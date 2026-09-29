@@ -1,0 +1,4 @@
+profile,runtime_updates,requests,static_successful,static_failed,static_success_rate_pct,static_requested_compute,static_allocated_compute,static_allocation_ratio_pct,dynamic_successful,dynamic_failed,dynamic_discovery_candidates,dynamic_success_rate_pct,dynamic_requested_compute,dynamic_allocated_compute,dynamic_allocation_ratio_pct,success_rate_difference_pp,allocation_ratio_difference_pp
+profile1,updates_on,10,3,7,30.0,310.0,140.0,45.16,7,3,8,70.0,310.0,250.0,80.65,40.0,35.48
+profile1,updates_off,10,3,7,30.0,310.0,100.0,32.26,5,5,6,50.0,310.0,180.0,58.06,20.0,25.81
+profile2,updates_on,10,3,7,30.0,270.0,140.0,51.85,9,1,14,90.0,270.0,250.0,92.59,60.0,40.74

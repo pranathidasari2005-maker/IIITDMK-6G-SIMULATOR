@@ -1,0 +1,2 @@
+experiment,evaluation,condition,primary_metric,baseline_value,proposed_value,difference,unit
+Experiment 6,Dynamic capability update,5 runtime state checks,State adaptation checks,,100.0,,percent

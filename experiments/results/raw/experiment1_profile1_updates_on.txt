@@ -1,0 +1,80 @@
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================
+     6G-LENA EXPERIMENT 1
+ Dynamic Capability Discovery vs Static Selection
+============================================
+Workload profile       : 1
+Runtime updates        : ON
+Request count          : 10
+
+========================================
+STATIC SELECTION EXPERIMENT
+========================================
+Request 1 | mode=STATIC | required=60 | selected=EdgeNode-1 | result=SUCCESS
+Request 2 | mode=STATIC | required=60 | selected=EdgeNode-1 | result=FAILURE
+Request 3 | mode=STATIC | required=30 | selected=EdgeNode-1 | result=SUCCESS
+  Runtime update: EdgeNode-1 released 40 compute | available=50
+Request 4 | mode=STATIC | required=50 | selected=EdgeNode-1 | result=SUCCESS
+Request 5 | mode=STATIC | required=20 | selected=EdgeNode-1 | result=FAILURE
+  Runtime update: EdgeNode-2 released 30 compute | available=80
+Request 6 | mode=STATIC | required=20 | selected=EdgeNode-1 | result=FAILURE
+Request 7 | mode=STATIC | required=10 | selected=EdgeNode-1 | result=FAILURE
+Request 8 | mode=STATIC | required=30 | selected=EdgeNode-1 | result=FAILURE
+Request 9 | mode=STATIC | required=20 | selected=EdgeNode-1 | result=FAILURE
+Request 10 | mode=STATIC | required=10 | selected=EdgeNode-1 | result=FAILURE
+
+========================================
+DYNAMIC CAPABILITY DISCOVERY EXPERIMENT
+========================================
+Request 1 | mode=DYNAMIC | required=60 | selected=EdgeNode-1 | candidates=2 | result=SUCCESS
+Request 2 | mode=DYNAMIC | required=60 | selected=EdgeNode-2 | candidates=1 | result=SUCCESS
+Request 3 | mode=DYNAMIC | required=30 | selected=EdgeNode-1 | candidates=1 | result=SUCCESS
+  Runtime update: EdgeNode-1 released 40 compute | available=50
+Request 4 | mode=DYNAMIC | required=50 | selected=EdgeNode-1 | candidates=1 | result=SUCCESS
+Request 5 | mode=DYNAMIC | required=20 | selected=EdgeNode-2 | candidates=1 | result=SUCCESS
+  Runtime update: EdgeNode-2 released 30 compute | available=30
+Request 6 | mode=DYNAMIC | required=20 | selected=EdgeNode-2 | candidates=1 | result=SUCCESS
+Request 7 | mode=DYNAMIC | required=10 | selected=EdgeNode-2 | candidates=1 | result=SUCCESS
+Request 8 | mode=DYNAMIC | required=30 | selected=NONE | candidates=0 | result=FAILURE
+Request 9 | mode=DYNAMIC | required=20 | selected=NONE | candidates=0 | result=FAILURE
+Request 10 | mode=DYNAMIC | required=10 | selected=NONE | candidates=0 | result=FAILURE
+
+========================================
+EXPERIMENT RESULTS
+========================================
+
+STATIC SELECTION
+Requests              : 10
+Successful            : 3
+Failed                : 7
+Success rate          : 30.00%
+Failure rate          : 70.00%
+Requested compute     : 310.00
+Allocated compute     : 140.00
+Allocation ratio      : 45.16%
+Final EdgeNode-1      : 0.00
+Final EdgeNode-2      : 80.00
+
+DYNAMIC CAPABILITY DISCOVERY
+Requests              : 10
+Successful            : 7
+Failed                : 3
+Discovery candidates  : 8
+Success rate          : 70.00%
+Failure rate          : 30.00%
+Requested compute     : 310.00
+Allocated compute     : 250.00
+Allocation ratio      : 80.65%
+Final EdgeNode-1      : 0.00
+Final EdgeNode-2      : 0.00
+
+----------------------------------------
+COMPARISON
+----------------------------------------
+Success-rate difference : 40.00 percentage points
+Allocation-ratio diff   : 35.48 percentage points
+----------------------------------------
+
+=== Experiment completed ===

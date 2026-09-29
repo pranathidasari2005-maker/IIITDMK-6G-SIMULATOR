@@ -1,0 +1,29 @@
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================
+  6G-LENA HETEROGENEOUS NETWORK EXPERIMENT
+============================================
+
+Heterogeneous topology:
+  Access nodes : 2
+  Edge nodes   : 3
+  AccessNode-1 reachable edges: 2
+  AccessNode-2 reachable edges: 2
+
+Communication capacities:
+  AccessNode-1: 100.00
+  AccessNode-2: 60.00
+
+Computing capacities:
+  EdgeNode-1: 120.00
+  EdgeNode-2: 80.00
+  EdgeNode-3: 40.00
+
+Validation:
+  Topology connectivity check : PASS
+  Resource heterogeneity check : PASS
+
+============================================
+ HETEROGENEOUS NETWORK EXPERIMENT PASSED
+============================================

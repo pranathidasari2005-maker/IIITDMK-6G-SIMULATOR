@@ -1,0 +1,13 @@
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+6G-LENA Dynamic Capability Update Experiment
+research_question=Can capability discovery adapt to runtime provider-state changes?
+minimum_resource=60
+
+time=0.00,state=INITIAL,minimum_resource=60.00,matches=2,provider=EdgeNode-1,available_resource=100.00,provider=EdgeNode-2,available_resource=80.00
+time=1.00,state=EDGE_NODE_1_DEGRADED,minimum_resource=60.00,matches=1,provider=EdgeNode-2,available_resource=80.00
+time=2.00,state=BOTH_PROVIDERS_BELOW_THRESHOLD,minimum_resource=60.00,matches=0
+time=3.00,state=EDGE_NODE_1_RECOVERED,minimum_resource=60.00,matches=1,provider=EdgeNode-1,available_resource=90.00
+time=4.00,state=EDGE_NODE_2_RECOVERED,minimum_resource=60.00,matches=2,provider=EdgeNode-1,available_resource=90.00,provider=EdgeNode-2,available_resource=100.00
+
+Experiment completed.

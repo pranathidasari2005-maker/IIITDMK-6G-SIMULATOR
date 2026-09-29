@@ -1,0 +1,73 @@
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================
+     6G-LENA EXPERIMENT 3
+ Capability Freshness and Temporal Discovery
+============================================
+
+Initial registration completed at t=0s.
+Capability state at t=0s
+EdgeNode-1 | lastUpdated=0s | age=0s | validity=5s | fresh=YES
+EdgeNode-2 | lastUpdated=0s | age=0s | validity=10s | fresh=YES
+EdgeNode-3 | lastUpdated=0s | age=0s | validity=0s | fresh=YES
+
+--- t=0s: All capabilities initially fresh ---
+Capability state at t=0s
+EdgeNode-1 | lastUpdated=0s | age=0s | validity=5s | fresh=YES
+EdgeNode-2 | lastUpdated=0s | age=0s | validity=10s | fresh=YES
+EdgeNode-3 | lastUpdated=0s | age=0s | validity=0s | fresh=YES
+
+Request 1 | t=0s | requireFresh=TRUE
+Discovered providers : EdgeNode-1, EdgeNode-2, EdgeNode-3
+Expected providers   : EdgeNode-1, EdgeNode-2, EdgeNode-3
+Expected count       : 3
+Actual count         : 3
+Discovery correctness: PASS
+
+--- t=6s: 5-second capability expired ---
+Capability state at t=6s
+EdgeNode-1 | lastUpdated=0s | age=6s | validity=5s | fresh=NO
+EdgeNode-2 | lastUpdated=0s | age=6s | validity=10s | fresh=YES
+EdgeNode-3 | lastUpdated=0s | age=6s | validity=0s | fresh=YES
+
+Request 2 | t=6s | requireFresh=TRUE
+Discovered providers : EdgeNode-2, EdgeNode-3
+Expected providers   : EdgeNode-2, EdgeNode-3
+Expected count       : 2
+Actual count         : 2
+Discovery correctness: PASS
+
+Request 3 | t=6s | requireFresh=FALSE
+Discovered providers : EdgeNode-1, EdgeNode-2, EdgeNode-3
+Expected providers   : EdgeNode-1, EdgeNode-2, EdgeNode-3
+Expected count       : 3
+Actual count         : 3
+Discovery correctness: PASS
+
+--- t=11s: 10-second capability expired ---
+Capability state at t=11s
+EdgeNode-1 | lastUpdated=0s | age=11s | validity=5s | fresh=NO
+EdgeNode-2 | lastUpdated=0s | age=11s | validity=10s | fresh=NO
+EdgeNode-3 | lastUpdated=0s | age=11s | validity=0s | fresh=YES
+
+Request 4 | t=11s | requireFresh=TRUE
+Discovered providers : EdgeNode-3
+Expected providers   : EdgeNode-3
+Expected count       : 1
+Actual count         : 1
+Discovery correctness: PASS
+
+Request 5 | t=11s | requireFresh=FALSE
+Discovered providers : EdgeNode-1, EdgeNode-2, EdgeNode-3
+Expected providers   : EdgeNode-1, EdgeNode-2, EdgeNode-3
+Expected count       : 3
+Actual count         : 3
+Discovery correctness: PASS
+
+============================================
+EXPERIMENT 3 COMPLETED
+============================================
+Temporal checkpoints : 3
+Freshness behavior   : VERIFIED
+============================================

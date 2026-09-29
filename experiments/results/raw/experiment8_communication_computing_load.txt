@@ -1,0 +1,30 @@
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================
+  6G-LENA COMMUNICATION + COMPUTING LOAD EXPERIMENT
+============================================
+
+Resource configuration:
+  Communication capacity : 100.00
+  Computing capacity     : 100.00
+  Communication/session  : 20.00
+  Computing/session      : 20.00
+
+load_offered,successful,failed,success_rate,communication_utilization,computing_utilization
+1,1,0,100.00,20.00,20.00
+2,2,0,100.00,40.00,40.00
+3,3,0,100.00,60.00,60.00
+4,4,0,100.00,80.00,80.00
+5,5,0,100.00,100.00,100.00
+6,5,1,83.33,100.00,100.00
+7,5,2,71.43,100.00,100.00
+8,5,3,62.50,100.00,100.00
+
+Final resource state:
+  Communication available: 100.00
+  Computing available    : 100.00
+
+============================================
+ COMMUNICATION + COMPUTING LOAD EXPERIMENT PASSED
+============================================

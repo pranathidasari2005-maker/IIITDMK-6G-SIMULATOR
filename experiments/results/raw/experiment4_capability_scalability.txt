@@ -1,0 +1,11 @@
+6G-LENA Capability Discovery Scalability Experiment
+Research question: discovery behavior as provider population increases
+
+provider_count,repetitions,total_elapsed_us,average_discovery_us,total_matches
+10,1000,17407.244,17.407,10000
+50,1000,37307.351,37.307,50000
+100,1000,114663.657,114.664,100000
+250,1000,312592.569,312.593,250000
+500,1000,486104.223,486.104,500000
+
+Experiment completed.

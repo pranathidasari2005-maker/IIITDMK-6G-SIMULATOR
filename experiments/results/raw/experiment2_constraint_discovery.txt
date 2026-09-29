@@ -1,0 +1,41 @@
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================
+     6G-LENA EXPERIMENT 2
+ Constraint-Aware Capability Discovery
+============================================
+
+Request 1 | Compute >= 80
+Discovered providers : 4
+Providers            : EdgeNode-1, EdgeNode-2, EdgeNode-3, EdgeNode-5
+Expected providers   : EdgeNode-1, EdgeNode-2, EdgeNode-3, EdgeNode-5
+Discovery correctness: PASS
+
+Request 2 | Compute >= 80 AND latencyClass = LOW
+Discovered providers : 3
+Providers            : EdgeNode-1, EdgeNode-3, EdgeNode-5
+Expected providers   : EdgeNode-1, EdgeNode-3, EdgeNode-5
+Discovery correctness: PASS
+
+Request 3 | Compute >= 80 AND reliabilityClass = HIGH
+Discovered providers : 3
+Providers            : EdgeNode-1, EdgeNode-2, EdgeNode-5
+Expected providers   : EdgeNode-1, EdgeNode-2, EdgeNode-5
+Discovery correctness: PASS
+
+Request 4 | Compute >= 80 AND latencyClass = LOW AND reliabilityClass = HIGH
+Discovered providers : 2
+Providers            : EdgeNode-1, EdgeNode-5
+Expected providers   : EdgeNode-1, EdgeNode-5
+Discovery correctness: PASS
+
+============================================
+EXPERIMENT 2 SUMMARY
+============================================
+Discovery requests    : 4
+Successful discoveries: 4
+Total provider matches: 12
+Correct discoveries   : 4
+Correctness rate      : 100.00%
+============================================

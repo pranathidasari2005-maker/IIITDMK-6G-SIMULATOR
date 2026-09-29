@@ -1,0 +1,5 @@
+request_id,request,discovered_count,expected_count,discovered_providers,expected_providers,correctness
+1,Compute >= 80,4,4,"EdgeNode-1, EdgeNode-2, EdgeNode-3, EdgeNode-5","EdgeNode-1, EdgeNode-2, EdgeNode-3, EdgeNode-5",PASS
+2,Compute >= 80 AND latencyClass = LOW,3,3,"EdgeNode-1, EdgeNode-3, EdgeNode-5","EdgeNode-1, EdgeNode-3, EdgeNode-5",PASS
+3,Compute >= 80 AND reliabilityClass = HIGH,3,3,"EdgeNode-1, EdgeNode-2, EdgeNode-5","EdgeNode-1, EdgeNode-2, EdgeNode-5",PASS
+4,Compute >= 80 AND latencyClass = LOW AND reliabilityClass = HIGH,2,2,"EdgeNode-1, EdgeNode-5","EdgeNode-1, EdgeNode-5",PASS

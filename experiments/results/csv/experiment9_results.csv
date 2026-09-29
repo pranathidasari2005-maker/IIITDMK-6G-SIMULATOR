@@ -1,0 +1,12 @@
+experiment,metric,value,unit
+Experiment 9,Access node count,2,nodes
+Experiment 9,Edge node count,3,nodes
+Experiment 9,AccessNode-1 reachable edge count,2,nodes
+Experiment 9,AccessNode-2 reachable edge count,2,nodes
+Experiment 9,AccessNode-1 communication capacity,100,resource units
+Experiment 9,AccessNode-2 communication capacity,60,resource units
+Experiment 9,EdgeNode-1 computing capacity,120,resource units
+Experiment 9,EdgeNode-2 computing capacity,80,resource units
+Experiment 9,EdgeNode-3 computing capacity,40,resource units
+Experiment 9,Topology connectivity check,100,percent
+Experiment 9,Resource heterogeneity check,100,percent

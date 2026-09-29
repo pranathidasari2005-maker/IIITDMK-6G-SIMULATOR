@@ -1,0 +1,141 @@
+6G-LENA EXPERIMENTAL ANALYSIS SUMMARY
+============================================================
+
+Dataset source: experiments/results/csv/master_results.csv
+Total experimental result rows: 13
+
+EXPERIMENT 1 — DYNAMIC VS STATIC CAPABILITY SELECTION
+------------------------------------------------------------
+Profile 1 + Updates ON: baseline=30.0%, proposed=70.0%, difference=40.0 percentage points
+Profile 1 + Updates OFF: baseline=30.0%, proposed=50.0%, difference=20.0 percentage points
+Profile 2 + Updates ON: baseline=30.0%, proposed=90.0%, difference=60.0 percentage points
+
+Interpretation: Dynamic capability-based selection produced higher observed request success rates than the static baseline in all three tested configurations.
+
+EXPERIMENT 2 — CONSTRAINT-AWARE DISCOVERY
+------------------------------------------------------------
+Observed discovery correctness: 100.0% for 4 predefined cases.
+Interpretation: All predefined multi-constraint discovery cases returned the expected eligible provider sets.
+
+EXPERIMENT 3 — CAPABILITY FRESHNESS
+------------------------------------------------------------
+Observed discovery correctness: 100.0% for 5 temporal checks.
+Interpretation: The implemented freshness mechanism correctly filtered stale capability information for the predefined temporal checks.
+
+EXPERIMENT 4 — CAPABILITY DISCOVERY SCALABILITY
+------------------------------------------------------------
+10 providers: 17.407 microseconds average discovery execution time
+50 providers: 37.307 microseconds average discovery execution time
+100 providers: 114.664 microseconds average discovery execution time
+250 providers: 312.593 microseconds average discovery execution time
+500 providers: 486.104 microseconds average discovery execution time
+
+Interpretation: Measured host execution time increased as the registered provider population increased. These values represent software execution time for the discovery benchmark, not physical 6G network latency.
+
+EXPERIMENT 5 — DYNAMIC CAPABILITY-BASED SERVICE PLACEMENT
+------------------------------------------------------------
+Success rate: 40.0% (5 service requests)
+Allocation ratio: 40.0% (5 service requests)
+
+Interpretation: In the tested five-request configuration, capability-based service placement successfully placed two requests before the available edge computing resources fell below the service requirement.
+
+EXPERIMENT 6 — DYNAMIC CAPABILITY UPDATE
+------------------------------------------------------------
+Observed state-adaptation checks: 100.0% (5 runtime state checks).
+Interpretation: All five predefined runtime capability-state transitions produced the expected discovery results.
+
+============================================================
+SCIENTIFIC CAUTION
+============================================================
+The reported percentages are observations from the defined simulation configurations and test cases. They must not be interpreted as universal accuracy, generalization, or physical-network performance.
+All experimental claims should remain tied to the corresponding raw simulation outputs and reproducible configurations.
+
+Experiment 7 — End-to-End Service Session Evaluation
+Research question: Can the 6G-LENA framework establish and terminate an end-to-end service session while correctly reserving and releasing communication and computing resources?
+
+Measured results:
+- Communication resource: 100 initial -> 70 after activation -> 100 after release.
+- Computing resource: 100 initial -> 60 after activation -> 100 after release.
+- Communication reserved during activation: 30 resource units.
+- Computing reserved during activation: 40 resource units.
+- Activation resource check: PASS.
+- Release resource check: PASS.
+
+The experiment demonstrates correct end-to-end session activation, resource reservation, and resource restoration for the tested service-session scenario. These results are scenario-specific simulator results and are not a claim of universal framework correctness.
+
+Experiment 8 — Communication + Computing Load Evaluation
+Research question: How does the 6G-LENA framework handle increasing concurrent service load when communication and computing resources are jointly required?
+
+Measured results:
+- One to five offered sessions were all successfully established.
+- Communication and computing utilization increased from 20% at one session to 100% at five sessions.
+- At six offered sessions, five sessions succeeded and one failed, giving an 83.33% success rate.
+- At seven offered sessions, five sessions succeeded and two failed, giving a 71.43% success rate.
+- At eight offered sessions, five sessions succeeded and three failed, giving a 62.50% success rate.
+- Both modeled resources reached full utilization at five concurrent sessions.
+- All resources were restored to full availability after each load-level test.
+
+The results show the expected capacity-limited behavior of the modeled communication and computing resources under increasing concurrent service load. The observed saturation point is specific to the configured 100-unit capacities and 20-unit per-session requirements and should not be interpreted as a physical 6G capacity limit.
+
+Experiment 9 — Heterogeneous Network Evaluation
+Research question: Can the 6G-LENA framework represent heterogeneous network entities with different connectivity relationships and resource capacities?
+
+Measured results:
+- 2 access nodes and 3 edge nodes were instantiated.
+- AccessNode-1 reached 2 edge nodes.
+- AccessNode-2 reached 2 edge nodes.
+- Communication capacities were 100 and 60 resource units for the two access nodes.
+- Computing capacities were 120, 80 and 40 resource units for the three edge nodes.
+- Topology connectivity validation: PASS.
+- Resource heterogeneity validation: PASS.
+
+The experiment demonstrates that the framework can represent heterogeneous access and edge resources together with distinct connectivity relationships. The capacities are configured simulation values used to validate the framework's heterogeneous modeling capability and are not measurements of physical 6G network capacity.
+
+============================================================
+Experiment 10 — Mobility / Handover
+============================================================
+
+Research question:
+Can the 6G-LENA framework maintain service-session consistency and
+resource correctness when a UE changes its serving access node?
+
+Scenario:
+A UE initially connects to AccessNode-1 through EdgeNode-1. A service
+session requiring 20 communication resource units and 20 computing
+resource units is activated. The session is then released, the UE is
+connected to AccessNode-2 through EdgeNode-2, and a new service session
+is activated.
+
+Measured validation results:
+- Old session release: PASS
+- New AccessNode-2 connection: PASS
+- New session activation: PASS
+- Old communication resource restored: PASS
+- New communication resource reserved: PASS
+
+Validation success:
+5/5 checks passed (100%).
+
+Interpretation:
+The experiment demonstrates that the implemented network-node and
+service-session abstractions can represent a controlled access-node
+handover while maintaining resource consistency. The original
+communication resource was restored after release, while the new access
+node correctly reserved the required communication resource for the
+new session.
+
+This result validates the implemented handover workflow for the tested
+simulation scenario. It does not represent physical 6G mobility
+performance or imply universal handover reliability.
+
+Raw simulation output:
+experiments/results/raw/experiment10_mobility_handover.txt
+
+Structured results:
+experiments/results/csv/experiment10_results.csv
+
+Figure:
+experiments/results/figures/experiment10_mobility_handover.png
+
+============================================================
+

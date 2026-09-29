@@ -1,0 +1,3 @@
+experiment,evaluation,condition,primary_metric,baseline_value,proposed_value,difference,unit
+Experiment 5,Dynamic capability-based service placement,5 service requests,Success rate,,40.0,,percent
+Experiment 5,Dynamic capability-based service placement,5 service requests,Allocation ratio,,40.0,,percent

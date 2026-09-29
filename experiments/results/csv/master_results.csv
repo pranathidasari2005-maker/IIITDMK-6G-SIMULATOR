@@ -1,0 +1,31 @@
+experiment,evaluation,condition,primary_metric,baseline_value,proposed_value,difference,unit
+Experiment 1,Dynamic vs Static,Profile 1 + Updates ON,Success rate,30.0,70.0,40.0,percentage points
+Experiment 1,Dynamic vs Static,Profile 1 + Updates OFF,Success rate,30.0,50.0,20.0,percentage points
+Experiment 1,Dynamic vs Static,Profile 2 + Updates ON,Success rate,30.0,90.0,60.0,percentage points
+Experiment 2,Constraint-aware discovery,4 predefined cases,Discovery correctness,,100.0,,percent
+Experiment 3,Capability freshness,5 temporal checks,Discovery correctness,,100.0,,percent
+Experiment 4,Capability Discovery Scalability,10 providers,Average discovery execution time,,17.407,,microseconds
+Experiment 4,Capability Discovery Scalability,50 providers,Average discovery execution time,,37.307,,microseconds
+Experiment 4,Capability Discovery Scalability,100 providers,Average discovery execution time,,114.664,,microseconds
+Experiment 4,Capability Discovery Scalability,250 providers,Average discovery execution time,,312.593,,microseconds
+Experiment 4,Capability Discovery Scalability,500 providers,Average discovery execution time,,486.104,,microseconds
+Experiment 5,Dynamic capability-based service placement,5 service requests,Success rate,,40.0,,percent
+Experiment 5,Dynamic capability-based service placement,5 service requests,Allocation ratio,,40.0,,percent
+Experiment 6,Dynamic capability update,5 runtime state checks,State adaptation checks,,100.0,,percent
+Experiment 7,End-to-end service session,Single service session,Activation resource check,,100.0,,percent
+Experiment 7,End-to-end service session,Single service session,Release resource check,,100.0,,percent
+Experiment 8,Communication + Computing Load,1 offered session,Success rate,,100.0,,percent
+Experiment 8,Communication + Computing Load,2 offered sessions,Success rate,,100.0,,percent
+Experiment 8,Communication + Computing Load,3 offered sessions,Success rate,,100.0,,percent
+Experiment 8,Communication + Computing Load,4 offered sessions,Success rate,,100.0,,percent
+Experiment 8,Communication + Computing Load,5 offered sessions,Success rate,,100.0,,percent
+Experiment 8,Communication + Computing Load,6 offered sessions,Success rate,,83.33,,percent
+Experiment 8,Communication + Computing Load,7 offered sessions,Success rate,,71.43,,percent
+Experiment 8,Communication + Computing Load,8 offered sessions,Success rate,,62.50,,percent
+Experiment 9,Heterogeneous Network,Topology connectivity,Topology validation,,100.0,,percent
+Experiment 9,Heterogeneous Network,Resource diversity,Resource heterogeneity validation,,100.0,,percent
+Experiment 10,Mobility / Handover,Initial-to-new access transition,Old session release,,100.0,,percent
+Experiment 10,Mobility / Handover,Initial-to-new access transition,New access node connection,,100.0,,percent
+Experiment 10,Mobility / Handover,Initial-to-new access transition,New session activation,,100.0,,percent
+Experiment 10,Mobility / Handover,Initial-to-new access transition,Old communication resource restored,,100.0,,percent
+Experiment 10,Mobility / Handover,Initial-to-new access transition,New communication resource reserved,,100.0,,percent

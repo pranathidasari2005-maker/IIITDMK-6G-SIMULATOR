@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# ns-3 build/generated files
+build/
+cmake-cache/
+*.o
+*.so
+*.a
+
+# IDE/editor files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Runtime/generated output
+*.log
+
+# Temporary/backup files
+*.backup
+*.bak
+*~

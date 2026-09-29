@@ -1,0 +1,6 @@
+request_id,time_seconds,require_fresh,discovered_providers,expected_providers,expected_count,actual_count,correctness
+1,0.0,TRUE,"EdgeNode-1, EdgeNode-2, EdgeNode-3","EdgeNode-1, EdgeNode-2, EdgeNode-3",3,3,PASS
+2,6.0,TRUE,"EdgeNode-2, EdgeNode-3","EdgeNode-2, EdgeNode-3",2,2,PASS
+3,6.0,FALSE,"EdgeNode-1, EdgeNode-2, EdgeNode-3","EdgeNode-1, EdgeNode-2, EdgeNode-3",3,3,PASS
+4,11.0,TRUE,EdgeNode-3,EdgeNode-3,1,1,PASS
+5,11.0,FALSE,"EdgeNode-1, EdgeNode-2, EdgeNode-3","EdgeNode-1, EdgeNode-2, EdgeNode-3",3,3,PASS

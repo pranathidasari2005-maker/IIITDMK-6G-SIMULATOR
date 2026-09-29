@@ -1,0 +1,22 @@
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+6G-LENA Dynamic Capability-Based Service Placement
+research_question=Can capability discovery select currently suitable edge providers for service placement?
+provider_capacities=80,120,50
+required_compute=70
+repetitions=5
+
+request=1,selected_node=EdgeNode-2,status=SUCCESS,remaining_compute=50.00
+request=2,selected_node=EdgeNode-1,status=SUCCESS,remaining_compute=10.00
+request=3,selected_node=NONE,status=FAILED
+request=4,selected_node=NONE,status=FAILED
+request=5,selected_node=NONE,status=FAILED
+
+SUMMARY
+requests=5
+successful=2
+failed=3
+success_rate=40.00%
+requested_compute=350.00
+allocated_compute=140.00
+allocation_ratio=40.00%

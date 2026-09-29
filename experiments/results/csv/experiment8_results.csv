@@ -1,0 +1,9 @@
+experiment,load_offered,successful,failed,success_rate,communication_utilization,computing_utilization
+Experiment 8,1,1,0,100.00,20.00,20.00
+Experiment 8,2,2,0,100.00,40.00,40.00
+Experiment 8,3,3,0,100.00,60.00,60.00
+Experiment 8,4,4,0,100.00,80.00,80.00
+Experiment 8,5,5,0,100.00,100.00,100.00
+Experiment 8,6,5,1,83.33,100.00,100.00
+Experiment 8,7,5,2,71.43,100.00,100.00
+Experiment 8,8,5,3,62.50,100.00,100.00

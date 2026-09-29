@@ -1,0 +1,6 @@
+experiment,metric,value,unit
+Experiment 10,Old session release,100,percent
+Experiment 10,New access node connection,100,percent
+Experiment 10,New session activation,100,percent
+Experiment 10,Old communication resource restored,100,percent
+Experiment 10,New communication resource reserved,100,percent

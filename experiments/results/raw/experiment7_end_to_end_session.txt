@@ -1,0 +1,32 @@
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================
+  6G-LENA END-TO-END SERVICE SESSION EXPERIMENT
+============================================
+
+Initial resource state:
+  Communication capacity : 100
+  Communication available: 100
+  Computing capacity     : 100
+  Computing available    : 100
+
+Service requirements:
+  Communication required: 30
+  Computing required    : 40
+
+Service activation: SUCCESS
+  Communication available after activation: 70
+  Computing available after activation    : 60
+
+Service deactivation: SUCCESS
+  Communication available after release: 100
+  Computing available after release    : 100
+
+Experiment result:
+  Activation resource check : PASS
+  Release resource check    : PASS
+
+============================================
+ END-TO-END SESSION EXPERIMENT PASSED
+============================================

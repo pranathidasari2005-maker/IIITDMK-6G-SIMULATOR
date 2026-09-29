@@ -1,0 +1,7 @@
+experiment,evaluation,metric,value,unit
+Experiment 7,End-to-end service session,Activation resource check,100,percent
+Experiment 7,End-to-end service session,Release resource check,100,percent
+Experiment 7,End-to-end service session,Communication reserved,30,resource units
+Experiment 7,End-to-end service session,Computing reserved,40,resource units
+Experiment 7,End-to-end service session,Communication restoration,100,percent
+Experiment 7,End-to-end service session,Computing restoration,100,percent

@@ -1,0 +1,2867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IIITDMK 6G SIMULATOR</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">6G</div>
+
+                <div>
+                    <h1>IIITDMK</h1>
+                    <span>6G SIMULATOR</span>
+                </div>
+            </div>
+
+            <nav class="navigation">
+
+                <a href="#" class="nav-item active"
+                   onclick="showSimulatorSection('dashboard-section')">
+                    <span>⌂</span>
+                    Dashboard
+                </a>
+
+                <a href="#" class="nav-item" id="nav-network"
+                   onclick="showSimulatorSection('network-section')">
+                    <span>◈</span>
+                    Network
+                </a>
+
+                <a href="#" class="nav-item"
+                   onclick="showSimulatorSection('capabilities-section')">
+                    <span>⚡</span>
+                    Capabilities
+                </a>
+
+                <a href="#" class="nav-item"
+                   onclick="showSimulatorSection('services-section')">
+                    <span>◇</span>
+                    Services
+                </a>
+
+                <a href="#" class="nav-item"
+                   onclick="showSimulatorSection('experiments-section')">
+                    <span>◎</span>
+                    Experiments
+                </a>
+
+                <a href="#" class="nav-item"
+                   onclick="showSimulatorSection('results-section')">
+                    <span>▦</span>
+                    Results
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <div class="system-status">
+                    <div class="status-dot"></div>
+
+                    <div>
+                        <strong>System Ready</strong>
+                        <small>Simulation Engine</small>
+                    </div>
+                </div>
+
+                <div class="version">
+                    6G-LENA Framework
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- TOP BAR -->
+            <header class="topbar">
+
+                <div>
+                    <p class="eyebrow">NEXT GENERATION NETWORK SIMULATION</p>
+
+                    <h2>
+                        Welcome to
+                        <span>6G Simulation</span>
+                    </h2>
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="live-indicator">
+                        <span></span>
+                        ENGINE READY
+                    </div>
+
+                    <div class="profile">
+                        IIITDMK
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <section id="dashboard-section" class="simulator-section">
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-label">
+                <span>✦</span>
+                6G NETWORK SIMULATION FRAMEWORK
+            </div>
+
+            <h3>
+                Explore the
+                <strong>Future of Wireless Networks.</strong>
+            </h3>
+
+            <p>
+                A simulation and experimental framework for studying
+                dynamic, capability-aware 6G network environments
+                through reusable network, resource, service and
+                computing models.
+            </p>
+
+            <div class="hero-buttons">
+
+                <button class="primary-button"
+                        onclick="showSimulatorSection('experiments-section')">
+                    ▶ Run Simulation
+                </button>
+
+                <button class="secondary-button"
+                        onclick="showSimulatorSection('network-section')">
+                    Explore Framework
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="network-visual">
+
+            <div class="orbit orbit-one"></div>
+            <div class="orbit orbit-two"></div>
+            <div class="orbit orbit-three"></div>
+
+            <div class="core-node">
+                <span>6G</span>
+            </div>
+
+            <div class="floating-node node-one">UE</div>
+            <div class="floating-node node-two">EDGE</div>
+            <div class="floating-node node-three">AI</div>
+            <div class="floating-node node-four">CORE</div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PROJECT OVERVIEW -->
+    <section class="section">
+
+        <div class="section-header">
+
+            <div>
+                <p class="section-label">PROJECT OVERVIEW</p>
+                <h3>IIITDMK 6G SIMULATOR</h3>
+            </div>
+
+            <span class="section-badge">
+                READY
+            </span>
+
+        </div>
+
+        <div class="dashboard-project-grid">
+
+            <div class="dashboard-project-card dashboard-project-main">
+
+                <div class="dashboard-card-icon">
+                    ◈
+                </div>
+
+                <div>
+
+                    <span class="card-label">
+                        SIMULATION FRAMEWORK
+                    </span>
+
+                    <h3>
+                        From Network Models to
+                        <span>6G Experiments</span>
+                    </h3>
+
+                    <p>
+                        IIITDMK 6G SIMULATOR provides a reusable environment
+                        for modelling and experimenting with next-generation
+                        network scenarios. The framework combines network
+                        entities, resource states, capability management,
+                        services and sessions with an ns-3 based simulation
+                        backend.
+                    </p>
+
+                    <p>
+                        The framework is designed to study how network
+                        resources and capabilities can change dynamically
+                        during simulation and how higher-level services
+                        interact with these network conditions.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-project-card dashboard-how-card">
+
+                <span class="card-label">
+                    SIMULATION WORKFLOW
+                </span>
+
+                <h3>How it works</h3>
+
+                <div class="dashboard-workflow">
+
+                    <div class="workflow-step">
+                        <div class="workflow-number">01</div>
+                        <div>
+                            <strong>Configure</strong>
+                            <small>Choose experiment parameters</small>
+                        </div>
+                    </div>
+
+                    <div class="workflow-line"></div>
+
+                    <div class="workflow-step">
+                        <div class="workflow-number">02</div>
+                        <div>
+                            <strong>Execute</strong>
+                            <small>Run the ns-3 simulation</small>
+                        </div>
+                    </div>
+
+                    <div class="workflow-line"></div>
+
+                    <div class="workflow-step">
+                        <div class="workflow-number">03</div>
+                        <div>
+                            <strong>Evaluate</strong>
+                            <small>Measure simulation behaviour</small>
+                        </div>
+                    </div>
+
+                    <div class="workflow-line"></div>
+
+                    <div class="workflow-step">
+                        <div class="workflow-number">04</div>
+                        <div>
+                            <strong>Analyze</strong>
+                            <small>Inspect experiment results</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FRAMEWORK FLOW -->
+    <section class="section">
+
+        <div class="section-header">
+
+            <div>
+                <p class="section-label">FRAMEWORK ARCHITECTURE</p>
+                <h3>From Network to Results</h3>
+            </div>
+
+        </div>
+
+        <div class="dashboard-flow">
+
+            <div class="flow-item">
+                <div class="flow-icon">◉</div>
+                <strong>Network</strong>
+                <small>UE • Access • Edge • Core</small>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="flow-item">
+                <div class="flow-icon">⚡</div>
+                <strong>Resources</strong>
+                <small>Communication • Computing</small>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="flow-item">
+                <div class="flow-icon">◇</div>
+                <strong>Capabilities</strong>
+                <small>Discovery • Matching • Updates</small>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="flow-item">
+                <div class="flow-icon">◆</div>
+                <strong>Services</strong>
+                <small>Workloads • Sessions</small>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="flow-item">
+                <div class="flow-icon">▶</div>
+                <strong>Simulation</strong>
+                <small>ns-3 execution</small>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="flow-item">
+                <div class="flow-icon">✓</div>
+                <strong>Results</strong>
+                <small>Metrics • Analysis</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FRAMEWORK HIGHLIGHTS -->
+    <section class="section">
+
+        <div class="section-header">
+
+            <div>
+                <p class="section-label">FRAMEWORK HIGHLIGHTS</p>
+                <h3>What the simulator models</h3>
+            </div>
+
+        </div>
+
+        <div class="dashboard-highlights-grid">
+
+            <div class="dashboard-highlight-card">
+                <span class="highlight-icon">◉</span>
+                <div>
+                    <strong>Network Entities</strong>
+                    <p>
+                        UE, access and edge network entities form
+                        the simulation environment.
+                    </p>
+                </div>
+            </div>
+
+            <div class="dashboard-highlight-card">
+                <span class="highlight-icon">⚡</span>
+                <div>
+                    <strong>Dynamic Resources</strong>
+                    <p>
+                        Communication and computing resources can
+                        change during simulation.
+                    </p>
+                </div>
+            </div>
+
+            <div class="dashboard-highlight-card">
+                <span class="highlight-icon">◇</span>
+                <div>
+                    <strong>Capability Management</strong>
+                    <p>
+                        Capabilities can be registered, requested,
+                        matched and updated dynamically.
+                    </p>
+                </div>
+            </div>
+
+            <div class="dashboard-highlight-card">
+                <span class="highlight-icon">◆</span>
+                <div>
+                    <strong>Services & Sessions</strong>
+                    <p>
+                        Service workloads and session lifecycles
+                        can be evaluated across the network.
+                    </p>
+                </div>
+            </div>
+
+            <div class="dashboard-highlight-card">
+                <span class="highlight-icon">⇄</span>
+                <div>
+                    <strong>Mobility & Heterogeneity</strong>
+                    <p>
+                        Network scenarios can include mobility,
+                        handover and heterogeneous nodes.
+                    </p>
+                </div>
+            </div>
+
+            <div class="dashboard-highlight-card">
+                <span class="highlight-icon">▣</span>
+                <div>
+                    <strong>Experimentation</strong>
+                    <p>
+                        Experiments expose parameters and return
+                        simulation results to the GUI.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 6G FOUNDATION -->
+    <section class="section sixg-foundation-section">
+
+        <div class="sixg-foundation-card">
+
+            <div class="foundation-glow"></div>
+
+            <div class="foundation-header">
+                <div>
+                    <p class="section-label">6G FOUNDATION</p>
+                    <h3>Built on the 6G Vision</h3>
+                </div>
+
+                <div class="foundation-badge">
+                    6G
+                </div>
+            </div>
+
+            <div class="foundation-statement">
+                Our simulator is built around the
+                <strong>IMT-2030 framework</strong> defined by ITU-R
+                and the ongoing
+                <strong>3GPP Release 20</strong> standardization work,
+                providing a foundation for exploring emerging
+                <strong>6G network concepts</strong>.
+            </div>
+
+            <div class="foundation-divider"></div>
+
+            <div class="foundation-references">
+
+                <a class="foundation-reference"
+                   href="https://www.itu.int/rec/R-REC-M.2160-0-202311-I"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    <div class="foundation-ref-icon">ITU-R</div>
+
+                    <div class="foundation-ref-content">
+                        <span>IMT-2030 FRAMEWORK</span>
+                        <strong>ITU-R M.2160-0</strong>
+                    </div>
+
+                    <div class="foundation-arrow">↗</div>
+
+                </a>
+
+                <div class="foundation-connector">+</div>
+
+                <a class="foundation-reference"
+                   href="https://portal.3gpp.org/Releases.aspx"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    <div class="foundation-ref-icon">3GPP</div>
+
+                    <div class="foundation-ref-content">
+                        <span>6G STANDARDIZATION</span>
+                        <strong>Release 20</strong>
+                    </div>
+
+                    <div class="foundation-arrow">↗</div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ACTION PANEL -->
+    <section class="dashboard-action-panel">
+
+        <div>
+
+            <span class="section-label">
+                READY TO EXPERIMENT?
+            </span>
+
+            <h3>
+                Configure a 6G scenario and
+                <span>run a simulation.</span>
+            </h3>
+
+            <p>
+                Select an experiment, configure its parameters,
+                execute the simulation and inspect the resulting
+                behaviour.
+            </p>
+
+        </div>
+
+        <button class="primary-button"
+                onclick="showSimulatorSection('experiments-section')">
+            Explore Experiments →
+        </button>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <span>
+            IIITDMK 6G SIMULATOR
+        </span>
+
+        <span>
+            Built on ns-3 / 6G-LENA
+        </span>
+
+    </footer>
+
+</section>
+
+
+<!-- SERVICES SECTION -->
+<section id="services-section" class="simulator-section" style="display:none;">
+
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">6G SERVICE ENVIRONMENT</span>
+            <h2>Services</h2>
+            <p>Define and inspect service workloads running across the 6G network environment.</p>
+        </div>
+
+        <div class="page-status">
+            <span class="status-dot"></span>
+            READY
+        </div>
+    </div>
+
+
+    <div class="service-workspace">
+
+        <div class="workspace-card">
+
+            <div class="workspace-card-header">
+                <div>
+                    <span class="card-label">SERVICE MODEL</span>
+                    <h3>Service Environment</h3>
+                </div>
+
+                <span class="card-unit">SIMULATION MODEL</span>
+            </div>
+
+
+            <div class="service-overview-grid">
+
+                <div class="resource-state">
+                    <span>CONFIGURED SERVICES</span>
+                    <strong id="service-configured-count">3</strong>
+                    <small>Services available to the simulation</small>
+                </div>
+
+                <div class="resource-state">
+                    <span>ACTIVE SESSIONS</span>
+                    <strong id="service-session-count">—</strong>
+                    <small>Runtime sessions</small>
+                </div>
+
+                <div class="resource-state">
+                    <span>PLACEMENT</span>
+                    <strong>EDGE</strong>
+                    <small>Distributed service execution</small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="workspace-card">
+
+            <div class="workspace-card-header">
+                <div>
+                    <span class="card-label">SERVICE PLACEMENT</span>
+                    <h3>Dynamic Service Placement</h3>
+                </div>
+            </div>
+
+            <div class="service-list">
+
+                <div class="service-row">
+                    <div class="service-identity">
+                        <span class="service-indicator"></span>
+                        <div>
+                            <strong id="service-placement-name">Service-1</strong>
+                            <small id="services-panel-placement-result">
+                                Waiting for Service Placement experiment
+                            </small>
+                        </div>
+                    </div>
+
+                    <span id="service-placement-status"
+                          class="service-state">READY</span>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-identity">
+                        <span class="service-indicator"></span>
+                        <div>
+                            <strong>Placement Strategy</strong>
+                            <small>
+                                Capability-based selection using current resources
+                            </small>
+                        </div>
+                    </div>
+
+                    <span class="service-state">DYNAMIC</span>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-identity">
+                        <span class="service-indicator"></span>
+                        <div>
+                            <strong>Latest Result</strong>
+                            <small id="service-placement-summary">
+                                No experiment result available
+                            </small>
+                        </div>
+                    </div>
+
+                    <span id="service-placement-state"
+                          class="service-state">—</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="workspace-card discovery-entry">
+
+            <div>
+                <span class="card-label">SERVICE PLACEMENT</span>
+                <h3>Distributed Service Execution</h3>
+
+                <p>
+                    Services can be associated with network resources
+                    and evaluated for placement across the 6G edge
+                    environment.
+                </p>
+            </div>
+
+            <button class="secondary-button"
+                    onclick="showSimulatorSection('experiments-section')">
+                Open Experiments →
+            </button>
+
+        </div>
+
+
+        <div class="workspace-card end-to-end-session-card">
+
+            <div class="workspace-card-header">
+                <div>
+                    <span class="card-label">END-TO-END SESSION</span>
+                    <h3>Service Session Lifecycle</h3>
+                </div>
+
+                <button class="primary-button"
+                        id="end-to-end-session-button"
+                        onclick="runEndToEndSession()">
+                    ▶ RUN SESSION
+                </button>
+            </div>
+
+            <div id="end-to-end-session-status" class="experiment-status">
+                READY — RUN REAL NS-3 SESSION EXPERIMENT
+            </div>
+
+            <div id="end-to-end-session-results" style="display:none;">
+
+                <div class="experiment-meta-grid">
+
+                    <div class="experiment-meta-card">
+                        <span>COMMUNICATION REQUIRED</span>
+                        <strong id="e2e-required-communication">—</strong>
+                    </div>
+
+                    <div class="experiment-meta-card">
+                        <span>COMPUTING REQUIRED</span>
+                        <strong id="e2e-required-computing">—</strong>
+                    </div>
+
+                    <div class="experiment-meta-card">
+                        <span>ACTIVATION</span>
+                        <strong id="e2e-activation-status">—</strong>
+                    </div>
+
+                    <div class="experiment-meta-card">
+                        <span>DEACTIVATION</span>
+                        <strong id="e2e-deactivation-status">—</strong>
+                    </div>
+
+                </div>
+
+                <div class="experiment-comparison-grid">
+
+                    <div class="experiment-result-card">
+                        <div class="result-card-title">Initial Resources</div>
+
+                        <div class="result-stat-row">
+                            <span>Communication</span>
+                            <strong id="e2e-initial-communication">—</strong>
+                        </div>
+
+                        <div class="result-stat-row">
+                            <span>Computing</span>
+                            <strong id="e2e-initial-computing">—</strong>
+                        </div>
+                    </div>
+
+                    <div class="experiment-result-card dynamic">
+                        <div class="result-card-title">After Activation</div>
+
+                        <div class="result-stat-row">
+                            <span>Communication</span>
+                            <strong id="e2e-activation-communication">—</strong>
+                        </div>
+
+                        <div class="result-stat-row">
+                            <span>Computing</span>
+                            <strong id="e2e-activation-computing">—</strong>
+                        </div>
+                    </div>
+
+                    <div class="experiment-result-card">
+                        <div class="result-card-title">After Release</div>
+
+                        <div class="result-stat-row">
+                            <span>Communication</span>
+                            <strong id="e2e-release-communication">—</strong>
+                        </div>
+
+                        <div class="result-stat-row">
+                            <span>Computing</span>
+                            <strong id="e2e-release-computing">—</strong>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="experiment-comparison-grid">
+
+                    <div class="experiment-result-card">
+                        <div class="result-card-title">Activation Resource Check</div>
+                        <strong id="e2e-activation-check">—</strong>
+                    </div>
+
+                    <div class="experiment-result-card">
+                        <div class="result-card-title">Release Resource Check</div>
+                        <strong id="e2e-release-check">—</strong>
+                    </div>
+
+                    <div class="experiment-difference-card">
+                        <span>EXPERIMENT RESULT</span>
+                        <strong id="e2e-experiment-result">—</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- EXPERIMENTS SECTION -->
+<section id="experiments-section" class="simulator-section" style="display:none;">
+
+    <div class="section-header">
+        <div>
+            <span class="section-kicker">6G EXPERIMENTATION</span>
+            <h2>Experiments</h2>
+            <p>Configure and execute reproducible experiments using the IIITDMK 6G simulation framework.</p>
+        </div>
+        <div class="experiment-header-badge">
+            <span class="status-dot"></span>
+            Simulation Engine Ready
+        </div>
+    </div>
+
+    <!-- CAPABILITY DISCOVERY -->
+    <div class="experiment-group">
+        <div class="experiment-group-header">
+            <div>
+                <span class="group-number">01</span>
+                <h3>Capability Discovery</h3>
+                <p>Study how network entities discover and use dynamically changing capabilities.</p>
+            </div>
+        </div>
+
+        <div class="experiment-page-grid">
+
+            <div class="experiment-card featured">
+                <div class="experiment-top">
+                    <div class="experiment-icon">⌕</div>
+                    <span class="experiment-status">CONFIGURABLE</span>
+                </div>
+                <h3>Dynamic Capability Discovery</h3>
+                <p>
+                    Evaluate capability discovery requests under different
+                    workloads and runtime updates.
+                </p>
+
+                <div class="experiment-controls">
+                    <label>Requests
+                        <input id="discovery-requests" type="number" value="10" min="1">
+                    </label>
+                    <label>Profile
+                        <input id="discovery-profile" type="number" value="1" min="1">
+                    </label>
+                    <label>Updates
+                        <input id="discovery-updates" type="number" value="1" min="0">
+                    </label>
+                </div>
+
+                <button id="experiments-discovery-button"
+                        class="experiment-button">
+                    Run Experiment →
+                </button>
+
+                <div id="experiments-discovery-result"
+                     class="experiment-inline-result"></div>
+            </div>
+
+            <div class="experiment-card">
+                <div class="experiment-top">
+                    <div class="experiment-icon">⊞</div>
+                    <span class="experiment-status">READY</span>
+                </div>
+                <h3>Capability Constraint</h3>
+                <p>
+                    Test provider discovery when requests include
+                    resource constraints.
+                </p>
+                <div class="experiment-controls">
+                    <label>
+                        Minimum Compute Requirement
+                        <input
+                            id="constraint-minimum-resource"
+                            type="number"
+                            min="1"
+                            value="80"
+                            step="1"
+                        >
+                    </label>
+                </div>
+
+                <div class="experiment-tags">
+                    <span>Constraints</span>
+                    <span>Providers</span>
+                    <span>Correctness</span>
+                </div>
+                <button id="experiments-constraint-button"
+                        class="experiment-button">
+                    Run Experiment →
+                </button>
+                <div id="experiments-constraint-result"
+                     class="experiment-inline-result"></div>
+            </div>
+
+            <div class="experiment-card">
+                <div class="experiment-top">
+                    <div class="experiment-icon">◷</div>
+                    <span class="experiment-status">CONFIGURABLE</span>
+                </div>
+                <h3>Capability Freshness</h3>
+                <p>
+                    Evaluate how capability information changes as
+                    validity periods and resource states evolve.
+                </p>
+
+                <div class="experiment-controls">
+                    <label>Node A validity
+                        <input id="freshness-node-a" type="number" value="4">
+                    </label>
+                    <label>Node B validity
+                        <input id="freshness-node-b" type="number" value="10">
+                    </label>
+                    <label>Minimum resource
+                        <input id="freshness-min-resource" type="number" value="50">
+                    </label>
+                    <label>Checkpoint 2
+                        <input id="freshness-checkpoint-2" type="number" value="6">
+                    </label>
+                    <label>Checkpoint 3
+                        <input id="freshness-checkpoint-3" type="number" value="11">
+                    </label>
+                </div>
+
+                <button id="experiments-freshness-button"
+                        class="experiment-button">
+                    Run Experiment →
+                </button>
+                <div id="experiments-freshness-result"
+                     class="experiment-inline-result"></div>
+            </div>
+
+            <div class="experiment-card">
+                <div class="experiment-top">
+                    <div class="experiment-icon">↻</div>
+                    <span class="experiment-status">VERIFIED</span>
+                </div>
+                <h3>Capability Update</h3>
+                <p>
+                    Observe capability discovery adaptation after
+                    runtime provider-state changes.
+                </p>
+                <div class="experiment-tags">
+                    <span>Runtime Updates</span>
+                    <span>Adaptation</span>
+                </div>
+                <button id="experiments-update-button"
+                        class="experiment-button">
+                    Run Experiment →
+                </button>
+                <div id="experiments-update-result"
+                     class="experiment-inline-result"></div>
+            </div>
+
+            <div class="experiment-card">
+                <div class="experiment-top">
+                    <div class="experiment-icon">▦</div>
+                    <span class="experiment-status">READY</span>
+                </div>
+                <h3>Capability Registry</h3>
+                <p>
+                    Inspect registered capabilities and current
+                    provider resource state.
+                </p>
+                <div class="experiment-tags">
+                    <span>Registry</span>
+                    <span>Resource State</span>
+                </div>
+
+                <div class="experiment-config">
+
+                    <div class="config-field">
+                        <label for="registry-communication-providers">
+                            Communication Providers
+                        </label>
+                        <input
+                            id="registry-communication-providers"
+                            type="number"
+                            min="0"
+                            value="1">
+                    </div>
+
+                    <div class="config-field">
+                        <label for="registry-sensing-providers">
+                            Sensing Providers
+                        </label>
+                        <input
+                            id="registry-sensing-providers"
+                            type="number"
+                            min="0"
+                            value="1">
+                    </div>
+
+                    <div class="config-field">
+                        <label for="registry-computing-providers">
+                            Computing Providers
+                        </label>
+                        <input
+                            id="registry-computing-providers"
+                            type="number"
+                            min="0"
+                            value="1">
+                    </div>
+
+                    <div class="config-field">
+                        <label for="registry-ai-providers">
+                            AI Providers
+                        </label>
+                        <input
+                            id="registry-ai-providers"
+                            type="number"
+                            min="0"
+                            value="1">
+                    </div>
+
+                    <div class="config-field">
+                        <label for="registry-query-type">
+                            Discovery Query
+                        </label>
+                        <select id="registry-query-type">
+                            <option value="COMMUNICATION">
+                                COMMUNICATION
+                            </option>
+                            <option value="SENSING">
+                                SENSING
+                            </option>
+                            <option value="COMPUTING" selected>
+                                COMPUTING
+                            </option>
+                            <option value="AI">
+                                AI
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <button id="capability-registry-button"
+                        class="experiment-button"
+                        onclick="runCapabilityRegistryExperiment()">
+                    View Registry →
+                </button>
+
+                <div id="capability-registry-result"
+                     class="experiment-inline-result"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SCALABILITY -->
+    <div class="experiment-group">
+        <div class="experiment-group-header">
+            <div>
+                <span class="group-number">02</span>
+                <h3>Scalability & Performance</h3>
+                <p>Measure how the capability mechanism behaves as the provider population grows.</p>
+            </div>
+        </div>
+
+        <div class="experiment-page-grid">
+
+            <div class="experiment-card featured">
+                <div class="experiment-top">
+                    <div class="experiment-icon">◫</div>
+                    <span class="experiment-status">CONFIGURABLE</span>
+                </div>
+                <h3>Capability Scalability</h3>
+                <p>
+                    Measure discovery execution time across increasing
+                    numbers of providers.
+                </p>
+
+                <div class="experiment-controls single-control">
+                    <label>Repetitions
+                        <input id="scalability-repetitions"
+                               type="number"
+                               value="1000"
+                               min="1">
+                    </label>
+                </div>
+
+                <button id="experiments-scalability-button"
+                        class="experiment-button">
+                    Run Experiment →
+                </button>
+                <div id="experiments-scalability-result"
+                     class="experiment-inline-result"></div>
+            </div>
+
+            <div class="experiment-card">
+                <div class="experiment-top">
+                    <div class="experiment-icon">⚙</div>
+                    <span class="experiment-status">CONFIGURABLE</span>
+                </div>
+                <h3>Resource Stress</h3>
+                <p>
+                    Evaluate resource allocation behaviour under
+                    constrained network conditions.
+                </p>
+
+                <div class="experiment-tags">
+                    <span>Resources</span>
+                    <span>Stress</span>
+                    <span>Allocation</span>
+                </div>
+
+                <div class="experiment-controls">
+                    <label>
+                        Node A Capacity
+                        <input id="resource-node-a-capacity"
+                               type="number"
+                               min="1"
+                               value="100"
+                               step="1">
+                    </label>
+
+                    <label>
+                        Node B Capacity
+                        <input id="resource-node-b-capacity"
+                               type="number"
+                               min="1"
+                               value="80"
+                               step="1">
+                    </label>
+
+                    <label>
+                        Request Count
+                        <input id="resource-request-count"
+                               type="number"
+                               min="1"
+                               value="5"
+                               step="1">
+                    </label>
+
+                    <label>
+                        Request Start
+                        <input id="resource-request-start"
+                               type="number"
+                               min="0"
+                               value="20"
+                               step="1">
+                    </label>
+
+                    <label>
+                        Request Step
+                        <input id="resource-request-step"
+                               type="number"
+                               min="0"
+                               value="20"
+                               step="1">
+                    </label>
+                </div>
+
+                <button id="experiments-resource-stress-button"
+                        class="experiment-button">
+                    Run Experiment →
+                </button>
+
+                <div id="resource-stress-results"
+                     class="experiment-inline-result"
+                     style="display:none;">
+
+                    <div class="resource-summary">
+                        <div>
+                            <strong>STATIC Success</strong>
+                            <span id="resource-static-success">—</span>
+                        </div>
+
+                        <div>
+                            <strong>DYNAMIC Success</strong>
+                            <span id="resource-dynamic-success">—</span>
+                        </div>
+
+                        <div>
+                            <strong>Improvement</strong>
+                            <span id="resource-dynamic-improvement">—</span>
+                        </div>
+                    </div>
+
+                    <div id="resource-stress-request-results"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- NETWORK -->
+    <div class="experiment-group">
+        <div class="experiment-group-header">
+            <div>
+                <span class="group-number">03</span>
+                <h3>Network & Mobility</h3>
+                <p>Evaluate network entities, mobility and handover behaviour.</p>
+            </div>
+        </div>
+
+        <div class="experiment-page-grid">
+
+            <div class="experiment-card">
+                <div class="experiment-top">
+                    <div class="experiment-icon">⌁</div>
+                    <span class="experiment-status">READY</span>
+                </div>
+                <h3>Basic 6G Network</h3>
+                <p>
+                    Create a basic UE → Access Node → Edge Node
+                    simulation environment.
+                </p>
+                <div class="experiment-tags">
+                    <span>UE</span>
+                    <span>Access</span>
+                    <span>Edge</span>
+                </div>
+                <button class="experiment-button"
+                        onclick="showSimulatorSection('network-section')">
+                    Open Network →
+                </button>
+            </div>
+
+            <div class="experiment-card">
+                <div class="experiment-top">
+                    <div class="experiment-icon">⇄</div>
+                    <span class="experiment-status">CONFIGURABLE</span>
+                </div>
+                <h3>Mobility & Handover</h3>
+                <p>
+                    Study UE movement, access-node reachability and
+                    handover behaviour.
+                </p>
+
+                <div class="experiment-controls">
+                    <label>UE X
+                        <input id="mobility-ue-x" type="number" value="25">
+                    </label>
+                    <label>UE Y
+                        <input id="mobility-ue-y" type="number" value="0">
+                    </label>
+                    <label>Access 1 X
+                        <input id="mobility-a1-x" type="number" value="0">
+                    </label>
+                    <label>Access 2 X
+                        <input id="mobility-a2-x" type="number" value="100">
+                    </label>
+                </div>
+
+                <button id="experiments-mobility-button"
+                        class="experiment-button">
+                    Run Experiment →
+                </button>
+                <div id="experiments-mobility-result"
+                     class="experiment-inline-result"></div>
+            </div>
+
+            <div class="experiment-card">
+                <div class="experiment-top">
+                    <div class="experiment-icon">⇥</div>
+                    <span class="experiment-status">CONFIGURABLE</span>
+                </div>
+                <h3>Mobility Handover Experiment</h3>
+                <p>
+                    Evaluate resource release, new access connection
+                    and session activation during handover.
+                </p>
+
+                <div class="experiment-controls">
+                    <label>Access 1 capacity
+                        <input id="handover-a1-capacity" type="number" value="100">
+                    </label>
+                    <label>Access 2 capacity
+                        <input id="handover-a2-capacity" type="number" value="100">
+                    </label>
+                    <label>Service communication
+                        <input id="handover-communication" type="number" value="20">
+                    </label>
+                    <label>Service computing
+                        <input id="handover-computing" type="number" value="20">
+                    </label>
+                </div>
+
+                <button id="experiments-handover-button"
+                        class="experiment-button">
+                    Run Experiment →
+                </button>
+                <div id="experiments-handover-result"
+                     class="experiment-inline-result"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SERVICE & COMPUTING -->
+    <div class="experiment-group">
+        <div class="experiment-group-header">
+            <div>
+                <span class="group-number">04</span>
+                <h3>Service & Computing</h3>
+                <p>Explore service placement and communication-computing resource behaviour.</p>
+            </div>
+        </div>
+
+        <div class="experiment-page-grid">
+
+            <div class="experiment-card">
+                <div class="experiment-top">
+                    <div class="experiment-icon">◎</div>
+                    <span class="experiment-status">CONFIGURABLE</span>
+                </div>
+
+                <h3>Service Placement</h3>
+
+                <p>
+                    Evaluate capability-based service placement across
+                    available edge computing resources.
+                </p>
+
+                <div class="experiment-tags">
+                    <span>Services</span>
+                    <span>Placement</span>
+                    <span>Edge</span>
+                </div>
+
+                <div class="experiment-controls">
+                    <label>
+                        Placement requests
+                        <input
+                            id="service-placement-repetitions"
+                            type="number"
+                            min="1"
+                            value="5">
+                    </label>
+                </div>
+
+                <button id="service-placement-button"
+                        class="experiment-button"
+                        onclick="runServicePlacementExperiment()">
+                    Run Experiment →
+                </button>
+
+                <div id="service-placement-result-panel"
+                     class="experiment-inline-result"
+                     style="display:none; margin-top:16px;">
+
+                    <div style="margin-bottom:10px;">
+                        <span id="service-placement-result-status"
+                              class="experiment-status">
+                            READY
+                        </span>
+                    </div>
+
+                    <pre id="service-placement-result"
+                         style="white-space:pre-wrap; margin:0;"></pre>
+                </div>
+            </div>
+
+            <div class="experiment-card">
+                <div class="experiment-top">
+                    <div class="experiment-icon">◇</div>
+                    <span class="experiment-status">CONFIGURABLE</span>
+                </div>
+
+                <h3>Communication + Computing</h3>
+
+                <p>
+                    Evaluate combined communication and computing
+                    resource behaviour under increasing offered load.
+                </p>
+
+                <div class="experiment-tags">
+                    <span>Communication</span>
+                    <span>Computing</span>
+                    <span>Load</span>
+                </div>
+
+                <div class="experiment-controls">
+                    <label>
+                        Communication capacity
+                        <input
+                            id="cc-load-communication-capacity"
+                            type="number"
+                            min="1"
+                            value="100">
+                    </label>
+
+                    <label>
+                        Computing capacity
+                        <input
+                            id="cc-load-computing-capacity"
+                            type="number"
+                            min="1"
+                            value="100">
+                    </label>
+
+                    <label>
+                        Communication / session
+                        <input
+                            id="cc-load-communication-session"
+                            type="number"
+                            min="1"
+                            value="20">
+                    </label>
+
+                    <label>
+                        Computing / session
+                        <input
+                            id="cc-load-computing-session"
+                            type="number"
+                            min="1"
+                            value="20">
+                    </label>
+                </div>
+
+                <button id="cc-load-button"
+                        class="experiment-button"
+                        onclick="runCommunicationComputingLoad()">
+                    Run Experiment →
+                </button>
+
+                <div id="cc-load-result-panel"
+                     class="experiment-inline-result"
+                     style="display:none; margin-top:16px;">
+
+                    <div style="margin-bottom:10px;">
+                        <span id="cc-load-result-status"
+                              class="experiment-status">
+                            READY
+                        </span>
+                    </div>
+
+                    <pre id="cc-load-result"
+                         style="white-space:pre-wrap; margin:0;"></pre>
+                </div>
+            </div>
+
+            <div class="experiment-card">
+                <div class="experiment-top">
+                    <div class="experiment-icon">◈</div>
+                    <span class="experiment-status">CONFIGURABLE</span>
+                </div>
+
+                <h3>End-to-End Session</h3>
+
+                <p>
+                    Validate service-session activation,
+                    resource consumption, and resource restoration
+                    under configurable resource conditions.
+                </p>
+
+                <div class="experiment-tags">
+                    <span>Session</span>
+                    <span>Service</span>
+                    <span>Resources</span>
+                </div>
+
+                <div class="experiment-controls">
+
+                    <div class="control-group">
+                        <label for="e2e-communication-capacity">
+                            Communication capacity
+                        </label>
+                        <input
+                            id="e2e-communication-capacity"
+                            type="number"
+                            min="1"
+                            step="1"
+                            value="100">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="e2e-computing-capacity">
+                            Computing capacity
+                        </label>
+                        <input
+                            id="e2e-computing-capacity"
+                            type="number"
+                            min="1"
+                            step="1"
+                            value="100">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="e2e-communication-required">
+                            Communication required
+                        </label>
+                        <input
+                            id="e2e-communication-required"
+                            type="number"
+                            min="1"
+                            step="1"
+                            value="30">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="e2e-computing-required">
+                            Computing required
+                        </label>
+                        <input
+                            id="e2e-computing-required"
+                            type="number"
+                            min="1"
+                            step="1"
+                            value="40">
+                    </div>
+
+                </div>
+
+                <button id="end-to-end-session-button"
+                        class="experiment-button"
+                        onclick="runEndToEndSessionExperiment()">
+                    Run Experiment →
+                </button>
+
+                <div id="end-to-end-session-result-panel"
+                     class="experiment-inline-result"
+                     style="display:none; margin-top:16px;">
+
+                    <div style="margin-bottom:10px;">
+                        <span id="end-to-end-session-result-status"
+                              class="experiment-status">
+                            READY
+                        </span>
+                    </div>
+
+                    <pre id="end-to-end-session-result"
+                         style="white-space:pre-wrap; margin:0;"></pre>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- OTHER FRAMEWORK EXAMPLES -->
+    <div class="experiment-group">
+        <div class="experiment-group-header">
+            <div>
+                <span class="group-number">05</span>
+                <h3>Framework Examples</h3>
+                <p>Additional network configurations available in the simulation framework.</p>
+            </div>
+        </div>
+
+        <div class="experiment-card">
+            <div class="experiment-top">
+                <div class="experiment-icon">◇</div>
+                <span class="experiment-status">CONFIGURABLE</span>
+            </div>
+
+            <h3>Heterogeneous Network</h3>
+
+            <p>
+                Validate a heterogeneous 6G topology with multiple access
+                and edge nodes having configurable communication and
+                computing capacities.
+            </p>
+
+            <div class="experiment-tags">
+                <span>Heterogeneous</span>
+                <span>Topology</span>
+                <span>Resources</span>
+            </div>
+
+            <div class="experiment-controls">
+
+                <div class="control-group">
+                    <label for="heterogeneous-access1-communication">
+                        AccessNode-1 communication capacity
+                    </label>
+                    <input
+                        id="heterogeneous-access1-communication"
+                        type="number"
+                        min="1"
+                        step="1"
+                        value="100">
+                </div>
+
+                <div class="control-group">
+                    <label for="heterogeneous-access2-communication">
+                        AccessNode-2 communication capacity
+                    </label>
+                    <input
+                        id="heterogeneous-access2-communication"
+                        type="number"
+                        min="1"
+                        step="1"
+                        value="60">
+                </div>
+
+                <div class="control-group">
+                    <label for="heterogeneous-edge1-computing">
+                        EdgeNode-1 computing capacity
+                    </label>
+                    <input
+                        id="heterogeneous-edge1-computing"
+                        type="number"
+                        min="1"
+                        step="1"
+                        value="120">
+                </div>
+
+                <div class="control-group">
+                    <label for="heterogeneous-edge2-computing">
+                        EdgeNode-2 computing capacity
+                    </label>
+                    <input
+                        id="heterogeneous-edge2-computing"
+                        type="number"
+                        min="1"
+                        step="1"
+                        value="80">
+                </div>
+
+                <div class="control-group">
+                    <label for="heterogeneous-edge3-computing">
+                        EdgeNode-3 computing capacity
+                    </label>
+                    <input
+                        id="heterogeneous-edge3-computing"
+                        type="number"
+                        min="1"
+                        step="1"
+                        value="40">
+                </div>
+
+            </div>
+
+            <button id="heterogeneous-network-button"
+                    class="experiment-button"
+                    onclick="runHeterogeneousNetworkExperiment()">
+                Run Experiment →
+            </button>
+
+            <div id="heterogeneous-network-result-panel"
+                 class="experiment-inline-result"
+                 style="display:none; margin-top:16px;">
+
+                <div style="margin-bottom:10px;">
+                    <span id="heterogeneous-network-result-status"
+                          class="experiment-status">
+                        READY
+                    </span>
+                </div>
+
+                <pre id="heterogeneous-network-result"
+                     style="white-space:pre-wrap; margin:0;"></pre>
+            </div>
+        </div>
+
+        <div class="experiment-card" style="margin-top:24px;">
+            <div class="experiment-card-header">
+                <div>
+                    <h3>Dynamic Resource State</h3>
+                    <p>
+                        Configure resource capacity, consumption, and release
+                        to observe dynamic computing-resource state changes.
+                    </p>
+                </div>
+
+                <span class="experiment-status">CONFIGURABLE</span>
+            </div>
+
+            <div class="experiment-controls">
+
+                <div class="control-group">
+                    <label for="dynamic-resource-capacity">
+                        Capacity
+                    </label>
+                    <input
+                        id="dynamic-resource-capacity"
+                        type="number"
+                        min="1"
+                        step="1"
+                        value="100"
+                    >
+                </div>
+
+                <div class="control-group">
+                    <label for="dynamic-resource-consumption">
+                        Consumption
+                    </label>
+                    <input
+                        id="dynamic-resource-consumption"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value="70"
+                    >
+                </div>
+
+                <div class="control-group">
+                    <label for="dynamic-resource-release">
+                        Release
+                    </label>
+                    <input
+                        id="dynamic-resource-release"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value="40"
+                    >
+                </div>
+
+            </div>
+
+            <button
+                id="dynamic-resource-state-button"
+                class="primary-button"
+                onclick="runDynamicResourceStateExperiment()"
+            >
+                Run Dynamic Resource State
+            </button>
+
+            <div
+                id="dynamic-resource-state-result-panel"
+                class="experiment-result-panel"
+                style="display:none;"
+            >
+                <div class="experiment-result-header">
+                    <strong>Simulation Result</strong>
+
+                    <span
+                        id="dynamic-resource-state-result-status"
+                        class="experiment-status"
+                    >
+                        READY
+                    </span>
+                </div>
+
+                <pre
+                    id="dynamic-resource-state-result"
+                    style="white-space:pre-wrap; margin:0;"
+                ></pre>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- CAPABILITIES SECTION -->
+<section id="capabilities-section" class="simulator-section" style="display:none;">
+
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">6G RESOURCE INTELLIGENCE</span>
+            <h2>Capabilities</h2>
+            <p>Inspect and manage capabilities exposed by 6G network entities.</p>
+        </div>
+
+        <div class="page-status">
+            <span class="status-dot"></span>
+            READY
+        </div>
+    </div>
+
+
+        <div class="workspace-card capability-experiment-card">
+
+            <div class="workspace-card-header">
+                <div>
+                    <span class="card-eyebrow">EXPERIMENT 1</span>
+                    <h3>Dynamic Discovery vs Static Selection</h3>
+                    <p>Compare capability-aware discovery against fixed provider selection using the real ns-3 experiment.</p>
+                </div>
+
+                <button class="primary-button"
+                        id="capability-experiment-button"
+                        onclick="runCapabilityExperiment()">
+                    ▶ RUN EXPERIMENT
+                </button>
+            </div>
+
+            <div id="capability-experiment-status"
+                 class="experiment-status">
+                READY — RUN THE EXPERIMENT TO LOAD RESULTS
+            </div>
+
+            <div id="capability-experiment-results"
+                 class="capability-experiment-results"
+                 style="display:none;">
+
+                <div class="experiment-meta-grid">
+
+                    <div class="experiment-meta-card">
+                        <span>WORKLOAD PROFILE</span>
+                        <strong id="capability-experiment-profile">—</strong>
+                    </div>
+
+                    <div class="experiment-meta-card">
+                        <span>RUNTIME UPDATES</span>
+                        <strong id="capability-experiment-updates">—</strong>
+                    </div>
+
+                    <div class="experiment-meta-card">
+                        <span>REQUEST COUNT</span>
+                        <strong id="capability-experiment-count">—</strong>
+                    </div>
+
+                </div>
+
+                <div class="experiment-comparison-grid">
+
+                    <div class="experiment-result-card">
+                        <div class="result-card-title">
+                            STATIC SELECTION
+                        </div>
+
+                        <div class="result-stat-row">
+                            <span>Success rate</span>
+                            <strong id="capability-static-success">—</strong>
+                        </div>
+
+                        <div class="result-stat-row">
+                            <span>Failure rate</span>
+                            <strong id="capability-static-failure">—</strong>
+                        </div>
+
+                        <div class="result-stat-row">
+                            <span>Allocated compute</span>
+                            <strong id="capability-static-allocated">—</strong>
+                        </div>
+
+                        <div class="result-stat-row">
+                            <span>Allocation ratio</span>
+                            <strong id="capability-static-allocation">—</strong>
+                        </div>
+                    </div>
+
+                    <div class="experiment-result-card dynamic">
+                        <div class="result-card-title">
+                            DYNAMIC CAPABILITY DISCOVERY
+                        </div>
+
+                        <div class="result-stat-row">
+                            <span>Success rate</span>
+                            <strong id="capability-dynamic-success">—</strong>
+                        </div>
+
+                        <div class="result-stat-row">
+                            <span>Failure rate</span>
+                            <strong id="capability-dynamic-failure">—</strong>
+                        </div>
+
+                        <div class="result-stat-row">
+                            <span>Allocated compute</span>
+                            <strong id="capability-dynamic-allocated">—</strong>
+                        </div>
+
+                        <div class="result-stat-row">
+                            <span>Allocation ratio</span>
+                            <strong id="capability-dynamic-allocation">—</strong>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="experiment-difference-card">
+
+                    <div>
+                        <span>SUCCESS-RATE DIFFERENCE</span>
+                        <strong id="capability-success-difference">—</strong>
+                    </div>
+
+                    <div>
+                        <span>ALLOCATION-RATIO DIFFERENCE</span>
+                        <strong id="capability-allocation-difference">—</strong>
+                    </div>
+
+                </div>
+
+                <div class="experiment-requests">
+
+                    <div class="requests-header">
+                        <div>
+                            <span class="card-eyebrow">REQUEST TRACE</span>
+                            <h3>Static vs Dynamic Requests</h3>
+                        </div>
+                    </div>
+
+                    <div class="request-tables">
+
+                        <div class="request-table-card">
+                            <h4>Static Selection</h4>
+                            <div id="capability-static-requests"></div>
+                        </div>
+
+                        <div class="request-table-card">
+                            <h4>Dynamic Capability Discovery</h4>
+                            <div id="capability-dynamic-requests"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    <div class="capability-workspace">
+
+        <div class="workspace-card">
+
+            <div class="workspace-card-header">
+                <div>
+                    <span class="card-label">CAPABILITY REGISTRY</span>
+                    <h3>Registered Capabilities</h3>
+                </div>
+
+                <span class="card-count" id="capability-count">0</span>
+            </div>
+
+            <div class="capability-list" id="capability-list">
+
+                <div class="empty-state">
+                    <div class="empty-state-icon">◇</div>
+                    <strong>No capabilities registered</strong>
+                    <p>Capabilities exposed by simulator nodes will appear here.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="workspace-card">
+
+            <div class="workspace-card-header">
+                <div>
+                    <span class="card-label">DYNAMIC STATE</span>
+                    <h3>Resource Availability</h3>
+                </div>
+
+                <span class="card-unit">LIVE STATE</span>
+            </div>
+
+            <div class="resource-state-grid">
+
+                <div class="resource-state">
+                    <span>COMPUTING</span>
+                    <strong id="capability-compute-state">—</strong>
+                    <small>Available capacity</small>
+                </div>
+
+                <div class="resource-state">
+                    <span>NETWORK</span>
+                    <strong id="capability-network-state">—</strong>
+                    <small>Available capacity</small>
+                </div>
+
+                <div class="resource-state">
+                    <span>AI / SERVICE</span>
+                    <strong id="capability-ai-state">—</strong>
+                    <small>Available capability</small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="workspace-card discovery-entry">
+
+            <div>
+                <span class="card-label">RESEARCH MECHANISM</span>
+                <h3>Dynamic Capability Discovery</h3>
+
+                <p>
+                    Network entities can register capabilities,
+                    update their dynamic state and respond to
+                    capability requirements at runtime.
+                </p>
+            </div>
+
+            <button class="primary-button"
+                    onclick="showSimulatorSection('experiments-section')">
+                Open Experiment →
+            </button>
+
+        </div>
+
+
+        <div class="workspace-card capability-update-card">
+
+            <div class="workspace-card-header">
+                <div>
+                    <span class="card-label">RUNTIME EXPERIMENT</span>
+                    <h3>Capability Update</h3>
+                </div>
+
+                <button id="capability-update-button"
+                        class="primary-button"
+                        onclick="runCapabilityUpdate()">
+                    ▶ RUN UPDATE
+                </button>
+            </div>
+
+            <p class="capability-update-question">
+                Can capability discovery adapt to runtime provider-state changes?
+            </p>
+
+            <div id="capability-update-results"
+                 class="capability-update-results">
+
+                <div class="empty-state">
+                    <div class="empty-state-icon">↻</div>
+                    <strong>Ready to run</strong>
+                    <p>
+                        Execute the real ns-3 capability update experiment
+                        to inspect provider-state changes.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="workspace-card capability-freshness-card">
+
+            <div class="workspace-card-header">
+                <div>
+                    <span class="card-label">TEMPORAL DISCOVERY</span>
+                    <h3>Capability Freshness</h3>
+                </div>
+
+                <button id="capability-freshness-button"
+                        class="primary-button"
+                        onclick="runCapabilityFreshness()">
+                    ▶ RUN FRESHNESS
+                </button>
+            </div>
+
+            <p class="capability-freshness-description">
+                Observe how capability validity changes over time and affects discovery.
+            </p>
+
+            <div class="experiment-controls capability-freshness-controls">
+
+                <div class="experiment-control">
+                    <label for="freshness-node-a-validity">
+                        Node A validity (s)
+                    </label>
+                    <input
+                        id="freshness-node-a-validity"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value="5">
+                </div>
+
+                <div class="experiment-control">
+                    <label for="freshness-node-b-validity">
+                        Node B validity (s)
+                    </label>
+                    <input
+                        id="freshness-node-b-validity"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value="10">
+                </div>
+
+                <div class="experiment-control">
+                    <label for="freshness-minimum-resource">
+                        Minimum resource
+                    </label>
+                    <input
+                        id="freshness-minimum-resource"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value="50">
+                </div>
+
+                <div class="experiment-control">
+                    <label for="freshness-second-checkpoint">
+                        Second checkpoint (s)
+                    </label>
+                    <input
+                        id="freshness-second-checkpoint"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value="6">
+                </div>
+
+                <div class="experiment-control">
+                    <label for="freshness-third-checkpoint">
+                        Third checkpoint (s)
+                    </label>
+                    <input
+                        id="freshness-third-checkpoint"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value="11">
+                </div>
+
+            </div>
+
+            <div id="capability-freshness-results"
+                 class="capability-freshness-results">
+
+                <div class="empty-state">
+                    <div class="empty-state-icon">◷</div>
+                    <strong>Ready to run</strong>
+                    <p>
+                        Execute the real ns-3 temporal capability freshness experiment.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="workspace-card capability-constraint-card">
+
+            <div class="workspace-card-header">
+                <div>
+                    <span class="card-label">CONSTRAINT-AWARE DISCOVERY</span>
+                    <h3>Capability Constraints</h3>
+                </div>
+
+                <button id="capability-constraint-button"
+                        class="primary-button"
+                        onclick="runCapabilityConstraint()">
+                    ▶ RUN CONSTRAINTS
+                </button>
+            </div>
+
+            <p class="capability-constraint-description">
+                Evaluate capability discovery using resource, latency and reliability constraints.
+            </p>
+
+            <div id="capability-constraint-results"
+                 class="capability-constraint-results">
+
+                <div class="empty-state">
+                    <div class="empty-state-icon">◇</div>
+                    <strong>Ready to run</strong>
+                    <p>
+                        Execute the real ns-3 constraint-aware discovery experiment.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CAPABILITY DISCOVERY WORKSPACE -->
+<div id="discovery-results" class="results-overlay">
+
+    <div class="results-modal discovery-workspace">
+
+        <div class="results-header">
+
+            <div>
+                <span class="results-eyebrow">6G SIMULATION EXPERIMENT</span>
+
+                <h2>Dynamic Capability Discovery</h2>
+
+                <p>
+                    Configure the workload, execute the real ns-3
+                    simulation, and analyze capability-aware selection.
+                </p>
+            </div>
+
+            <button class="results-close"
+                    onclick="closeDiscoveryResults()">×</button>
+
+        </div>
+
+
+        <!-- CONFIGURATION -->
+        <div class="experiment-config">
+
+            <div class="results-section-title">
+                <span>Experiment Configuration</span>
+                <span class="results-unit">USER CONTROLLED</span>
+            </div>
+
+            <div class="config-grid">
+
+                <div class="config-field">
+                    <label for="discovery-request-input">
+                        REQUEST COUNT
+                    </label>
+
+                    <input
+                        id="discovery-request-input"
+                        type="number"
+                        min="1"
+                        max="1000"
+                        value="10">
+                </div>
+
+
+                <div class="config-field">
+                    <label for="discovery-profile-input">
+                        WORKLOAD PROFILE
+                    </label>
+
+                    <select id="discovery-profile-input">
+                        <option value="1">Profile 1 — Balanced</option>
+                        <option value="2">Profile 2 — Intensive</option>
+                    </select>
+                </div>
+
+
+                <div class="config-field">
+                    <label for="discovery-updates-input">
+                        RUNTIME UPDATES
+                    </label>
+
+                    <select id="discovery-updates-input">
+                        <option value="1">Enabled</option>
+                        <option value="0">Disabled</option>
+                    </select>
+                </div>
+
+
+                <div class="config-action">
+
+                    <button
+                        id="discovery-run-button"
+                        class="primary-button"
+                        onclick="executeDiscoverySimulation()">
+
+                        ▶ RUN SIMULATION
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+        <div id="discovery-status" class="results-status">
+
+            <span class="status-dot"></span>
+
+            <span>
+                Configure the experiment and run the simulation.
+            </span>
+
+        </div>
+
+
+        <!-- RESULTS -->
+        <div id="discovery-result-content"
+             class="discovery-result-content"
+             style="display:none;">
+
+            <div class="results-summary">
+
+                <div class="result-summary-card">
+                    <span>REQUESTS</span>
+                    <strong id="discovery-requests">—</strong>
+                </div>
+
+                <div class="result-summary-card">
+                    <span>STATIC SUCCESS</span>
+                    <strong id="static-success-rate">—</strong>
+                </div>
+
+                <div class="result-summary-card">
+                    <span>DYNAMIC SUCCESS</span>
+                    <strong id="dynamic-success-rate">—</strong>
+                </div>
+
+                <div class="result-summary-card">
+                    <span>DYNAMIC DISCOVERIES</span>
+                    <strong id="discovery-candidates">—</strong>
+                </div>
+
+            </div>
+
+
+            <div class="results-chart-container">
+
+                <div class="results-section-title">
+                    <span>Selection Performance</span>
+                    <span class="results-unit">PERCENTAGE</span>
+                </div>
+
+                <div class="results-chart">
+                    <canvas id="discovery-chart"></canvas>
+                </div>
+
+            </div>
+
+
+            <div class="results-table-container">
+
+                <div class="results-section-title">
+                    <span>Static vs Dynamic</span>
+                    <span class="results-unit">MEASURED RESULTS</span>
+                </div>
+
+                <table class="results-table">
+
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Static</th>
+                            <th>Dynamic</th>
+                            <th>Difference</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="discovery-table-body"></tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="results-observation-container">
+
+                <div class="results-section-title">
+                    <span>Research Observation</span>
+                    <span class="results-unit">DATA-DERIVED</span>
+                </div>
+
+                <div id="discovery-observation"
+                     class="research-observation">
+                    —
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="results-footer">
+
+            <span>
+                Real simulation executed by ns-3 / 6G-LENA
+            </span>
+
+            <button onclick="closeDiscoveryResults()">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- RESULTS SECTION -->
+<section id="results-section" class="simulator-section" style="display:none;">
+
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">6G SIMULATION OUTPUT</span>
+            <h2>Results</h2>
+            <p>Inspect measured simulation results generated by the IIITDMK 6G SIMULATOR.</p>
+        </div>
+
+        <div class="page-status">
+            <span class="status-dot"></span>
+            READY
+        </div>
+    </div>
+
+    <div class="results-page-grid">
+
+        <div class="workspace-card results-overview-card">
+            <div class="workspace-card-header">
+                <div>
+                    <span class="card-label">LATEST RUN</span>
+                    <h3>Simulation Status</h3>
+                </div>
+                <span class="card-unit">NS-3</span>
+            </div>
+
+            <div class="results-overview-grid">
+
+                <div class="resource-state">
+                    <span>EXPERIMENT</span>
+                    <strong id="results-latest-experiment">—</strong>
+                    <small>Most recent completed experiment</small>
+                </div>
+
+                <div class="resource-state">
+                    <span>STATUS</span>
+                    <strong id="results-latest-status">READY</strong>
+                    <small>Simulation execution state</small>
+                </div>
+
+                <div class="resource-state">
+                    <span>DATA SOURCE</span>
+                    <strong>MEASURED</strong>
+                    <small>Generated directly by ns-3</small>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="workspace-card">
+            <div class="workspace-card-header">
+                <div>
+                    <span class="card-label">AVAILABLE RESULTS</span>
+                    <h3>Experiment Outputs</h3>
+                </div>
+            </div>
+
+            <div class="results-experiment-list">
+
+                <button class="results-experiment-row"
+                        onclick="openDiscoveryResultsFromResultsPage()">
+
+                    <div>
+                        <strong>Dynamic Capability Discovery</strong>
+                        <small>Capability selection, updates and success-rate comparison</small>
+                    </div>
+
+                    <span>OPEN →</span>
+
+                </button>
+
+
+                <button class="results-experiment-row"
+                        onclick="openScalabilityResultsFromResultsPage()">
+
+                    <div>
+                        <strong>Capability Scalability</strong>
+                        <small>Discovery time across increasing provider counts</small>
+                    </div>
+
+                    <span>OPEN →</span>
+
+                </button>
+
+            </div>
+        </div>
+
+
+        <div class="workspace-card results-guidance-card">
+
+            <div>
+                <span class="card-label">RESULT WORKFLOW</span>
+                <h3>Measured Data → Analysis</h3>
+
+                <p>
+                    Experiment outputs shown here are generated from
+                    simulator execution. Configure and run an experiment,
+                    then inspect its measured results here.
+                </p>
+            </div>
+
+            <button class="secondary-button"
+                    onclick="showSimulatorSection('experiments-section')">
+                Open Experiments →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- NETWORK WORKSPACE -->
+
+            <!-- NETWORK SECTION -->
+            <section id="network-section" class="simulator-section" style="display:none;">
+
+    <div class="section-header">
+        <div>
+            <span class="results-eyebrow">6G NETWORK ENVIRONMENT</span>
+            <h2>Network Topology</h2>
+            <p>Configure and inspect the simulated 6G communication environment.</p>
+        </div>
+    </div>
+
+    <div class="network-workspace">
+
+        <div class="network-toolbar">
+            <div>
+                <span class="toolbar-label">NETWORK STATUS</span>
+                <strong id="network-status">READY</strong>
+            </div>
+
+            <button class="primary-button"
+                    id="network-build-button"
+                    onclick="buildNetwork()">
+                ▶ BUILD NETWORK
+            </button>
+        </div>
+
+        <div class="network-config-grid">
+
+            <div class="config-field">
+                <label>ACCESS NODES</label>
+                <input id="network-access-input"
+                       type="number"
+                       min="1"
+                       max="20"
+                       value="2">
+            </div>
+
+            <div class="config-field">
+                <label>EDGE NODES</label>
+                <input id="network-edge-input"
+                       type="number"
+                       min="1"
+                       max="20"
+                       value="2">
+            </div>
+
+            <div class="config-field">
+                <label>USER EQUIPMENT</label>
+                <input id="network-ue-input"
+                       type="number"
+                       min="1"
+                       max="100"
+                       value="10">
+            </div>
+
+            <div class="config-field">
+                <label>SERVICES</label>
+                <input id="network-service-input"
+                       type="number"
+                       min="0"
+                       max="50"
+                       value="3">
+            </div>
+
+        </div>
+
+        <div class="network-overview-grid">
+
+            <div class="network-stat-card">
+                <span>ACCESS NODES</span>
+                <strong id="network-access-count">2</strong>
+            </div>
+
+            <div class="network-stat-card">
+                <span>EDGE NODES</span>
+                <strong id="network-edge-count">2</strong>
+            </div>
+
+            <div class="network-stat-card">
+                <span>USER EQUIPMENT</span>
+                <strong id="network-ue-count">10</strong>
+            </div>
+
+            <div class="network-stat-card">
+                <span>SERVICES</span>
+                <strong id="network-service-count">3</strong>
+            </div>
+
+        </div>
+
+        <div class="network-topology-panel">
+
+            <div class="results-section-title">
+                <span>6G NETWORK TOPOLOGY</span>
+                <span class="results-unit">SIMULATION MODEL</span>
+            </div>
+
+            <div id="network-topology" class="network-topology">
+
+                <div class="topology-layer">
+                    <span class="topology-label">CORE</span>
+                    <div class="topology-node core-node">
+                        <strong>6G CORE</strong>
+                        <small>CONTROL + SERVICES</small>
+                    </div>
+                </div>
+
+                <div class="topology-connection"></div>
+
+                <div class="topology-layer">
+                    <span class="topology-label">EDGE</span>
+                    <div id="edge-topology-nodes" class="topology-node-row"></div>
+                </div>
+
+                <div class="topology-connection"></div>
+
+                <div class="topology-layer">
+                    <span class="topology-label">ACCESS</span>
+                    <div id="access-topology-nodes" class="topology-node-row"></div>
+                </div>
+
+                <div class="topology-connection"></div>
+
+                <div class="topology-layer">
+                    <span class="topology-label">UE</span>
+                    <div id="ue-topology-nodes" class="topology-node-row"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MOBILITY + HANDOVER -->
+    <div class="mobility-workspace">
+
+        <div class="network-toolbar">
+            <div>
+                <span class="toolbar-label">MOBILITY + HANDOVER</span>
+                <strong id="mobility-status">READY</strong>
+            </div>
+
+            <button class="primary-button"
+                    id="mobility-run-button"
+                    onclick="runMobilityHandover()">
+                ▶ RUN HANDOVER
+            </button>
+        </div>
+
+        <div class="network-config-grid">
+
+            <div class="config-field">
+                <label>UE X POSITION</label>
+                <input id="mobility-ue-x"
+                       type="number"
+                       step="1"
+                       value="25">
+            </div>
+
+            <div class="config-field">
+                <label>UE Y POSITION</label>
+                <input id="mobility-ue-y"
+                       type="number"
+                       step="1"
+                       value="0">
+            </div>
+
+            <div class="config-field">
+                <label>ACCESS NODE 1 X</label>
+                <input id="mobility-access1-x"
+                       type="number"
+                       step="1"
+                       value="0">
+            </div>
+
+            <div class="config-field">
+                <label>ACCESS NODE 1 Y</label>
+                <input id="mobility-access1-y"
+                       type="number"
+                       step="1"
+                       value="0">
+            </div>
+
+            <div class="config-field">
+                <label>ACCESS NODE 2 X</label>
+                <input id="mobility-access2-x"
+                       type="number"
+                       step="1"
+                       value="100">
+            </div>
+
+            <div class="config-field">
+                <label>ACCESS NODE 2 Y</label>
+                <input id="mobility-access2-y"
+                       type="number"
+                       step="1"
+                       value="0">
+            </div>
+
+        </div>
+
+        <div class="network-overview-grid">
+
+            <div class="network-stat-card">
+                <span>UE POSITION</span>
+                <strong id="mobility-ue-position">—</strong>
+            </div>
+
+            <div class="network-stat-card">
+                <span>ACCESS NODE 1 DISTANCE</span>
+                <strong id="mobility-distance1">—</strong>
+            </div>
+
+            <div class="network-stat-card">
+                <span>ACCESS NODE 2 DISTANCE</span>
+                <strong id="mobility-distance2">—</strong>
+            </div>
+
+            <div class="network-stat-card">
+                <span>HANDOVER</span>
+                <strong id="mobility-handover-status">—</strong>
+            </div>
+
+        </div>
+
+        <div class="network-topology-panel">
+
+            <div class="results-section-title">
+                <span>HANDOVER RESULT</span>
+                <span class="results-unit">REAL NS-3 OUTPUT</span>
+            </div>
+
+            <div class="research-observation">
+
+                <p>
+                    Serving Access Node:
+                    <strong id="mobility-serving-node">—</strong>
+                </p>
+
+                <p>
+                    Reachable Edge Node:
+                    <strong id="mobility-edge-node">—</strong>
+                </p>
+
+                <p>
+                    Handover status:
+                    <strong id="mobility-result">—</strong>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SIMULATION RESULTS PANEL -->
+        <div id="simulation-results" class="results-overlay">
+
+            <div class="results-modal">
+
+                <div class="results-header">
+
+                    <div>
+                        <span class="results-eyebrow">SIMULATION RESULTS</span>
+                        <h2>Capability Scalability</h2>
+                        <p>
+                            Dynamic capability discovery performance
+                            as provider population increases.
+                        </p>
+                    </div>
+
+                    <button class="results-close" onclick="closeResults()">×</button>
+
+                </div>
+
+                <div id="results-status" class="results-status">
+                    <span class="status-dot"></span>
+                    <span>Waiting for simulation...</span>
+                </div>
+
+                <div class="results-summary">
+
+                    <div class="result-summary-card">
+                        <span>PROVIDERS TESTED</span>
+                        <strong id="providers-tested">—</strong>
+                    </div>
+
+                    <div class="result-summary-card">
+                        <span>REPETITIONS</span>
+                        <strong id="repetitions">—</strong>
+                    </div>
+
+                    <div class="result-summary-card">
+                        <span>EXPERIMENT</span>
+                        <strong>SCALABILITY</strong>
+                    </div>
+
+                </div>
+
+                <div class="results-chart-container">
+
+            <div class="results-section-title">
+                <span>Discovery Time Scaling</span>
+                <span class="results-unit">PROVIDERS vs µs</span>
+            </div>
+
+            <div class="results-chart">
+                <canvas id="scalability-chart"></canvas>
+            </div>
+
+        </div>
+
+        
+        <div class="results-observation-container">
+
+            <div class="results-section-title">
+                <span>Research Observation</span>
+                <span class="results-unit">DATA-DERIVED</span>
+            </div>
+
+            <div id="research-observation" class="research-observation">
+                Waiting for simulation results...
+            </div>
+
+        </div>
+
+<div class="results-table-container">
+
+                    <div class="results-section-title">
+                        <span>Discovery Performance</span>
+                        <span class="results-unit">TIME: µs</span>
+                    </div>
+
+                    <table class="results-table">
+
+                        <thead>
+                            <tr>
+                                <th>Providers</th>
+                                <th>Avg. Discovery</th>
+                                <th>Total Elapsed</th>
+                                <th>Total Matches</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="results-table-body">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="results-footer">
+                    <span>Generated by ns-3 / 6G-LENA</span>
+                    <button onclick="closeResults()">Close Results</button>
+                </div>
+
+            </div>
+
+        </div>
+
+        </main>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>
