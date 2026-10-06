@@ -14,7 +14,8 @@ build_lib(
                  model/6g-service.cc
                  model/6g-service-session.cc
                  helper/network-nodes-helper.cc
-    HEADER_FILES model/6g-network-node.h
+    HEADER_FILES model/network-nodes.h
+                 model/6g-network-node.h
                  model/6g-ue.h
                  model/6g-access-node.h
                  model/6g-edge-node.h
