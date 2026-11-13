@@ -4073,3 +4073,3038 @@ footer {
     }
 }
 
+
+/* =========================================================
+   IIITDMK 6G SIMULATOR — PROFESSIONAL APPLICATION SHELL
+   Shell redesign layer | Existing component styles preserved
+========================================================= */
+
+:root {
+    --bg-main: #0b1018;
+    --bg-secondary: #101925;
+    --card: #131e2b;
+    --card-border: #263545;
+    --text-primary: #e8eef5;
+    --text-secondary: #91a1b2;
+    --cyan: #39c6d6;
+    --purple: #7589a6;
+    --pink: #b18aab;
+    --green: #45c99a;
+}
+
+html {
+    background: var(--bg-main);
+}
+
+body {
+    background: #0b1018;
+    color: var(--text-primary);
+    font-family: "Inter", "Segoe UI", sans-serif;
+    letter-spacing: 0.05px;
+}
+
+body::before {
+    display: none;
+}
+
+.app-container {
+    min-height: 100vh;
+    background: #0b1018;
+}
+
+/* Sidebar */
+
+.sidebar {
+    width: 252px;
+    padding: 26px 17px 20px;
+    background: #0e1722;
+    border-right: 1px solid #253444;
+    backdrop-filter: none;
+    box-shadow: none;
+}
+
+.brand {
+    gap: 12px;
+    padding: 3px 9px 30px;
+    border-bottom: 1px solid #253444;
+    margin-bottom: 25px;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 9px;
+    color: #e8fbff;
+    background: #123542;
+    border: 1px solid #276477;
+    box-shadow: none;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.brand h1 {
+    color: #edf3f8;
+    font-size: 14px;
+    font-weight: 650;
+    letter-spacing: 0.35px;
+}
+
+.brand span {
+    color: #55c7d5;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+/* Navigation */
+
+.navigation {
+    gap: 5px;
+}
+
+.nav-item {
+    min-height: 43px;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    color: #9aabba;
+    font-size: 12.5px;
+    font-weight: 550;
+    transition: background 0.18s ease, color 0.18s ease;
+}
+
+.nav-item span {
+    width: 21px;
+    color: #8297a9;
+    font-size: 16px;
+}
+
+.nav-item:hover {
+    color: #edf5fa;
+    background: #172635;
+    transform: none;
+}
+
+.nav-item:hover span {
+    color: #59c9d7;
+}
+
+.nav-item.active {
+    color: #e9faff;
+    background: #16303b;
+    border: 1px solid #254c59;
+    box-shadow: inset 3px 0 0 #42bdce;
+}
+
+.nav-item.active span {
+    color: #58d0df;
+}
+
+/* Sidebar system status */
+
+.system-status {
+    padding: 13px 11px;
+    border-radius: 7px;
+    background: #121f2b;
+    border: 1px solid #293c4b;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    box-shadow: none;
+    animation: none;
+}
+
+.system-status strong {
+    color: #e2edf3;
+    font-size: 11px;
+}
+
+.system-status small {
+    color: #8b9eae;
+    font-size: 10px;
+}
+
+.version {
+    margin-top: 14px;
+    color: #718496;
+    font-size: 9px;
+    letter-spacing: 1.1px;
+}
+
+/* Main application workspace */
+
+.main-content {
+    width: calc(100% - 252px);
+    margin-left: 252px;
+    min-width: 0;
+    padding: 27px 36px 42px;
+    background: #0b1018;
+}
+
+/* Top application bar */
+
+.topbar {
+    min-height: 76px;
+    margin-bottom: 29px;
+    padding: 0 0 20px;
+    border-bottom: 1px solid #263442;
+}
+
+.eyebrow,
+.section-label {
+    color: #5bbdca;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.65px;
+}
+
+.topbar h2 {
+    margin-top: 7px;
+    color: #edf3f8;
+    font-size: 23px;
+    font-weight: 620;
+    letter-spacing: -0.45px;
+}
+
+.topbar h2 span {
+    color: #69cbd6;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+}
+
+.topbar-right {
+    gap: 12px;
+}
+
+.live-indicator {
+    padding: 8px 11px;
+    border: 1px solid #294b46;
+    border-radius: 5px;
+    background: #142722;
+    color: #77d8b3;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.9px;
+}
+
+.live-indicator span {
+    box-shadow: none;
+}
+
+.profile {
+    padding: 9px 12px;
+    border: 1px solid #2a3948;
+    border-radius: 5px;
+    background: #131e2a;
+    color: #b5c4d0;
+    font-size: 11px;
+}
+
+/* General section heading consistency */
+
+.simulator-section > h2 {
+    color: #e9f0f6;
+    font-size: 22px;
+    font-weight: 630;
+    letter-spacing: -0.35px;
+}
+
+.simulator-section > p {
+    color: #93a4b4;
+}
+
+/* Restrained transitions */
+
+button,
+.nav-item,
+.primary-button,
+.secondary-button {
+    transition-duration: 0.18s;
+}
+
+/* Responsive shell */
+
+@media (max-width: 1050px) {
+    .main-content {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .sidebar {
+        width: 225px;
+    }
+
+    .main-content {
+        width: calc(100% - 225px);
+        margin-left: 225px;
+    }
+}
+
+@media (max-width: 760px) {
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        position: relative;
+        padding: 16px;
+        border-right: none;
+        border-bottom: 1px solid #253444;
+    }
+
+    .brand {
+        padding-bottom: 15px;
+        margin-bottom: 14px;
+    }
+
+    .navigation {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .nav-item {
+        flex: 1 1 135px;
+    }
+
+    .sidebar-bottom {
+        margin-top: 15px;
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 22px 16px 32px;
+    }
+
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+}
+
+
+
+/* IIITDMK DASHBOARD VISUAL POLISH V1 */
+/* Scoped to the dashboard to protect all other simulator sections. */
+
+#dashboard-section {
+    --dash-border: rgba(148, 170, 220, 0.15);
+    --dash-surface: rgba(17, 24, 45, 0.82);
+    --dash-muted: #aab5d0;
+}
+
+#dashboard-section .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgba(91, 190, 255, 0.22);
+    border-radius: 24px;
+    background:
+        radial-gradient(ellipse at 85% 20%, rgba(111, 83, 255, 0.22), transparent 38%),
+        radial-gradient(ellipse at 12% 100%, rgba(0, 205, 230, 0.13), transparent 42%),
+        linear-gradient(120deg, #111a32 0%, #10152b 55%, #17132f 100%);
+    box-shadow: 0 24px 65px rgba(0, 0, 0, 0.28);
+}
+
+#dashboard-section .hero::after {
+    opacity: 0.55;
+    background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.035), transparent 70%);
+}
+
+#dashboard-section .hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+#dashboard-section .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 13px;
+    border: 1px solid rgba(77, 232, 255, 0.2);
+    border-radius: 30px;
+    background: rgba(77, 232, 255, 0.07);
+    color: #8cefff;
+    letter-spacing: 1.5px;
+}
+
+#dashboard-section .hero h3 {
+    line-height: 1.16;
+    letter-spacing: -1.2px;
+    text-wrap: balance;
+}
+
+#dashboard-section .hero h3 strong {
+    background: linear-gradient(95deg, #68eaff 5%, #a99aff 58%, #f18bd8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+#dashboard-section .hero p {
+    max-width: 590px;
+    color: #b5bfd7;
+    line-height: 1.85;
+}
+
+#dashboard-section .network-visual {
+    filter: drop-shadow(0 0 24px rgba(77, 232, 255, 0.12));
+}
+
+#dashboard-section .core-node {
+    box-shadow:
+        0 0 0 10px rgba(77, 232, 255, 0.045),
+        0 0 45px rgba(77, 232, 255, 0.35);
+}
+
+#dashboard-section .floating-node {
+    border: 1px solid rgba(120, 205, 255, 0.3);
+    background: rgba(19, 29, 55, 0.92);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px);
+}
+
+#dashboard-section .section {
+    margin-top: 34px;
+}
+
+#dashboard-section .section-header {
+    margin-bottom: 18px;
+    align-items: end;
+}
+
+#dashboard-section .section-header h3 {
+    margin-top: 7px;
+    font-size: 21px;
+    letter-spacing: -0.4px;
+}
+
+#dashboard-section .section-badge,
+#dashboard-section .foundation-badge {
+    border: 1px solid rgba(85, 230, 165, 0.22);
+    background: rgba(85, 230, 165, 0.09);
+    color: #75edb6;
+}
+
+#dashboard-section .dashboard-project-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--dash-border);
+    border-radius: 20px;
+    background:
+        linear-gradient(145deg, rgba(25, 34, 61, 0.96), rgba(14, 19, 37, 0.96));
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.19);
+    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#dashboard-section .dashboard-project-card:hover {
+    border-color: rgba(77, 232, 255, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 22px 42px rgba(0, 0, 0, 0.25);
+}
+
+#dashboard-section .dashboard-card-icon {
+    border: 1px solid rgba(77, 232, 255, 0.22);
+    background: linear-gradient(145deg, rgba(77, 232, 255, 0.16), rgba(155, 108, 255, 0.16));
+    box-shadow: 0 8px 24px rgba(77, 232, 255, 0.08);
+}
+
+#dashboard-section .dashboard-project-card h3 {
+    letter-spacing: -0.5px;
+    line-height: 1.35;
+}
+
+#dashboard-section .dashboard-project-card p {
+    color: #aeb9d2;
+    line-height: 1.8;
+}
+
+#dashboard-section .card-label {
+    color: #7eeaff;
+    letter-spacing: 1.6px;
+}
+
+#dashboard-section .dashboard-how-card {
+    background:
+        radial-gradient(circle at 100% 0%, rgba(155, 108, 255, 0.12), transparent 42%),
+        linear-gradient(145deg, rgba(24, 30, 55, 0.97), rgba(14, 19, 37, 0.97));
+}
+
+#dashboard-section .workflow-step {
+    padding: 9px 0;
+}
+
+#dashboard-section .workflow-number {
+    border: 1px solid rgba(77, 232, 255, 0.2);
+    background: rgba(77, 232, 255, 0.09);
+    color: #7eeaff;
+}
+
+#dashboard-section .workflow-step strong {
+    color: #f0f4ff;
+}
+
+#dashboard-section .workflow-step small {
+    color: #9eabc8;
+}
+
+#dashboard-section .workflow-line {
+    background: linear-gradient(90deg, rgba(77, 232, 255, 0.4), rgba(155, 108, 255, 0.12));
+}
+
+#dashboard-section .dashboard-flow {
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid var(--dash-border);
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(19, 27, 50, 0.88), rgba(15, 18, 37, 0.88));
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.16);
+}
+
+#dashboard-section .flow-item {
+    min-height: 112px;
+    padding: 15px 10px;
+    border: 1px solid rgba(135, 160, 215, 0.13);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.035);
+    transition: 0.22s ease;
+}
+
+#dashboard-section .flow-item:hover {
+    transform: translateY(-3px);
+    border-color: rgba(77, 232, 255, 0.32);
+    background: rgba(77, 232, 255, 0.065);
+}
+
+#dashboard-section .flow-icon {
+    color: #7ceaff;
+}
+
+#dashboard-section .flow-item strong {
+    color: #edf3ff;
+}
+
+#dashboard-section .flow-item small {
+    color: #9eabc8;
+}
+
+#dashboard-section .flow-arrow {
+    color: #8b82e8;
+}
+
+#dashboard-section .dashboard-highlight-card {
+    min-height: 120px;
+    border: 1px solid var(--dash-border);
+    border-radius: 17px;
+    background: linear-gradient(145deg, rgba(24, 32, 57, 0.9), rgba(15, 20, 39, 0.92));
+    transition: 0.25s ease;
+}
+
+#dashboard-section .dashboard-highlight-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(77, 232, 255, 0.32);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+}
+
+#dashboard-section .highlight-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(77, 232, 255, 0.17);
+    border-radius: 12px;
+    background: rgba(77, 232, 255, 0.08);
+    color: #7ceaff;
+}
+
+#dashboard-section .dashboard-highlight-card strong {
+    color: #edf3ff;
+}
+
+#dashboard-section .dashboard-highlight-card p {
+    color: #a5b1cc;
+    line-height: 1.65;
+}
+
+#dashboard-section .sixg-foundation-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(155, 108, 255, 0.23);
+    border-radius: 21px;
+    background:
+        radial-gradient(ellipse at 90% 10%, rgba(155, 108, 255, 0.15), transparent 40%),
+        linear-gradient(135deg, rgba(24, 27, 54, 0.97), rgba(13, 19, 38, 0.97));
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
+}
+
+#dashboard-section .foundation-statement {
+    color: #c1cbe0;
+    line-height: 1.85;
+}
+
+#dashboard-section .foundation-statement strong {
+    color: #f0eaff;
+}
+
+#dashboard-section .foundation-reference {
+    border: 1px solid rgba(145, 165, 220, 0.15);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.045);
+    transition: 0.2s ease;
+}
+
+#dashboard-section .foundation-reference:hover {
+    border-color: rgba(77, 232, 255, 0.32);
+    background: rgba(77, 232, 255, 0.07);
+}
+
+#dashboard-section .dashboard-action-panel {
+    margin-top: 34px;
+    border: 1px solid rgba(77, 232, 255, 0.2);
+    border-radius: 21px;
+    background:
+        radial-gradient(ellipse at 85% 50%, rgba(155, 108, 255, 0.17), transparent 45%),
+        linear-gradient(110deg, rgba(18, 34, 58, 0.98), rgba(23, 22, 49, 0.98));
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+}
+
+#dashboard-section .dashboard-action-panel h3 {
+    line-height: 1.35;
+    letter-spacing: -0.5px;
+}
+
+#dashboard-section .dashboard-action-panel p {
+    color: #aebbd5;
+    line-height: 1.75;
+}
+
+#dashboard-section .dashboard-action-panel h3 span {
+    background: linear-gradient(90deg, #68eaff, #b39aff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+#dashboard-section footer {
+    border-top: 1px solid rgba(145, 165, 220, 0.12);
+    color: #7f8ba9;
+}
+
+@media (max-width: 650px) {
+    #dashboard-section .hero {
+        border-radius: 18px;
+    }
+
+    #dashboard-section .dashboard-flow {
+        padding: 13px;
+    }
+
+    #dashboard-section .dashboard-project-card,
+    #dashboard-section .dashboard-highlight-card {
+        border-radius: 15px;
+    }
+}
+
+
+
+/* IIITDMK DASHBOARD MOTION SYSTEM V2 */
+/* Dashboard-only motion. No HTML, JavaScript or backend changes. */
+
+#dashboard-section {
+    --motion-cyan: #4de8ff;
+    --motion-purple: #a58aff;
+}
+
+/* Animated ambient light across the hero */
+#dashboard-section .hero {
+    background-size: 200% 200%;
+    animation: dashboardHeroAtmosphere 13s ease-in-out infinite alternate;
+}
+
+#dashboard-section .hero::before {
+    content: "";
+    position: absolute;
+    inset: -40% -70%;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(77, 232, 255, 0.045) 47%,
+        rgba(155, 108, 255, 0.10) 50%,
+        rgba(77, 232, 255, 0.045) 53%,
+        transparent 60%
+    );
+    transform: translateX(-55%) rotate(-8deg);
+    animation: dashboardLightSweep 11s ease-in-out infinite;
+}
+
+#dashboard-section .hero-content {
+    animation: dashboardHeroContentIn 0.9s cubic-bezier(.2,.75,.25,1) both;
+}
+
+/* Network orbit system */
+#dashboard-section .network-visual {
+    animation: dashboardNetworkFloat 7s ease-in-out infinite;
+}
+
+#dashboard-section .orbit {
+    border-color: rgba(77, 232, 255, 0.17);
+    box-shadow: 0 0 18px rgba(77, 232, 255, 0.035);
+}
+
+#dashboard-section .orbit::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #78efff;
+    box-shadow:
+        0 0 8px #78efff,
+        0 0 18px rgba(77, 232, 255, 0.8);
+}
+
+#dashboard-section .orbit-two::after {
+    background: #b49aff;
+    box-shadow: 0 0 16px #a58aff;
+}
+
+#dashboard-section .orbit-three::after {
+    background: #65e9c1;
+    box-shadow: 0 0 16px #65e9c1;
+}
+
+#dashboard-section .core-node {
+    position: relative;
+    animation: dashboardCorePulse 3.2s ease-in-out infinite;
+}
+
+#dashboard-section .core-node::before,
+#dashboard-section .core-node::after {
+    content: "";
+    position: absolute;
+    inset: -9px;
+    border: 1px solid rgba(77, 232, 255, 0.4);
+    border-radius: 50%;
+    animation: dashboardCoreRipple 3s ease-out infinite;
+}
+
+#dashboard-section .core-node::after {
+    animation-delay: 1.5s;
+}
+
+#dashboard-section .floating-node {
+    animation: dashboardNodeFloat 4s ease-in-out infinite;
+    will-change: transform;
+}
+
+#dashboard-section .node-two {
+    animation-delay: -1s;
+}
+
+#dashboard-section .node-three {
+    animation-delay: -2s;
+}
+
+#dashboard-section .node-four {
+    animation-delay: -3s;
+}
+
+/* Dashboard section entrance */
+#dashboard-section > .section {
+    animation: dashboardSectionIn 0.75s ease both;
+}
+
+#dashboard-section > .section:nth-of-type(2) {
+    animation-delay: 0.12s;
+}
+
+#dashboard-section > .section:nth-of-type(3) {
+    animation-delay: 0.22s;
+}
+
+#dashboard-section > .section:nth-of-type(4) {
+    animation-delay: 0.32s;
+}
+
+/* Project cards */
+#dashboard-section .dashboard-project-card {
+    animation: dashboardCardIn 0.8s cubic-bezier(.2,.7,.2,1) both;
+}
+
+#dashboard-section .dashboard-how-card {
+    animation-delay: 0.16s;
+}
+
+/* Architecture energy pulse */
+#dashboard-section .dashboard-flow {
+    position: relative;
+    isolation: isolate;
+}
+
+#dashboard-section .dashboard-flow::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 75px;
+    height: 2px;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #4de8ff,
+        #b49aff,
+        transparent
+    );
+    box-shadow: 0 0 12px rgba(77, 232, 255, 0.8);
+    animation: dashboardDataPulse 5s linear infinite;
+}
+
+#dashboard-section .flow-item {
+    position: relative;
+    z-index: 1;
+    animation: dashboardFlowFloat 5s ease-in-out infinite;
+}
+
+#dashboard-section .flow-item:nth-of-type(3) {
+    animation-delay: -0.7s;
+}
+
+#dashboard-section .flow-item:nth-of-type(5) {
+    animation-delay: -1.4s;
+}
+
+#dashboard-section .flow-item:nth-of-type(7) {
+    animation-delay: -2.1s;
+}
+
+#dashboard-section .flow-item:nth-of-type(9) {
+    animation-delay: -2.8s;
+}
+
+#dashboard-section .flow-item:nth-of-type(11) {
+    animation-delay: -3.5s;
+}
+
+#dashboard-section .flow-icon {
+    animation: dashboardIconGlow 4s ease-in-out infinite;
+}
+
+/* Highlights: staggered entry and refined hover */
+#dashboard-section .dashboard-highlight-card {
+    animation: dashboardCardIn 0.65s ease both;
+}
+
+#dashboard-section .dashboard-highlight-card:nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+#dashboard-section .dashboard-highlight-card:nth-child(3) {
+    animation-delay: 0.16s;
+}
+
+#dashboard-section .dashboard-highlight-card:nth-child(4) {
+    animation-delay: 0.24s;
+}
+
+#dashboard-section .dashboard-highlight-card:nth-child(5) {
+    animation-delay: 0.32s;
+}
+
+#dashboard-section .dashboard-highlight-card:nth-child(6) {
+    animation-delay: 0.40s;
+}
+
+#dashboard-section .dashboard-highlight-card:hover .highlight-icon {
+    animation: dashboardIconPop 0.45s ease;
+}
+
+/* Buttons */
+#dashboard-section .primary-button {
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+#dashboard-section .primary-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        110deg,
+        transparent 25%,
+        rgba(255,255,255,0.35) 50%,
+        transparent 75%
+    );
+    transform: translateX(-130%);
+    transition: transform 0.65s ease;
+}
+
+#dashboard-section .primary-button:hover::after {
+    transform: translateX(130%);
+}
+
+#dashboard-section .primary-button:hover {
+    transform: translateY(-3px) scale(1.025);
+    filter: brightness(1.08);
+    box-shadow:
+        0 12px 32px rgba(77, 232, 255, 0.28),
+        0 0 22px rgba(77, 232, 255, 0.12);
+}
+
+#dashboard-section .secondary-button {
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+#dashboard-section .secondary-button:hover {
+    transform: translateY(-3px);
+    border-color: rgba(77, 232, 255, 0.38);
+}
+
+/* Foundation and action panel ambient glow */
+#dashboard-section .sixg-foundation-card,
+#dashboard-section .dashboard-action-panel {
+    background-size: 180% 180%;
+    animation: dashboardPanelGlow 12s ease-in-out infinite alternate;
+}
+
+#dashboard-section .foundation-badge {
+    animation: dashboardBadgePulse 4s ease-in-out infinite;
+}
+
+/* Keyframes */
+@keyframes dashboardHeroAtmosphere {
+    0%   { background-position: 0% 45%; }
+    100% { background-position: 100% 55%; }
+}
+
+@keyframes dashboardLightSweep {
+    0%, 15% { transform: translateX(-65%) rotate(-8deg); opacity: 0; }
+    35%    { opacity: 1; }
+    65%, 100% { transform: translateX(65%) rotate(-8deg); opacity: 0; }
+}
+
+@keyframes dashboardHeroContentIn {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dashboardNetworkFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-9px); }
+}
+
+@keyframes dashboardCorePulse {
+    0%, 100% {
+        box-shadow: 0 0 25px rgba(77,232,255,.28), 0 0 55px rgba(155,108,255,.13);
+    }
+    50% {
+        box-shadow: 0 0 38px rgba(77,232,255,.55), 0 0 85px rgba(155,108,255,.25);
+    }
+}
+
+@keyframes dashboardCoreRipple {
+    0%   { transform: scale(.85); opacity: .7; }
+    100% { transform: scale(1.65); opacity: 0; }
+}
+
+@keyframes dashboardNodeFloat {
+    0%, 100% { translate: 0 0; }
+    50%      { translate: 0 -8px; }
+}
+
+@keyframes dashboardSectionIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dashboardCardIn {
+    from { opacity: 0; transform: translateY(16px) scale(.985); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes dashboardDataPulse {
+    0%   { left: 0; opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { left: calc(100% - 75px); opacity: 0; }
+}
+
+@keyframes dashboardFlowFloat {
+    0%, 100% { translate: 0 0; }
+    50%      { translate: 0 -4px; }
+}
+
+@keyframes dashboardIconGlow {
+    0%, 100% { filter: drop-shadow(0 0 0 rgba(77,232,255,0)); }
+    50%      { filter: drop-shadow(0 0 7px rgba(77,232,255,.45)); }
+}
+
+@keyframes dashboardIconPop {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.13) rotate(-5deg); }
+    100% { transform: scale(1); }
+}
+
+@keyframes dashboardPanelGlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+@keyframes dashboardBadgePulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(85,230,165,0); }
+    50% { box-shadow: 0 0 18px rgba(85,230,165,.16); }
+}
+
+/* Accessibility: respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    #dashboard-section *,
+    #dashboard-section *::before,
+    #dashboard-section *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* =========================================================
+   IIITDMK SIMULATOR GLOBAL MOTION SYSTEM V1
+   Visual-only enhancement. No layout or application logic changes.
+   ========================================================= */
+
+/* Navigation: smooth active indicator */
+.navigation .nav-item {
+    position: relative;
+    overflow: hidden;
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
+}
+
+.navigation .nav-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 22%;
+    width: 3px;
+    height: 56%;
+    border-radius: 0 5px 5px 0;
+    background: linear-gradient(180deg, var(--cyan), var(--purple));
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.navigation .nav-item.active::before {
+    transform: scaleY(1);
+}
+
+.navigation .nav-item.active {
+    box-shadow:
+        inset 0 0 22px rgba(77, 232, 255, 0.045),
+        0 5px 22px rgba(77, 232, 255, 0.07);
+}
+
+.navigation .nav-item:hover {
+    background: linear-gradient(
+        100deg,
+        rgba(77, 232, 255, 0.09),
+        rgba(155, 108, 255, 0.07)
+    );
+}
+
+/* Experiment cards */
+#experiments-section .experiment-card {
+    position: relative;
+    isolation: isolate;
+    transition:
+        transform 0.35s cubic-bezier(.2, .8, .2, 1),
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        background 0.35s ease;
+}
+
+#experiments-section .experiment-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+        circle at 50% 0%,
+        rgba(77, 232, 255, 0.10),
+        transparent 65%
+    );
+    transition: opacity 0.35s ease;
+    z-index: -1;
+}
+
+#experiments-section .experiment-card:hover {
+    transform: translateY(-7px);
+    border-color: rgba(77, 232, 255, 0.34);
+    box-shadow:
+        0 18px 42px rgba(0, 0, 0, 0.25),
+        0 0 22px rgba(77, 232, 255, 0.07);
+}
+
+#experiments-section .experiment-card:hover::after {
+    opacity: 1;
+}
+
+#experiments-section .experiment-icon {
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+#experiments-section .experiment-card:hover .experiment-icon {
+    transform: translateY(-3px) rotate(-5deg) scale(1.06);
+    box-shadow: 0 0 20px rgba(77, 232, 255, 0.15);
+}
+
+/* Workspace panels: subtle interactive depth */
+.simulator-section .workspace-card,
+.simulator-section .capability-experiment-card {
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+.simulator-section .workspace-card:hover,
+.simulator-section .capability-experiment-card:hover {
+    border-color: rgba(77, 232, 255, 0.17);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+}
+
+/* Result and statistic cards */
+.simulator-section .network-stat-card,
+.simulator-section .experiment-result-card,
+.simulator-section .experiment-meta-card,
+.simulator-section .request-table-card {
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.simulator-section .network-stat-card:hover,
+.simulator-section .experiment-result-card:hover,
+.simulator-section .experiment-meta-card:hover,
+.simulator-section .request-table-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(77, 232, 255, 0.22);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
+}
+
+.simulator-section .network-stat-card strong {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.simulator-section .network-stat-card:hover strong {
+    color: var(--cyan);
+    text-shadow: 0 0 16px rgba(77, 232, 255, 0.25);
+}
+
+/* Results tables */
+.simulator-section .results-table tbody tr {
+    transition: background 0.22s ease;
+}
+
+.simulator-section .results-table tbody tr:hover {
+    background: rgba(77, 232, 255, 0.045);
+}
+
+.simulator-section .results-table-container {
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.simulator-section .results-table-container:hover {
+    border-color: rgba(77, 232, 255, 0.18);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.13);
+}
+
+/* Buttons: consistent feedback */
+.simulator-section .primary-button,
+.simulator-section .secondary-button,
+.simulator-section .experiment-button {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+.simulator-section .primary-button:hover,
+.simulator-section .experiment-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+    box-shadow: 0 8px 24px rgba(77, 232, 255, 0.15);
+}
+
+.simulator-section .secondary-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(155, 108, 255, 0.12);
+}
+
+.simulator-section .primary-button:active,
+.simulator-section .secondary-button:active,
+.simulator-section .experiment-button:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Smooth entrance when switching simulator sections */
+@keyframes simulatorSectionReveal {
+    from {
+        opacity: 0;
+        transform: translateY(9px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.simulator-section:not(#dashboard-section) {
+    animation: simulatorSectionReveal 0.42s ease both;
+}
+
+/* Gentle entrance for experiment cards */
+@keyframes simulatorCardReveal {
+    from {
+        opacity: 0;
+        transform: translateY(13px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#experiments-section .experiment-card {
+    animation: simulatorCardReveal 0.5s ease both;
+}
+
+#experiments-section .experiment-card:nth-child(2) { animation-delay: 0.04s; }
+#experiments-section .experiment-card:nth-child(3) { animation-delay: 0.08s; }
+#experiments-section .experiment-card:nth-child(4) { animation-delay: 0.12s; }
+#experiments-section .experiment-card:nth-child(5) { animation-delay: 0.16s; }
+#experiments-section .experiment-card:nth-child(6) { animation-delay: 0.20s; }
+
+/* Respect accessibility preferences */
+@media (prefers-reduced-motion: reduce) {
+    .navigation .nav-item,
+    #experiments-section .experiment-card,
+    #experiments-section .experiment-icon,
+    .simulator-section .workspace-card,
+    .simulator-section .network-stat-card,
+    .simulator-section .experiment-result-card,
+    .simulator-section .experiment-meta-card,
+    .simulator-section .request-table-card,
+    .simulator-section .primary-button,
+    .simulator-section .secondary-button,
+    .simulator-section .experiment-button {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+
+    .simulator-section:not(#dashboard-section) {
+        animation: none !important;
+    }
+}
+
+/* End IIITDMK SIMULATOR GLOBAL MOTION SYSTEM V1 */
+
+/* =========================================================
+   IIITDMK PREMIUM RESEARCH UI V1
+   ========================================================= */
+
+/* Consistent rendering */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+::selection {
+    background: rgba(77, 232, 255, 0.24);
+    color: #ffffff;
+}
+
+/* Network overview */
+.network-stat-card {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(77, 232, 255, 0.09),
+            transparent 48%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(22, 29, 51, 0.92),
+            rgba(12, 17, 32, 0.88)
+        );
+    border-color: rgba(125, 249, 255, 0.12);
+}
+
+.network-stat-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 12%;
+    width: 45%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(77, 232, 255, 0.7),
+        transparent
+    );
+    opacity: 0.65;
+}
+
+.network-topology-panel {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(77, 232, 255, 0.055),
+            transparent 55%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(16, 23, 42, 0.92),
+            rgba(9, 14, 27, 0.96)
+        );
+    border-color: rgba(77, 232, 255, 0.16);
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.16);
+}
+
+.topology-node {
+    position: relative;
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.topology-node:hover {
+    transform: translateY(-4px);
+    border-color: rgba(77, 232, 255, 0.5);
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.24),
+        0 0 20px rgba(77, 232, 255, 0.10);
+}
+
+.topology-connection {
+    position: relative;
+    overflow: hidden;
+}
+
+.topology-connection::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(77, 232, 255, 0.85) 48%,
+        transparent 100%
+    );
+    background-size: 100% 200%;
+    animation: topologySignalTravel 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes topologySignalTravel {
+    0% {
+        background-position: 0 -100%;
+        opacity: 0;
+    }
+    35% {
+        opacity: 0.8;
+    }
+    75% {
+        opacity: 0.8;
+    }
+    100% {
+        background-position: 0 100%;
+        opacity: 0;
+    }
+}
+
+/* Analytics and result summaries */
+.result-summary-card {
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(24, 31, 54, 0.92),
+            rgba(13, 18, 34, 0.92)
+        );
+    border-color: rgba(125, 249, 255, 0.13);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.result-summary-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        var(--cyan),
+        var(--purple),
+        transparent
+    );
+    opacity: 0.7;
+}
+
+.result-summary-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(77, 232, 255, 0.3);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
+
+.result-summary-card strong {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.4px;
+}
+
+.results-chart-container {
+    overflow: hidden;
+    border: 1px solid rgba(125, 249, 255, 0.13);
+    border-radius: 17px;
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(77, 232, 255, 0.045),
+            transparent 65%
+        ),
+        rgba(8, 13, 26, 0.55);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+    transition: border-color 0.3s ease;
+}
+
+.results-chart-container:hover {
+    border-color: rgba(77, 232, 255, 0.28);
+}
+
+.results-chart {
+    padding: 14px;
+}
+
+.results-table-container {
+    border-color: rgba(125, 249, 255, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.results-section-title {
+    background: linear-gradient(
+        90deg,
+        rgba(77, 232, 255, 0.045),
+        rgba(155, 108, 255, 0.035)
+    );
+}
+
+/* Discovery workspace */
+.discovery-workspace .results-header {
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(125, 249, 255, 0.12);
+}
+
+.discovery-workspace .results-eyebrow {
+    color: var(--cyan);
+    letter-spacing: 2px;
+}
+
+.discovery-workspace .results-header h2 {
+    letter-spacing: -0.5px;
+}
+
+.discovery-workspace .experiment-config {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+/* C++ workspace: preserve existing two-panel layout */
+body #cpp-workspace-section .cpp-workspace-grid > .panel {
+    border: 1px solid rgba(125, 249, 255, 0.14) !important;
+    border-radius: 15px !important;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 27, 45, 0.98),
+            rgba(11, 16, 29, 0.98)
+        ) !important;
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025) !important;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease !important;
+}
+
+body #cpp-workspace-section .cpp-workspace-grid > .panel:hover {
+    border-color: rgba(77, 232, 255, 0.28) !important;
+    box-shadow:
+        0 16px 42px rgba(0, 0, 0, 0.26),
+        0 0 20px rgba(77, 232, 255, 0.045) !important;
+}
+
+body #cpp-workspace-section .CodeMirror {
+    border: 1px solid rgba(125, 249, 255, 0.17) !important;
+    border-radius: 10px !important;
+}
+
+body #cpp-workspace-section #cpp-workspace-output {
+    border: 1px solid rgba(125, 249, 255, 0.17) !important;
+    border-radius: 10px !important;
+    background:
+        radial-gradient(
+            ellipse at top left,
+            rgba(77, 232, 255, 0.035),
+            transparent 65%
+        ),
+        #090e19 !important;
+}
+
+body #cpp-workspace-section .cpp-output-actions button {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease !important;
+}
+
+body #cpp-workspace-section .cpp-output-actions button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+}
+
+/* Accessible motion settings */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .topology-connection::after {
+        animation: none !important;
+    }
+
+    .topology-node,
+    .result-summary-card,
+    .results-chart-container,
+    body #cpp-workspace-section .cpp-workspace-grid > .panel,
+    body #cpp-workspace-section .cpp-output-actions button {
+        transition: none !important;
+    }
+}
+
+/* End IIITDMK PREMIUM RESEARCH UI V1 */
+
+/* =========================================================
+   IIITDMK 6G SIMULATOR — STEP 1
+   PREMIUM APPLICATION VISUAL IDENTITY
+   ========================================================= */
+
+:root {
+    --bg-main: #080d19;
+    --bg-secondary: #0d1526;
+    --card: rgba(17, 27, 46, 0.88);
+    --card-border: rgba(112, 165, 205, 0.16);
+    --text-primary: #edf5ff;
+    --text-secondary: #9aacc3;
+    --cyan: #51dff2;
+    --purple: #9678ff;
+    --pink: #d18bdb;
+    --green: #55d6a5;
+}
+
+/* Application background */
+html,
+body {
+    background-color: var(--bg-main);
+}
+
+body {
+    color: var(--text-primary);
+    font-family: "Inter", "Segoe UI", sans-serif;
+    letter-spacing: 0;
+    background:
+        radial-gradient(
+            ellipse at 78% 0%,
+            rgba(76, 105, 220, 0.16),
+            transparent 38%
+        ),
+        radial-gradient(
+            ellipse at 42% 92%,
+            rgba(20, 170, 195, 0.09),
+            transparent 42%
+        ),
+        linear-gradient(135deg, #080d19 0%, #0b1424 52%, #0a1020 100%);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+body::before {
+    display: block;
+    background-image:
+        linear-gradient(rgba(133, 177, 220, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(133, 177, 220, 0.025) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.65), transparent 78%);
+    z-index: 0;
+}
+
+.app-container {
+    position: relative;
+    isolation: isolate;
+    background: transparent;
+}
+
+/* Sidebar — refined glass panel */
+.sidebar {
+    background:
+        linear-gradient(180deg,
+            rgba(17, 29, 49, 0.98),
+            rgba(10, 18, 33, 0.98)
+        );
+    border-right: 1px solid rgba(104, 164, 204, 0.19);
+    box-shadow: 12px 0 42px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(22px);
+}
+
+.brand {
+    border-bottom-color: rgba(123, 166, 205, 0.16);
+}
+
+.brand-icon {
+    color: #ffffff;
+    background: linear-gradient(140deg, #24b9d0 0%, #587ee9 54%, #9270ef 100%);
+    border: 1px solid rgba(164, 222, 255, 0.28);
+    box-shadow:
+        0 7px 22px rgba(47, 139, 220, 0.22),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.brand h1 {
+    color: #f0f6ff;
+}
+
+.brand span {
+    color: #65d9e9;
+}
+
+/* Navigation */
+.navigation {
+    gap: 7px;
+}
+
+.nav-item {
+    min-height: 45px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    color: #a3b4c9;
+    transition:
+        background 0.22s ease,
+        border-color 0.22s ease,
+        color 0.22s ease,
+        transform 0.22s ease;
+}
+
+.nav-item span {
+    color: #8ba8c0;
+}
+
+.nav-item:hover {
+    color: #f2f8ff;
+    background: rgba(82, 157, 204, 0.10);
+    border-color: rgba(90, 180, 220, 0.13);
+    transform: translateX(2px);
+}
+
+.nav-item:hover span {
+    color: var(--cyan);
+}
+
+.nav-item.active {
+    color: #f4fbff;
+    background:
+        linear-gradient(105deg,
+            rgba(38, 174, 197, 0.19),
+            rgba(91, 112, 221, 0.17),
+            rgba(130, 94, 211, 0.12)
+        );
+    border: 1px solid rgba(83, 199, 224, 0.25);
+    box-shadow:
+        inset 3px 0 0 #55dff0,
+        0 5px 18px rgba(0, 0, 0, 0.15);
+}
+
+.nav-item.active span {
+    color: #69e3f0;
+}
+
+/* Sidebar system status */
+.system-status {
+    background: linear-gradient(135deg,
+        rgba(25, 57, 61, 0.68),
+        rgba(17, 38, 48, 0.72)
+    );
+    border-color: rgba(78, 205, 169, 0.20);
+}
+
+.system-status strong {
+    color: #e8f8f5;
+}
+
+.system-status small {
+    color: #9bb9b8;
+}
+
+.version {
+    color: #8298b1;
+}
+
+/* Main content area */
+.main-content {
+    position: relative;
+    background: transparent;
+}
+
+/* Top application bar */
+.topbar {
+    position: relative;
+    border-bottom: 1px solid rgba(120, 164, 205, 0.19);
+}
+
+.topbar::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 150px;
+    height: 1px;
+    background: linear-gradient(90deg, #50d9eb, rgba(133, 112, 242, 0.55), transparent);
+}
+
+.eyebrow,
+.section-label {
+    color: #69d6e6;
+}
+
+.topbar h2 {
+    color: #f0f6ff;
+    letter-spacing: -0.55px;
+}
+
+.topbar h2 span {
+    background: linear-gradient(95deg, #62e2ed, #91a2ff 75%, #c39bea);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Dashboard section headings */
+.section-header {
+    border-color: rgba(120, 164, 205, 0.16);
+}
+
+.section-header h3 {
+    color: #eaf3ff;
+    letter-spacing: -0.25px;
+}
+
+/* Dashboard project cards */
+.dashboard-project-card,
+.dashboard-highlight-card,
+.dashboard-action-panel {
+    background:
+        radial-gradient(ellipse at 100% 0%,
+            rgba(74, 132, 211, 0.10),
+            transparent 48%
+        ),
+        linear-gradient(145deg,
+            rgba(20, 33, 55, 0.96),
+            rgba(12, 21, 38, 0.97)
+        );
+    border: 1px solid rgba(117, 166, 211, 0.18);
+    box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.dashboard-project-card:hover,
+.dashboard-highlight-card:hover {
+    border-color: rgba(83, 205, 226, 0.38);
+    box-shadow:
+        0 16px 38px rgba(0, 0, 0, 0.23),
+        0 0 25px rgba(53, 166, 202, 0.07);
+}
+
+.dashboard-project-card h3,
+.dashboard-highlight-card strong,
+.dashboard-action-panel h3 {
+    color: #eff7ff;
+}
+
+.dashboard-project-card p,
+.dashboard-highlight-card p,
+.dashboard-action-panel p {
+    color: #a7b7cc;
+}
+
+.dashboard-card-icon {
+    border: 1px solid rgba(98, 202, 226, 0.19);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.16);
+}
+
+/* Keep readable text selection */
+::selection {
+    background: rgba(81, 223, 242, 0.28);
+    color: #ffffff;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    body,
+    body::before,
+    .nav-item,
+    .dashboard-project-card,
+    .dashboard-highlight-card {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* End STEP 1 premium application identity */
+
+/* =========================================================
+   IIITDMK 6G SIMULATOR — STEP 1
+   PREMIUM APPLICATION VISUAL IDENTITY
+   ========================================================= */
+
+:root {
+    --bg-main: #080d19;
+    --bg-secondary: #0d1526;
+    --card: rgba(17, 27, 46, 0.88);
+    --card-border: rgba(112, 165, 205, 0.16);
+    --text-primary: #edf5ff;
+    --text-secondary: #9aacc3;
+    --cyan: #51dff2;
+    --purple: #9678ff;
+    --pink: #d18bdb;
+    --green: #55d6a5;
+}
+
+/* Application background */
+html,
+body {
+    background-color: var(--bg-main);
+}
+
+body {
+    color: var(--text-primary);
+    font-family: "Inter", "Segoe UI", sans-serif;
+    letter-spacing: 0;
+    background:
+        radial-gradient(
+            ellipse at 78% 0%,
+            rgba(76, 105, 220, 0.16),
+            transparent 38%
+        ),
+        radial-gradient(
+            ellipse at 42% 92%,
+            rgba(20, 170, 195, 0.09),
+            transparent 42%
+        ),
+        linear-gradient(135deg, #080d19 0%, #0b1424 52%, #0a1020 100%);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+body::before {
+    display: block;
+    background-image:
+        linear-gradient(rgba(133, 177, 220, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(133, 177, 220, 0.025) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.65), transparent 78%);
+    z-index: 0;
+}
+
+.app-container {
+    position: relative;
+    isolation: isolate;
+    background: transparent;
+}
+
+/* Sidebar — refined glass panel */
+.sidebar {
+    background:
+        linear-gradient(180deg,
+            rgba(17, 29, 49, 0.98),
+            rgba(10, 18, 33, 0.98)
+        );
+    border-right: 1px solid rgba(104, 164, 204, 0.19);
+    box-shadow: 12px 0 42px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(22px);
+}
+
+.brand {
+    border-bottom-color: rgba(123, 166, 205, 0.16);
+}
+
+.brand-icon {
+    color: #ffffff;
+    background: linear-gradient(140deg, #24b9d0 0%, #587ee9 54%, #9270ef 100%);
+    border: 1px solid rgba(164, 222, 255, 0.28);
+    box-shadow:
+        0 7px 22px rgba(47, 139, 220, 0.22),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.brand h1 {
+    color: #f0f6ff;
+}
+
+.brand span {
+    color: #65d9e9;
+}
+
+/* Navigation */
+.navigation {
+    gap: 7px;
+}
+
+.nav-item {
+    min-height: 45px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    color: #a3b4c9;
+    transition:
+        background 0.22s ease,
+        border-color 0.22s ease,
+        color 0.22s ease,
+        transform 0.22s ease;
+}
+
+.nav-item span {
+    color: #8ba8c0;
+}
+
+.nav-item:hover {
+    color: #f2f8ff;
+    background: rgba(82, 157, 204, 0.10);
+    border-color: rgba(90, 180, 220, 0.13);
+    transform: translateX(2px);
+}
+
+.nav-item:hover span {
+    color: var(--cyan);
+}
+
+.nav-item.active {
+    color: #f4fbff;
+    background:
+        linear-gradient(105deg,
+            rgba(38, 174, 197, 0.19),
+            rgba(91, 112, 221, 0.17),
+            rgba(130, 94, 211, 0.12)
+        );
+    border: 1px solid rgba(83, 199, 224, 0.25);
+    box-shadow:
+        inset 3px 0 0 #55dff0,
+        0 5px 18px rgba(0, 0, 0, 0.15);
+}
+
+.nav-item.active span {
+    color: #69e3f0;
+}
+
+/* Sidebar system status */
+.system-status {
+    background: linear-gradient(135deg,
+        rgba(25, 57, 61, 0.68),
+        rgba(17, 38, 48, 0.72)
+    );
+    border-color: rgba(78, 205, 169, 0.20);
+}
+
+.system-status strong {
+    color: #e8f8f5;
+}
+
+.system-status small {
+    color: #9bb9b8;
+}
+
+.version {
+    color: #8298b1;
+}
+
+/* Main content area */
+.main-content {
+    position: relative;
+    background: transparent;
+}
+
+/* Top application bar */
+.topbar {
+    position: relative;
+    border-bottom: 1px solid rgba(120, 164, 205, 0.19);
+}
+
+.topbar::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 150px;
+    height: 1px;
+    background: linear-gradient(90deg, #50d9eb, rgba(133, 112, 242, 0.55), transparent);
+}
+
+.eyebrow,
+.section-label {
+    color: #69d6e6;
+}
+
+.topbar h2 {
+    color: #f0f6ff;
+    letter-spacing: -0.55px;
+}
+
+.topbar h2 span {
+    background: linear-gradient(95deg, #62e2ed, #91a2ff 75%, #c39bea);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Dashboard section headings */
+.section-header {
+    border-color: rgba(120, 164, 205, 0.16);
+}
+
+.section-header h3 {
+    color: #eaf3ff;
+    letter-spacing: -0.25px;
+}
+
+/* Dashboard project cards */
+.dashboard-project-card,
+.dashboard-highlight-card,
+.dashboard-action-panel {
+    background:
+        radial-gradient(ellipse at 100% 0%,
+            rgba(74, 132, 211, 0.10),
+            transparent 48%
+        ),
+        linear-gradient(145deg,
+            rgba(20, 33, 55, 0.96),
+            rgba(12, 21, 38, 0.97)
+        );
+    border: 1px solid rgba(117, 166, 211, 0.18);
+    box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.dashboard-project-card:hover,
+.dashboard-highlight-card:hover {
+    border-color: rgba(83, 205, 226, 0.38);
+    box-shadow:
+        0 16px 38px rgba(0, 0, 0, 0.23),
+        0 0 25px rgba(53, 166, 202, 0.07);
+}
+
+.dashboard-project-card h3,
+.dashboard-highlight-card strong,
+.dashboard-action-panel h3 {
+    color: #eff7ff;
+}
+
+.dashboard-project-card p,
+.dashboard-highlight-card p,
+.dashboard-action-panel p {
+    color: #a7b7cc;
+}
+
+.dashboard-card-icon {
+    border: 1px solid rgba(98, 202, 226, 0.19);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.16);
+}
+
+/* Keep readable text selection */
+::selection {
+    background: rgba(81, 223, 242, 0.28);
+    color: #ffffff;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    body,
+    body::before,
+    .nav-item,
+    .dashboard-project-card,
+    .dashboard-highlight-card {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* End STEP 1 premium application identity */
+
+/* =========================================================
+   IIITDMK 6G SIMULATOR — STEP 2
+   NETWORK TOPOLOGY VISUAL REDESIGN
+   ========================================================= */
+
+.network-topology-panel {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(65, 140, 220, 0.12), transparent 58%),
+        linear-gradient(145deg, rgba(17, 30, 51, 0.97), rgba(9, 17, 32, 0.98));
+    border: 1px solid rgba(100, 174, 218, 0.22);
+    border-radius: 18px;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+}
+
+.network-topology {
+    position: relative;
+    padding: 34px 12px;
+}
+
+.topology-layer {
+    position: relative;
+    z-index: 1;
+}
+
+.topology-label {
+    margin-bottom: 12px;
+    color: #91a9c5;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+}
+
+/* Shared node structure */
+.network-topology .topology-node {
+    position: relative;
+    min-width: 180px;
+    min-height: 68px;
+    padding: 13px 20px 13px 34px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(23, 42, 67, 0.98), rgba(13, 25, 44, 0.98));
+    border: 1px solid var(--node-border, rgba(100, 180, 220, 0.35));
+    box-shadow:
+        0 10px 26px rgba(0, 0, 0, 0.20),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045),
+        0 0 20px var(--node-glow, rgba(70, 180, 220, 0.07));
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Small illuminated node indicator */
+.network-topology .topology-node::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: var(--node-accent, #58d9ef);
+    box-shadow: 0 0 7px var(--node-accent, #58d9ef), 0 0 15px var(--node-accent, #58d9ef);
+}
+
+.network-topology .topology-node::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 12%;
+    width: 55%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--node-accent, #58d9ef), transparent);
+    opacity: 0.7;
+}
+
+.network-topology .topology-node:hover {
+    transform: translateY(-3px);
+    border-color: var(--node-accent, #58d9ef);
+    box-shadow:
+        0 13px 30px rgba(0, 0, 0, 0.25),
+        0 0 22px var(--node-glow, rgba(70, 180, 220, 0.12));
+}
+
+.network-topology .topology-node strong {
+    color: #f0f7ff;
+    font-size: 13px;
+    font-weight: 750;
+    letter-spacing: 0.35px;
+}
+
+.network-topology .topology-node small {
+    color: #9aafc7;
+    font-size: 9px;
+    letter-spacing: 1.15px;
+}
+
+/* CORE — central network */
+.network-topology .core-node {
+    --node-accent: #a58aff;
+    --node-border: rgba(157, 126, 255, 0.48);
+    --node-glow: rgba(139, 105, 255, 0.15);
+    background: linear-gradient(135deg, rgba(57, 43, 100, 0.55), rgba(18, 29, 54, 0.98));
+    min-width: 210px;
+    min-height: 76px;
+}
+
+/* EDGE — computing layer */
+#edge-topology-nodes .topology-node {
+    --node-accent: #55e5d0;
+    --node-border: rgba(65, 220, 195, 0.40);
+    --node-glow: rgba(65, 220, 195, 0.10);
+    background: linear-gradient(135deg, rgba(19, 69, 69, 0.42), rgba(13, 29, 46, 0.98));
+}
+
+/* ACCESS — radio access layer */
+#access-topology-nodes .topology-node {
+    --node-accent: #5db9ff;
+    --node-border: rgba(77, 169, 255, 0.42);
+    --node-glow: rgba(77, 169, 255, 0.11);
+    background: linear-gradient(135deg, rgba(23, 57, 96, 0.48), rgba(13, 27, 48, 0.98));
+}
+
+/* UE — connected user devices */
+#ue-topology-nodes .topology-node {
+    --node-accent: #65dfa0;
+    --node-border: rgba(85, 218, 151, 0.40);
+    --node-glow: rgba(85, 218, 151, 0.10);
+    background: linear-gradient(135deg, rgba(24, 73, 57, 0.42), rgba(13, 30, 42, 0.98));
+}
+
+/* Layer connection links */
+.network-topology .topology-connection {
+    position: relative;
+    width: 3px;
+    height: 34px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 5px;
+    background: linear-gradient(
+        to bottom,
+        rgba(91, 205, 231, 0.65),
+        rgba(135, 123, 245, 0.35)
+    );
+    box-shadow: 0 0 10px rgba(73, 194, 225, 0.14);
+}
+
+.network-topology .topology-connection::after {
+    content: "";
+    position: absolute;
+    top: -45%;
+    left: -2px;
+    width: 7px;
+    height: 42%;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        #a9f7ff,
+        #ffffff,
+        transparent
+    );
+    filter: drop-shadow(0 0 4px #59dff5);
+    animation: sixGSignalFlow 2.2s linear infinite;
+}
+
+.network-topology .topology-connection:nth-of-type(4)::after {
+    animation-delay: 0.45s;
+}
+
+.network-topology .topology-connection:nth-of-type(6)::after {
+    animation-delay: 0.9s;
+}
+
+@keyframes sixGSignalFlow {
+    0% {
+        top: -45%;
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 1;
+    }
+    100% {
+        top: 110%;
+        opacity: 0;
+    }
+}
+
+/* Responsive node sizing */
+@media (max-width: 700px) {
+    .network-topology {
+        padding: 24px 4px;
+    }
+
+    .network-topology .topology-node,
+    .network-topology .core-node {
+        min-width: 145px;
+        max-width: 100%;
+    }
+
+    .topology-node-row {
+        gap: 9px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .network-topology .topology-connection::after {
+        animation: none !important;
+    }
+
+    .network-topology .topology-node {
+        transition: none !important;
+    }
+}
+
+/* End STEP 2 network topology visual redesign */
+
+/* =========================================================
+   IIITDMK 6G SIMULATOR — NETWORK ARCHITECTURE LAYOUT
+   Structural redesign: vertical stack -> horizontal layers
+   ========================================================= */
+
+#network-topology {
+    display: grid !important;
+    grid-template-columns:
+        minmax(135px, 1fr) 42px
+        minmax(135px, 1fr) 42px
+        minmax(135px, 1fr) 42px
+        minmax(135px, 1fr) !important;
+    align-items: center !important;
+    gap: 0 !important;
+    padding: 38px 24px !important;
+    min-height: 300px;
+    overflow-x: auto;
+    background:
+        radial-gradient(ellipse at 50% 50%, rgba(45, 91, 145, .13), transparent 70%),
+        linear-gradient(145deg, rgba(13, 24, 43, .96), rgba(8, 15, 29, .98)) !important;
+    border: 1px solid rgba(105, 157, 207, .18);
+    border-radius: 18px;
+}
+
+#network-topology > .topology-layer {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    gap: 18px !important;
+    min-width: 0;
+    height: 100%;
+    padding: 16px 10px !important;
+    background: rgba(30, 49, 75, .20);
+    border: 1px solid rgba(117, 157, 199, .15);
+    border-radius: 14px;
+}
+
+#network-topology .topology-label {
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #91a9c6;
+    margin-bottom: 4px;
+}
+
+#network-topology .topology-node-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    width: 100%;
+}
+
+#network-topology .topology-node {
+    position: relative;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 76px !important;
+    padding: 14px 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center;
+    border-radius: 12px !important;
+    background: linear-gradient(145deg, rgba(28, 49, 77, .98), rgba(14, 27, 47, .98)) !important;
+    border: 1px solid rgba(110, 164, 213, .32) !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .22);
+}
+
+#network-topology .topology-node strong {
+    font-size: 12px;
+    letter-spacing: .4px;
+}
+
+#network-topology .topology-node small {
+    margin-top: 5px;
+    font-size: 9px;
+    line-height: 1.4;
+    color: #a9bdd3;
+}
+
+#network-topology .core-node {
+    border-color: rgba(169, 131, 255, .65) !important;
+    background: linear-gradient(145deg, rgba(78, 51, 126, .72), rgba(31, 29, 65, .96)) !important;
+}
+
+#network-topology #edge-topology-nodes .topology-node {
+    border-color: rgba(65, 220, 195, .48) !important;
+}
+
+#network-topology #access-topology-nodes .topology-node {
+    border-color: rgba(75, 163, 255, .5) !important;
+}
+
+#network-topology #ue-topology-nodes .topology-node {
+    border-color: rgba(117, 218, 151, .48) !important;
+}
+
+#network-topology > .topology-connection {
+    position: relative !important;
+    width: 100% !important;
+    height: 3px !important;
+    min-height: 3px !important;
+    margin: 0 !important;
+    align-self: center !important;
+    background: rgba(93, 145, 190, .30) !important;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#network-topology > .topology-connection::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -45%;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #54dff2, transparent);
+    animation: topologyHorizontalFlow 2.2s linear infinite;
+}
+
+@keyframes topologyHorizontalFlow {
+    from { left: -45%; }
+    to { left: 100%; }
+}
+
+@media (max-width: 1100px) {
+    #network-topology {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 12px !important;
+        padding: 22px 16px !important;
+    }
+
+    #network-topology > .topology-layer {
+        width: 100%;
+    }
+
+    #network-topology > .topology-connection {
+        width: 3px !important;
+        height: 25px !important;
+        min-height: 25px !important;
+        justify-self: center;
+    }
+
+    #network-topology > .topology-connection::after {
+        top: -45%;
+        left: 0;
+        width: 100%;
+        height: 45%;
+        animation: topologyVerticalFlow 2.2s linear infinite;
+    }
+}
+
+@keyframes topologyVerticalFlow {
+    from { top: -45%; }
+    to { top: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #network-topology > .topology-connection::after {
+        animation: none !important;
+    }
+}
+
+
+
+/* IIITDMK 6G SIMULATOR — INTERACTIVE 3D NETWORK VIEW */
+
+.network-3d-shell {
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(95, 154, 207, .2);
+    border-radius: 17px;
+    background: #07111f;
+}
+
+.network-3d-stage {
+    position: relative;
+    width: 100%;
+    height: 560px;
+    min-height: 420px;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 50% 45%, rgba(24, 65, 103, .28), transparent 65%),
+        #07111f;
+}
+
+.network-3d-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    cursor: grab;
+}
+
+.network-3d-canvas:active {
+    cursor: grabbing;
+}
+
+.network-3d-loading {
+    position: absolute;
+    z-index: 5;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: #07111f;
+    color: #75dff2;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.network-3d-overlay {
+    position: absolute;
+    z-index: 2;
+    top: 18px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.network-3d-live,
+.network-3d-controls-hint {
+    color: #a9bfd4;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.network-3d-live {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.network-3d-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #55e4bd;
+    box-shadow: 0 0 12px #55e4bd;
+}
+
+.network-3d-controls-hint span {
+    padding: 0 5px;
+    color: #4e789b;
+}
+
+.network-3d-details {
+    position: absolute;
+    z-index: 3;
+    left: 20px;
+    bottom: 20px;
+    width: min(290px, calc(100% - 40px));
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 15px 17px;
+    border: 1px solid rgba(101, 163, 214, .27);
+    border-radius: 12px;
+    background: rgba(7, 18, 33, .88);
+    backdrop-filter: blur(12px);
+    pointer-events: none;
+}
+
+.network-3d-detail-label {
+    color: #62cfe5;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+}
+
+.network-3d-details strong {
+    color: #f0f7ff;
+    font-size: 14px;
+    letter-spacing: .5px;
+}
+
+.network-3d-details > span:last-child {
+    color: #9db2c9;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.network-3d-summary {
+    position: absolute;
+    z-index: 3;
+    right: 20px;
+    bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(75px, 1fr));
+    gap: 8px;
+    pointer-events: none;
+}
+
+.network-3d-summary div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 78px;
+    padding: 10px 12px;
+    border: 1px solid rgba(101, 163, 214, .2);
+    border-radius: 9px;
+    background: rgba(7, 18, 33, .86);
+    backdrop-filter: blur(10px);
+}
+
+.network-3d-summary span {
+    color: #829cb7;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+}
+
+.network-3d-summary strong {
+    color: #eff8ff;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.network-3d-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    padding: 15px 18px;
+    border-top: 1px solid rgba(101, 163, 214, .13);
+    background: rgba(9, 21, 37, .96);
+}
+
+.network-3d-legend > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #a7bbd0;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.core-dot { background: #9875ff; box-shadow: 0 0 10px #9875ff; }
+.edge-dot { background: #38d9c1; box-shadow: 0 0 10px #38d9c1; }
+.access-dot { background: #52a9ff; box-shadow: 0 0 10px #52a9ff; }
+.ue-dot { background: #83e5a5; box-shadow: 0 0 10px #83e5a5; }
+
+/* Keep the original topology DOM available to existing application logic. */
+#network-topology {
+    display: none !important;
+}
+
+@media (max-width: 700px) {
+    .network-3d-stage {
+        height: 470px;
+        min-height: 400px;
+    }
+
+    .network-3d-controls-hint {
+        max-width: 130px;
+        text-align: right;
+        line-height: 1.6;
+    }
+
+    .network-3d-summary {
+        right: 12px;
+        bottom: 12px;
+        gap: 5px;
+    }
+
+    .network-3d-summary div {
+        min-width: 62px;
+        padding: 8px;
+    }
+
+    .network-3d-details {
+        left: 12px;
+        bottom: 12px;
+        width: 145px;
+        padding: 10px;
+    }
+
+    .network-3d-legend {
+        gap: 12px;
+    }
+}
+
+
+/* =========================================================
+   IIITDMK 6G SIMULATOR — CAPABILITY WORKSPACE ARCHITECTURE
+   Structured research dashboard layout
+   ========================================================= */
+
+#capabilities-section {
+    width: 100%;
+    max-width: 100%;
+}
+
+#capabilities-section > .page-header {
+    margin-bottom: 30px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Main experiment comparison panel */
+
+#capabilities-section > .capability-experiment-card {
+    margin: 0 0 26px;
+    padding: 28px;
+    border-radius: 16px;
+    background: linear-gradient(
+        120deg,
+        rgba(20, 34, 53, 0.96),
+        rgba(17, 23, 37, 0.96)
+    );
+    border: 1px solid rgba(125, 190, 255, 0.15);
+    min-width: 0;
+}
+
+#capabilities-section .capability-experiment-card
+.workspace-card-header {
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+#capabilities-section .capability-experiment-card
+.workspace-card-header p {
+    max-width: 720px;
+    margin: 9px 0 0;
+    color: #9ba9bd;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* Main workspace grid */
+
+#capabilities-section .capability-workspace {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-areas:
+        "registry registry registry registry registry registry registry resource resource resource resource resource"
+        "discovery discovery discovery discovery discovery discovery discovery discovery discovery discovery discovery discovery"
+        "update update update update update update freshness freshness freshness freshness freshness freshness"
+        "constraint constraint constraint constraint constraint constraint constraint constraint constraint constraint constraint constraint";
+    gap: 22px;
+    align-items: stretch;
+}
+
+#capabilities-section .capability-workspace > .workspace-card {
+    min-width: 0;
+    height: 100%;
+    padding: 27px;
+    border-radius: 15px;
+    background: rgba(19, 25, 39, 0.88);
+    border: 1px solid rgba(255,255,255,0.075);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* Assign meaningful architectural positions */
+
+#capabilities-section .capability-workspace > .workspace-card:nth-child(1) {
+    grid-area: registry;
+}
+
+#capabilities-section .capability-workspace > .workspace-card:nth-child(2) {
+    grid-area: resource;
+}
+
+#capabilities-section .capability-workspace > .discovery-entry {
+    grid-area: discovery;
+}
+
+#capabilities-section .capability-workspace > .capability-update-card {
+    grid-area: update;
+}
+
+#capabilities-section .capability-workspace > .capability-freshness-card {
+    grid-area: freshness;
+}
+
+#capabilities-section .capability-workspace > .capability-constraint-card {
+    grid-area: constraint;
+}
+
+/* Consistent card hierarchy */
+
+#capabilities-section .workspace-card-header {
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 23px;
+}
+
+#capabilities-section .workspace-card h3 {
+    color: #edf3ff;
+    font-size: 18px;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+}
+
+#capabilities-section .card-label {
+    margin-bottom: 9px;
+    color: #8ca5c3;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+}
+
+#capabilities-section .capability-list {
+    min-height: 145px;
+}
+
+#capabilities-section .capability-list .empty-state {
+    min-height: 145px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+/* Resource availability */
+
+#capabilities-section .resource-state-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+#capabilities-section .resource-state {
+    min-height: 88px;
+    padding: 17px 19px;
+    border-radius: 11px;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.055);
+}
+
+/* Discovery overview */
+
+#capabilities-section .discovery-entry {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 35px;
+    padding: 28px 32px;
+    background: linear-gradient(
+        105deg,
+        rgba(23, 43, 65, 0.94),
+        rgba(20, 29, 46, 0.94)
+    );
+    border-color: rgba(100, 180, 255, 0.16);
+}
+
+#capabilities-section .discovery-entry > div {
+    max-width: 760px;
+}
+
+#capabilities-section .discovery-entry p {
+    max-width: 680px;
+    margin: 10px 0 0;
+    color: #a4b0c2;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+#capabilities-section .discovery-entry button {
+    flex-shrink: 0;
+}
+
+/* Experiment panels */
+
+#capabilities-section .capability-update-question,
+#capabilities-section .capability-freshness-description,
+#capabilities-section .capability-constraint-description {
+    margin: 0 0 23px;
+    color: #9ba9bd;
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+#capabilities-section .capability-update-results,
+#capabilities-section .capability-freshness-results,
+#capabilities-section .capability-constraint-results {
+    min-width: 0;
+}
+
+#capabilities-section .capability-update-results .empty-state,
+#capabilities-section .capability-freshness-results .empty-state,
+#capabilities-section .capability-constraint-results .empty-state {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+/* Freshness configuration */
+
+#capabilities-section .capability-freshness-controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+#capabilities-section .capability-freshness-controls .experiment-control {
+    min-width: 0;
+}
+
+/* Constraint experiment */
+
+#capabilities-section .capability-constraint-card {
+    margin-top: 0;
+}
+
+/* Consistent buttons and form spacing */
+
+#capabilities-section .workspace-card button {
+    white-space: nowrap;
+}
+
+#capabilities-section .workspace-card input,
+#capabilities-section .workspace-card select {
+    max-width: 100%;
+}
+
+#capabilities-section .capability-workspace .empty-state p {
+    max-width: 440px;
+    line-height: 1.65;
+}
+
+/* Tablet */
+
+@media (max-width: 1050px) {
+    #capabilities-section .capability-workspace {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-areas:
+            "registry registry"
+            "resource resource"
+            "discovery discovery"
+            "update freshness"
+            "constraint constraint";
+        gap: 18px;
+    }
+
+    #capabilities-section .resource-state-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #capabilities-section .resource-state {
+        min-width: 0;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 680px) {
+    #capabilities-section .capability-workspace {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    #capabilities-section .capability-workspace > .workspace-card {
+        width: 100%;
+        padding: 21px;
+    }
+
+    #capabilities-section .discovery-entry {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #capabilities-section .resource-state-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #capabilities-section .capability-freshness-controls {
+        grid-template-columns: 1fr;
+    }
+
+    #capabilities-section .workspace-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #capabilities-section .capability-experiment-card {
+        padding: 21px;
+    }
+}
+

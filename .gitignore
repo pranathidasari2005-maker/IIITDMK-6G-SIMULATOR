@@ -30,3 +30,17 @@ Thumbs.db
 *.backup
 *.bak
 *~
+/simulator-gui/web/instance/
+*.before-auth
+
+# Authentication database and SQLite files
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.db
+
+# Local development backups
+/backups/
+*.before-*
+*.bak_*
+*.backup-*

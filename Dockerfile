@@ -37,10 +37,16 @@ RUN pip3 install --break-system-packages -r /opt/requirements.txt
 
 COPY simulator-gui/web /opt/ns-3.48/simulator-gui/web
 
+# Separate C++ learning workspace (source files only)
+COPY docker-cpp-workspace/ /opt/cpp-workspace/
+RUN mkdir -p /opt/cpp-workspace/build /opt/cpp-workspace/custom
+
 WORKDIR /opt/ns-3.48/simulator-gui/web
 
+ENV NS3_PROJECT_ROOT=/opt/ns-3.48
+ENV CPP_WORKSPACE_DIR=/opt/cpp-workspace
 ENV PORT=10000
 
 EXPOSE 10000
 
-CMD ["sh", "-c", "python3 app.py --host 0.0.0.0 --port ${PORT}"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT} --workers 1 --threads 4 --timeout 120 --access-logfile - --error-logfile - app:app"]

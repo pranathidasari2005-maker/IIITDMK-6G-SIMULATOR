@@ -6,7 +6,7 @@ from threading import Thread
 
 
 # ============================================================
-# IIITDMK 6G SIMULATOR
+# IIITDM Kurnool 6G SIMULATOR
 # GUI foundation + real ns-3 executable integration
 # ============================================================
 
@@ -161,7 +161,7 @@ SIMULATIONS = {
 class IIITDMKSimulator:
     def __init__(self, root):
         self.root = root
-        self.root.title("IIITDMK 6G SIMULATOR")
+        self.root.title("IIITDM Kurnool 6G SIMULATOR")
         self.root.geometry("1100x700")
         self.root.minsize(900, 600)
 
@@ -180,7 +180,7 @@ class IIITDMKSimulator:
 
         title = tk.Label(
             header,
-            text="IIITDMK 6G SIMULATOR",
+            text="IIITDM Kurnool 6G SIMULATOR",
             font=("Arial", 24, "bold"),
         )
         title.pack(anchor="w")
@@ -420,7 +420,7 @@ class IIITDMKSimulator:
 
         self.output_text.insert(
             tk.END,
-            "IIITDMK 6G SIMULATOR\n"
+            "IIITDM Kurnool 6G SIMULATOR\n"
             "=====================\n\n"
             f"Simulation: {self.simulation_var.get()}\n\n"
             f"Command:\n{' '.join(command)}\n\n"

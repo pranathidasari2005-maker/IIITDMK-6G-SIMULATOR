@@ -1,0 +1,8 @@
+.git
+.gitignore
+**/__pycache__/
+**/*.py[cod]
+simulator-gui/web/instance/
+**/*.sqlite3
+**/*.sqlite3-*
+**/auth_secret_key

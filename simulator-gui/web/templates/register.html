@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | IIITDMK 6G SIMULATOR</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #17233d;
+            background:
+                radial-gradient(circle at 15% 15%, #dceaff 0, transparent 35%),
+                radial-gradient(circle at 85% 85%, #d9e9ff 0, transparent 35%),
+                #f3f6fc;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 460px;
+            padding: 38px 42px;
+            background: #fff;
+            border: 1px solid #e7edf6;
+            border-radius: 20px;
+            box-shadow: 0 24px 70px rgba(30, 56, 100, .12);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 27px;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1768d5, #5638bd);
+        }
+
+        .brand h1 { font-size: 17px; color: #172b50; }
+        .brand span {
+            display: block;
+            margin-top: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #3477d2;
+        }
+
+        .eyebrow {
+            margin-bottom: 9px;
+            color: #3477d2;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        h2 { margin-bottom: 8px; font-size: 28px; color: #172b50; }
+        .subtitle { margin-bottom: 20px; color: #78869d; font-size: 14px; line-height: 1.6; }
+
+        label {
+            display: block;
+            margin: 14px 0 7px;
+            color: #34445e;
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        input {
+            width: 100%;
+            height: 46px;
+            padding: 0 14px;
+            border: 1px solid #dce4ef;
+            border-radius: 9px;
+            outline: none;
+            color: #172b50;
+            background: #fbfcff;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #3477d2;
+            box-shadow: 0 0 0 3px rgba(52,119,210,.12);
+        }
+
+        button {
+            width: 100%;
+            height: 49px;
+            margin-top: 23px;
+            border: 0;
+            border-radius: 9px;
+            color: white;
+            background: linear-gradient(100deg, #1768d5, #5638bd);
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:hover { box-shadow: 0 9px 22px rgba(45,91,180,.25); }
+
+        .switch {
+            margin-top: 21px;
+            text-align: center;
+            color: #78869d;
+            font-size: 13px;
+        }
+
+        a { color: #286bc6; font-weight: 700; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .message {
+            margin: 12px 0;
+            padding: 11px 13px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .error { color: #a52828; background: #fff0f0; }
+        .success { color: #176b42; background: #eaf8f0; }
+
+        .footer {
+            margin-top: 25px;
+            padding-top: 17px;
+            border-top: 1px solid #edf0f5;
+            text-align: center;
+            color: #9aa5b5;
+            font-size: 11px;
+        }
+
+        @media (max-width: 480px) {
+            .auth-card { padding: 28px 23px; }
+            h2 { font-size: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="auth-card">
+        <div class="brand">
+            <div class="brand-icon">6G</div>
+            <div>
+                <h1>IIITDM Kurnool</h1>
+                <span>6G SIMULATOR</span>
+            </div>
+        </div>
+
+        <p class="eyebrow">JOIN THE PLATFORM</p>
+        <h2>Create your account</h2>
+        <p class="subtitle">Register to access the 6G network simulation framework.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text"
+                   placeholder="Choose a username"
+                   minlength="3" maxlength="32"
+                   pattern="[A-Za-z0-9_]{3,32}"
+                   autocomplete="username" required>
+
+            <label for="email">Email Address</label>
+            <input id="email" name="email" type="email"
+                   placeholder="Enter your email address"
+                   autocomplete="email" required>
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password"
+                   placeholder="At least 8 characters"
+                   minlength="8" autocomplete="new-password" required>
+
+            <label for="confirm_password">Confirm Password</label>
+            <input id="confirm_password" name="confirm_password" type="password"
+                   placeholder="Enter your password again"
+                   minlength="8" autocomplete="new-password" required>
+
+            <button type="submit">Create Account</button>
+        </form>
+
+        <p class="switch">
+            Already have an account?
+            <a href="{{ url_for('login') }}">Sign in</a>
+        </p>
+
+        <div class="footer">
+            IIITDM Kurnool · Next Generation Network Simulation
+        </div>
+    </main>
+</body>
+</html>

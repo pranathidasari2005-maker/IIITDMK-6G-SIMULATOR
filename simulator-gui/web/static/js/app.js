@@ -841,32 +841,6 @@ async function runCapabilityScalability() {
 }
 
 
-function loadLatestResultsSummary() {
-
-    const experiment =
-        sessionStorage.getItem("iiitdmk_latest_experiment");
-
-    const status =
-        sessionStorage.getItem("iiitdmk_latest_status");
-
-    const experimentElement =
-        document.getElementById("results-latest-experiment");
-
-    const statusElement =
-        document.getElementById("results-latest-status");
-
-    if (experimentElement) {
-        experimentElement.textContent =
-            experiment || "—";
-    }
-
-    if (statusElement) {
-        statusElement.textContent =
-            status || "READY";
-    }
-}
-
-
 function closeResults() {
 
     const resultsPanel =
@@ -1227,6 +1201,477 @@ function closeDiscoveryResults() {
    NETWORK WORKSPACE
    ========================================================= */
 
+
+/* ============================================================
+   INTERACTIVE 3D NETWORK TOPOLOGY
+   Uses aggregate values returned by the ns-3 network API.
+   ============================================================ */
+
+window.iiitdmkNetwork3D = null;
+
+function render3DNetworkTopology(networkData) {
+    const stage = document.getElementById("network-3d-stage");
+    const loading = document.getElementById("network-3d-loading");
+
+    if (!stage) return;
+
+    if (!window.THREE || !window.THREE.OrbitControls) {
+        if (loading) {
+            loading.textContent =
+                "3D LIBRARY UNAVAILABLE — CHECK INTERNET CONNECTION";
+        }
+        return;
+    }
+
+    const parseCount = value => {
+        if (
+            value === null ||
+            value === undefined ||
+            /NOT REPORTED|UNKNOWN/i.test(String(value))
+        ) return null;
+
+        const match = String(value).match(/\d+/);
+        return match ? Number(match[0]) : null;
+    };
+
+    const counts = {
+        edge: parseCount(networkData.edge),
+        access: parseCount(networkData.access),
+        ue: parseCount(networkData.ue)
+    };
+
+    const connectionValid =
+        String(networkData.ueConnection).toUpperCase() === "VALID";
+
+    const pathValid =
+        String(networkData.accessEdgePath).toUpperCase() === "VALID";
+
+    const previous = window.iiitdmkNetwork3D;
+
+    if (previous) {
+        previous.controls.dispose();
+        previous.renderer.dispose();
+        previous.resizeObserver.disconnect();
+        previous.animationActive = false;
+    }
+
+    stage.querySelectorAll("canvas").forEach(canvas => canvas.remove());
+
+    const THREE = window.THREE;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x07111f);
+    scene.fog = new THREE.FogExp2(0x07111f, 0.018);
+
+    const camera = new THREE.PerspectiveCamera(
+        43,
+        stage.clientWidth / stage.clientHeight,
+        0.1,
+        200
+    );
+
+    camera.position.set(19, 17, 24);
+
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: false
+    });
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));
+    renderer.setSize(stage.clientWidth, stage.clientHeight);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    stage.insertBefore(renderer.domElement, stage.firstChild);
+
+    renderer.domElement.className = "network-3d-canvas";
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.055;
+    controls.minDistance = 12;
+    controls.maxDistance = 48;
+    controls.maxPolarAngle = Math.PI * 0.48;
+    controls.target.set(0, 1, 0);
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.35;
+
+    scene.add(new THREE.AmbientLight(0x9bb8df, 1.15));
+
+    const keyLight = new THREE.PointLight(0x59c9ff, 2.4, 55);
+    keyLight.position.set(3, 15, 8);
+    scene.add(keyLight);
+
+    const violetLight = new THREE.PointLight(0x9165ff, 1.8, 45);
+    violetLight.position.set(-12, 5, -8);
+    scene.add(violetLight);
+
+    const floor = new THREE.GridHelper(38, 38, 0x23415c, 0x142b41);
+    floor.position.y = -1.4;
+    scene.add(floor);
+
+    const baseRing = new THREE.Mesh(
+        new THREE.RingGeometry(12.7, 12.85, 100),
+        new THREE.MeshBasicMaterial({
+            color: 0x1c4767,
+            transparent: true,
+            opacity: 0.48,
+            side: THREE.DoubleSide
+        })
+    );
+
+    baseRing.rotation.x = -Math.PI / 2;
+    baseRing.position.y = -1.35;
+    scene.add(baseRing);
+
+    const selectable = [];
+    const movingParticles = [];
+    const connections = [];
+
+    const materials = {
+        core: new THREE.MeshStandardMaterial({
+            color: 0x9875ff,
+            emissive: 0x4c24a0,
+            emissiveIntensity: 1.2,
+            metalness: 0.45,
+            roughness: 0.24
+        }),
+        edge: new THREE.MeshStandardMaterial({
+            color: 0x38d9c1,
+            emissive: 0x087e76,
+            emissiveIntensity: 0.8,
+            metalness: 0.5,
+            roughness: 0.3
+        }),
+        access: new THREE.MeshStandardMaterial({
+            color: 0x52a9ff,
+            emissive: 0x124d9c,
+            emissiveIntensity: 0.85,
+            metalness: 0.4,
+            roughness: 0.3
+        }),
+        ue: new THREE.MeshStandardMaterial({
+            color: 0x83e5a5,
+            emissive: 0x247746,
+            emissiveIntensity: 0.8,
+            metalness: 0.25,
+            roughness: 0.32
+        })
+    };
+
+    function makeLabel(text, color) {
+        const canvas = document.createElement("canvas");
+        canvas.width = 512;
+        canvas.height = 128;
+
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "rgba(5, 15, 28, 0.86)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
+
+        ctx.font = "bold 34px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "#e9f5ff";
+        ctx.fillText(text, 256, 64, 480);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        const sprite = new THREE.Sprite(
+            new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true,
+                depthTest: false
+            })
+        );
+
+        sprite.scale.set(3.2, 0.8, 1);
+        return sprite;
+    }
+
+    function addNode(type, index, total, position, description) {
+        let geometry;
+
+        if (type === "core") {
+            geometry = new THREE.IcosahedronGeometry(1.35, 2);
+        } else if (type === "edge") {
+            geometry = new THREE.BoxGeometry(1.25, 1.25, 1.25);
+        } else if (type === "access") {
+            geometry = new THREE.OctahedronGeometry(0.85, 1);
+        } else {
+            geometry = new THREE.SphereGeometry(0.38, 20, 16);
+        }
+
+        const mesh = new THREE.Mesh(geometry, materials[type]);
+        mesh.position.copy(position);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+
+        mesh.userData = {
+            type,
+            name: type === "core"
+                ? "6G CORE"
+                : `${type.toUpperCase()} NODE ${index + 1}`,
+            description,
+            total
+        };
+
+        scene.add(mesh);
+        selectable.push(mesh);
+
+        const label = makeLabel(mesh.userData.name, {
+            core: "#a78bfa",
+            edge: "#43dec8",
+            access: "#64b5ff",
+            ue: "#83e5a5"
+        }[type]);
+
+        label.position.copy(position);
+        label.position.y += type === "core" ? 1.8 : 1.25;
+        scene.add(label);
+
+        return mesh;
+    }
+
+    function addConnection(from, to, valid) {
+        const points = [
+            from.clone(),
+            new THREE.Vector3(
+                (from.x + to.x) / 2,
+                Math.max(from.y, to.y) + 0.4,
+                (from.z + to.z) / 2
+            ),
+            to.clone()
+        ];
+
+        const curve = new THREE.CatmullRomCurve3(points);
+        const geometry = new THREE.BufferGeometry().setFromPoints(
+            curve.getPoints(40)
+        );
+
+        const material = new THREE.LineBasicMaterial({
+            color: valid ? 0x43cfe5 : 0x66758b,
+            transparent: true,
+            opacity: valid ? 0.7 : 0.28
+        });
+
+        const line = new THREE.Line(geometry, material);
+        scene.add(line);
+
+        const particle = new THREE.Mesh(
+            new THREE.SphereGeometry(0.105, 10, 10),
+            new THREE.MeshBasicMaterial({
+                color: valid ? 0x8df5ff : 0x8793a5
+            })
+        );
+
+        scene.add(particle);
+
+        movingParticles.push({
+            mesh: particle,
+            curve,
+            offset: Math.random()
+        });
+
+        connections.push(line);
+    }
+
+    const core = addNode(
+        "core",
+        0,
+        1,
+        new THREE.Vector3(0, 3.8, 0),
+        "Central network control and service layer"
+    );
+
+    function ringPositions(count, radius, height, phase = 0) {
+        return Array.from({ length: count }, (_, index) => {
+            const angle = phase + (index / Math.max(count, 1)) * Math.PI * 2;
+
+            return new THREE.Vector3(
+                Math.cos(angle) * radius,
+                height,
+                Math.sin(angle) * radius
+            );
+        });
+    }
+
+    // Render a bounded number of visual markers while preserving
+    // the exact reported totals in the inspector.
+    const edgeVisualCount = counts.edge === null
+        ? 0 : Math.min(counts.edge, 12);
+
+    const accessVisualCount = counts.access === null
+        ? 0 : Math.min(counts.access, 12);
+
+    const ueVisualCount = counts.ue === null
+        ? 0 : Math.min(counts.ue, 24);
+
+    const edgePositions = ringPositions(edgeVisualCount, 5.2, 1.8, 0.2);
+    const accessPositions = ringPositions(accessVisualCount, 9.2, 0.1, 0.1);
+    const uePositions = ringPositions(ueVisualCount, 13.1, -0.7, 0.05);
+
+    const edgeNodes = edgePositions.map((position, index) =>
+        addNode(
+            "edge",
+            index,
+            counts.edge,
+            position,
+            "Computing and resource capability layer"
+        )
+    );
+
+    const accessNodes = accessPositions.map((position, index) =>
+        addNode(
+            "access",
+            index,
+            counts.access,
+            position,
+            "Radio access and network connectivity layer"
+        )
+    );
+
+    const ueNodes = uePositions.map((position, index) =>
+        addNode(
+            "ue",
+            index,
+            counts.ue,
+            position,
+            "User equipment represented in the simulation"
+        )
+    );
+
+    edgeNodes.forEach(node => {
+        addConnection(
+            core.position,
+            node.position,
+            pathValid
+        );
+    });
+
+    accessNodes.forEach((node, index) => {
+        if (edgeNodes.length) {
+            const parent = edgeNodes[index % edgeNodes.length];
+            addConnection(
+                parent.position,
+                node.position,
+                pathValid
+            );
+        }
+    });
+
+    ueNodes.forEach((node, index) => {
+        if (accessNodes.length) {
+            const parent = accessNodes[index % accessNodes.length];
+            addConnection(
+                parent.position,
+                node.position,
+                connectionValid
+            );
+        }
+    });
+
+    const summary = document.createElement("div");
+    summary.className = "network-3d-summary";
+    summary.innerHTML = `
+        <div><span>CORE</span><strong>1</strong></div>
+        <div><span>EDGE</span><strong>${counts.edge ?? "—"}</strong></div>
+        <div><span>ACCESS</span><strong>${counts.access ?? "—"}</strong></div>
+        <div><span>UE</span><strong>${counts.ue ?? "—"}</strong></div>
+    `;
+
+    const oldSummary = stage.querySelector(".network-3d-summary");
+    if (oldSummary) oldSummary.remove();
+    stage.appendChild(summary);
+
+    const detailName = document.getElementById("network-3d-detail-name");
+    const detailDescription = document.getElementById(
+        "network-3d-detail-description"
+    );
+
+    function showDetails(data) {
+        detailName.textContent = data.name;
+        detailDescription.textContent =
+            `${data.description} · Reported quantity: ${data.total ?? "Not reported"}`;
+    }
+
+    showDetails({
+        name: "6G NETWORK",
+        description: `UE connection: ${networkData.ueConnection}; Access-edge path: ${networkData.accessEdgePath}`,
+        total: "Live API data"
+    });
+
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+
+    renderer.domElement.addEventListener("pointerdown", event => {
+        const rect = renderer.domElement.getBoundingClientRect();
+
+        pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        raycaster.setFromCamera(pointer, camera);
+
+        const hits = raycaster.intersectObjects(selectable);
+
+        if (hits.length) {
+            controls.autoRotate = false;
+            showDetails(hits[0].object.userData);
+        }
+    });
+
+    const resizeObserver = new ResizeObserver(() => {
+        const width = stage.clientWidth;
+        const height = stage.clientHeight;
+
+        if (!width || !height) return;
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+    });
+
+    resizeObserver.observe(stage);
+
+    let animationActive = true;
+
+    function animate() {
+        if (!animationActive) return;
+
+        requestAnimationFrame(animate);
+
+        controls.update();
+
+        const elapsed = performance.now() * 0.00035;
+
+        movingParticles.forEach(item => {
+            const t = (elapsed + item.offset) % 1;
+            item.mesh.position.copy(item.curve.getPoint(t));
+        });
+
+        core.rotation.y += 0.002;
+        core.rotation.x += 0.0007;
+
+        renderer.render(scene, camera);
+    }
+
+    if (loading) loading.remove();
+
+    window.iiitdmkNetwork3D = {
+        renderer,
+        controls,
+        resizeObserver,
+        get animationActive() { return animationActive; },
+        set animationActive(value) { animationActive = value; }
+    };
+
+    animate();
+}
+
+
 async function buildNetwork() {
 
     const access = Number(
@@ -1317,6 +1762,15 @@ async function buildNetwork() {
 
         const accessEdgePath =
             network.access_edge_path || "UNKNOWN";
+
+        render3DNetworkTopology({
+            edge: actualEdge,
+            access: actualAccess,
+            ue: actualUE,
+            reachableEdges,
+            ueConnection,
+            accessEdgePath
+        });
 
         /*
          * Display the actual simulated topology.
@@ -1755,9 +2209,6 @@ function showSimulatorSection(sectionId) {
         // Service Placement experiment.
     }
 
-    if (sectionId === "results-section") {
-        loadLatestResultsSummary();
-    }
 }
 
 
@@ -1943,29 +2394,6 @@ async function loadCapabilityResourceState() {
 
         computeState.textContent = "ERROR";
     }
-}
-
-/* =========================================================
-   RESULTS PAGE → EXISTING RESULT WORKSPACES
-   ========================================================= */
-
-function openDiscoveryResultsFromResultsPage() {
-
-    showSimulatorSection("experiments-section");
-
-    setTimeout(function() {
-        runCapabilityDiscovery();
-    }, 100);
-}
-
-
-function openScalabilityResultsFromResultsPage() {
-
-    showSimulatorSection("experiments-section");
-
-    setTimeout(function() {
-        runCapabilityScalability();
-    }, 100);
 }
 
 /* =========================================================
@@ -3917,3 +4345,653 @@ async function runCapabilityRegistryExperiment() {
     }
 }
 
+
+/* =========================================================
+   C++ LEARNING WORKSPACE
+   ========================================================= */
+(function initCppWorkspace() {
+    const textarea = document.getElementById("cpp-source-editor");
+    if (!textarea || textarea.dataset.cppWorkspaceReady === "true") return;
+    textarea.dataset.cppWorkspaceReady = "true";
+
+    const selector = document.getElementById("cpp-example-select");
+    const filenameLabel = document.getElementById("cpp-source-filename");
+    const loadButton = document.getElementById("cpp-load-source");
+    const resetButton = document.getElementById("cpp-reset-source");
+    const downloadButton = document.getElementById("cpp-download-source");
+    const saveButton = document.getElementById("cpp-save-source");
+    const compileButton = document.getElementById("cpp-compile-source");
+    const runButton = document.getElementById("cpp-run-source");
+    const status = document.getElementById("cpp-editor-status");
+    const output = document.getElementById("cpp-workspace-output");
+    const compileStatus = document.getElementById("cpp-compile-status");
+    const executionStatus = document.getElementById("cpp-execution-status");
+    const exitCodeDisplay = document.getElementById("cpp-exit-code");
+    const executionTimeDisplay = document.getElementById("cpp-execution-time");
+    const customCreateButton = document.getElementById("cpp-custom-create");
+    const customStatus = document.getElementById("cpp-custom-status");
+
+    let originalSource = "";
+    let sourceLoaded = false;
+    let loadedExampleId = "";
+    let workspaceMode = "example";
+    let loadedCustomId = "";
+    let editor = null;
+
+    if (typeof window.CodeMirror === "function") {
+        editor = window.CodeMirror.fromTextArea(textarea, {
+            mode: "text/x-c++src",
+            theme: "material-darker",
+            lineNumbers: true,
+            indentUnit: 4,
+            tabSize: 4,
+            indentWithTabs: false,
+            lineWrapping: false,
+            viewportMargin: 20
+        });
+        editor.setSize("100%", "480px");
+        window.cppWorkspaceEditor = editor;
+    }
+
+    function getSource() {
+        return editor ? editor.getValue() : textarea.value;
+    }
+
+    function setSource(source) {
+        if (editor) {
+            editor.setValue(source);
+            editor.refresh();
+        } else {
+            textarea.value = source;
+        }
+    }
+
+    function selectedExampleId() {
+        return selector ? selector.value : "6g-basic-network-example";
+    }
+
+    const exampleDescriptions = {
+        "6g-basic-network-example":
+            "Creates a basic 6G network with access nodes, edge nodes, UEs and services. Demonstrates network connectivity and validates UE-to-access-node associations.",
+
+        "6g-communication-computing-example":
+            "Demonstrates the interaction between communication and computing capabilities in a 6G network. Explores how network connectivity and edge computing resources support service execution.",
+
+        "6g-communication-computing-load-experiment":
+            "Studies communication and computing resource behaviour under different loads. Helps examine how increasing service demand affects available network resources.",
+
+        "6g-dynamic-resource-state-example":
+            "Demonstrates how resource availability changes as network services use and release resources. Examines dynamic resource-state updates within the network.",
+
+        "6g-end-to-end-session-experiment":
+            "Explores an end-to-end service session across network entities. Demonstrates session establishment, resource allocation and session lifecycle behaviour.",
+
+        "6g-heterogeneous-multi-node-example":
+            "Builds a heterogeneous network containing multiple network entities and nodes. Demonstrates how different nodes participate in communication and computing operations.",
+
+        "6g-heterogeneous-network-experiment":
+            "Examines network behaviour in a heterogeneous environment with different node types and capabilities. Helps study interactions and resource availability across the network.",
+
+        "6g-mobility-handover-example":
+            "Demonstrates UE mobility between access nodes. Explores how connectivity is maintained when a user moves across network coverage areas.",
+
+        "6g-mobility-handover-experiment":
+            "Studies mobility and handover behaviour under an experimental scenario. Examines access-node changes and their impact on network connectivity.",
+
+        "6g-service-placement-example":
+            "Demonstrates service placement using available edge computing resources. Explores how a service can be assigned to a suitable edge node.",
+
+        "network-nodes-example":
+            "Introduces the network-node components used in the 6G simulation framework. Demonstrates the roles and relationships of the different node types.",
+
+        "6g-core-example":
+            "Demonstrates the 6G core capability lifecycle, including registration, discovery, matching and resource-aware service selection. Also explores session activation, deactivation and capability freshness.",
+
+        "6g-capability-experiment":
+            "Explores capability registration and discovery among network entities. Demonstrates how capability information can be used to identify suitable resources.",
+
+        "6g-capability-constraint-experiment":
+            "Examines capability discovery using specified constraints. Studies how resource requirements influence which providers qualify as discovery candidates.",
+
+        "6g-capability-freshness-experiment":
+            "Investigates how capability information changes over time. Examines freshness validity and the effect of stale information on discovery results.",
+
+        "6g-capability-scalability-experiment":
+            "Evaluates capability-discovery performance as the number of registered providers increases. Helps study scalability and discovery processing overhead.",
+
+        "6g-capability-update-experiment":
+            "Demonstrates updates to registered capability information. Explores how changes in resource state are reflected during subsequent discovery operations.",
+
+        "6g-freshness-experiment":
+            "Studies the effect of capability age and validity periods on discovery. Compares normal discovery with discovery that requires fresh capability information.",
+
+        "6g-resource-stress-experiment":
+            "Examines resource behaviour under intensive demand. Helps evaluate resource availability and the system's handling of competing resource requirements.",
+
+        "6g-service-placement-experiment":
+            "Evaluates service placement using capability discovery and available resources. Explores how suitable edge providers are selected for service requirements.",
+
+        "6g-device-example":
+            "Introduces the device components used in the 6G simulation framework. Demonstrates how 6G devices are represented and used in the network.",
+
+        "6g-capability-registry-example":
+            "Demonstrates the capability registry used to maintain provider capability information. Explores registration and retrieval of capabilities for network discovery."
+    };
+
+    function updateExampleDescription() {
+        const description = document.getElementById("cpp-example-description-text");
+        if (!description) return;
+
+        if (selector.value.startsWith("custom:")) {
+            description.textContent =
+                "Your own custom C++ experiment. Edit the source and use Save, Compile and Run to develop your scenario.";
+            return;
+        }
+
+        description.textContent =
+            exampleDescriptions[selectedExampleId()] ||
+            "Select an experiment to view its description.";
+    }
+
+    updateExampleDescription();
+
+    if (selector) {
+        selector.addEventListener("change", updateExampleDescription);
+    }
+
+    function setStatus(message) {
+        if (status) status.textContent = message;
+    }
+
+    function setFilename(filename) {
+        if (filenameLabel) {
+            filenameLabel.textContent = "Source file: " + filename;
+        }
+    }
+
+    async function fetchOriginalSource() {
+        const exampleId = selectedExampleId();
+        const response = await fetch(
+            "/api/cpp-workspace/source?example_id=" +
+            encodeURIComponent(exampleId)
+        );
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || "Could not load the project source.");
+        }
+
+        return data;
+    }
+
+    async function loadCustomList() {
+        if (!selector) return;
+
+        const response = await fetch("/api/cpp-workspace/custom/list");
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || "Could not load custom experiments.");
+        }
+
+        const previousValue = selector.value;
+        const oldGroup = selector.querySelector("#cpp-custom-optgroup");
+        if (oldGroup) oldGroup.remove();
+
+        const group = document.createElement("optgroup");
+        group.id = "cpp-custom-optgroup";
+        group.label = "Custom Experiments";
+
+        (data.experiments || []).forEach(item => {
+            const option = document.createElement("option");
+            option.value = "custom:" + item.id;
+            option.textContent = item.name;
+            group.appendChild(option);
+        });
+
+        if (group.children.length) {
+            selector.appendChild(group);
+        }
+
+        if (previousValue && selector.querySelector(
+            'option[value="' + CSS.escape(previousValue) + '"]'
+        )) {
+            selector.value = previousValue;
+        }
+    }
+
+    async function loadCustomSource(experimentId) {
+        if (!experimentId) throw new Error("Select a custom experiment first.");
+
+        setStatus("LOADING CUSTOM EXPERIMENT");
+        if (output) output.textContent = "Loading custom C++ source...";
+
+        const response = await fetch(
+            "/api/cpp-workspace/custom/source?experiment_id=" +
+            encodeURIComponent(experimentId)
+        );
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || "Could not load custom experiment.");
+        }
+
+        workspaceMode = "custom";
+        loadedCustomId = data.id;
+        sourceLoaded = true;
+        loadedExampleId = "";
+        originalSource = data.source;
+
+        setSource(data.source);
+        setFilename(data.filename);
+        if (editor) editor.clearHistory();
+
+        setStatus("CUSTOM SOURCE LOADED");
+        if (customStatus) customStatus.textContent = "Opened " + data.filename;
+        if (output) output.textContent =
+            "Loaded custom experiment " + data.filename +
+            ". You can edit, save, compile, run or download it.";
+    }
+
+    async function loadSource() {
+        loadButton.disabled = true;
+        setStatus("LOADING SOURCE");
+        if (output) output.textContent = "Loading the selected C++ example...";
+
+        try {
+            const data = await fetchOriginalSource();
+
+            originalSource = data.source;
+            sourceLoaded = true;
+            loadedExampleId = data.example_id;
+
+            setSource(originalSource);
+            setFilename(data.filename);
+
+            if (editor) editor.clearHistory();
+
+            setStatus("SOURCE LOADED");
+
+            if (output) {
+                output.textContent =
+                    "Loaded " + data.filename +
+                    ". You can edit, save, compile, run or download this separate workspace copy. " +
+                    "The original ns-3 source remains unchanged.";
+            }
+        } catch (error) {
+            sourceLoaded = false;
+            loadedExampleId = "";
+            setStatus("LOAD FAILED");
+            if (output) output.textContent =
+                "Source loading failed: " + error.message;
+        } finally {
+            loadButton.disabled = false;
+        }
+    }
+
+    async function ensureSelectedSourceLoaded() {
+        if (workspaceMode === "custom") {
+            if (!sourceLoaded || !loadedCustomId) {
+                throw new Error("Open a custom experiment first.");
+            }
+            return;
+        }
+
+        if (!sourceLoaded || loadedExampleId !== selectedExampleId()) {
+            await loadSource();
+            if (!sourceLoaded) {
+                throw new Error("Could not load the selected example.");
+            }
+        }
+    }
+
+    if (customCreateButton) {
+        customCreateButton.addEventListener("click", async () => {
+            const name = window.prompt("Enter a name for your new experiment:");
+            if (!name || !name.trim()) return;
+
+            customCreateButton.disabled = true;
+            if (customStatus) customStatus.textContent = "Creating experiment...";
+
+            try {
+                const response = await fetch("/api/cpp-workspace/custom/create", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name: name.trim() })
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || "Could not create experiment.");
+                }
+
+                await loadCustomList();
+                selector.value = "custom:" + data.id;
+                await loadCustomSource(data.id);
+                updateExampleDescription();
+
+                if (customStatus) {
+                    customStatus.textContent = "Created and opened " + data.filename;
+                }
+            } catch (error) {
+                if (customStatus) {
+                    customStatus.textContent = "Create failed: " + error.message;
+                }
+            } finally {
+                customCreateButton.disabled = false;
+            }
+        });
+    }
+
+    loadCustomList().catch(error => {
+        if (customStatus) {
+            customStatus.textContent = "Could not load saved experiments: " + error.message;
+        }
+    });
+
+    if (selector) {
+        selector.addEventListener("change", async () => {
+            const selected = selector.value;
+
+            if (selected.startsWith("custom:")) {
+                const experimentId = selected.slice("custom:".length);
+                try {
+                    await loadCustomSource(experimentId);
+                    updateExampleDescription();
+                } catch (error) {
+                    if (customStatus) {
+                        customStatus.textContent = "Open failed: " + error.message;
+                    }
+                }
+                return;
+            }
+
+            workspaceMode = "example";
+            loadedCustomId = "";
+            sourceLoaded = false;
+            loadedExampleId = "";
+            updateExampleDescription();
+            await loadSource();
+        });
+    }
+
+    saveButton.addEventListener("click", async () => {
+        try {
+            await ensureSelectedSourceLoaded();
+            const source = getSource();
+
+            if (!source.trim()) {
+                throw new Error("Load or enter C++ source before saving.");
+            }
+
+            saveButton.disabled = true;
+            setStatus("SAVING SOURCE");
+
+            const response = await fetch(
+                workspaceMode === "custom"
+                    ? "/api/cpp-workspace/custom/save"
+                    : "/api/cpp-workspace/save",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(workspaceMode === "custom"
+                        ? { experiment_id: loadedCustomId, source }
+                        : { example_id: selectedExampleId(), source })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.error || "Save failed.");
+            }
+
+            setStatus("SOURCE SAVED");
+            if (output) {
+                output.textContent =
+                    "Saved " + data.filename +
+                    " to your separate local C++ workspace copy. " +
+                    "The original ns-3 source remains unchanged.";
+            }
+        } catch (error) {
+            setStatus("SAVE FAILED");
+            if (output) output.textContent = "Save failed: " + error.message;
+        } finally {
+            saveButton.disabled = false;
+        }
+    });
+
+    async function compileCurrentSource() {
+        await ensureSelectedSourceLoaded();
+
+        const source = getSource();
+        if (!source.trim()) {
+            throw new Error("Load or enter C++ source before compiling.");
+        }
+
+        if (compileStatus) compileStatus.textContent = "Compiling...";
+        if (executionStatus) executionStatus.textContent = "Not run";
+        if (exitCodeDisplay) exitCodeDisplay.textContent = "—";
+        if (executionTimeDisplay) executionTimeDisplay.textContent = "—";
+
+        const startedAt = performance.now();
+
+        try {
+            const response = await fetch(
+                workspaceMode === "custom"
+                    ? "/api/cpp-workspace/custom/compile"
+                    : "/api/cpp-workspace/compile",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(workspaceMode === "custom"
+                        ? { experiment_id: loadedCustomId, source }
+                        : { example_id: selectedExampleId(), source })
+                }
+            );
+
+            const data = await response.json();
+            const elapsed = ((performance.now() - startedAt) / 1000).toFixed(2);
+
+            if (!response.ok || !data.success) {
+                if (compileStatus) compileStatus.textContent = "Failed";
+                if (output) {
+                    output.textContent =
+                        data.output || data.error || "Compilation failed.";
+                }
+                throw new Error(data.error || data.message || "Compilation failed.");
+            }
+
+            if (compileStatus) compileStatus.textContent = "Success (" + elapsed + " s)";
+            if (output) output.textContent = data.output || "BUILD SUCCEEDED";
+            return data;
+
+        } catch (error) {
+            if (compileStatus) compileStatus.textContent = "Failed";
+            throw error;
+        }
+    }
+
+    compileButton.addEventListener("click", async () => {
+        compileButton.disabled = true;
+        runButton.disabled = true;
+        setStatus("COMPILING C++");
+
+        if (compileStatus) compileStatus.textContent = "Compiling...";
+        if (executionStatus) executionStatus.textContent = "Not run";
+        if (exitCodeDisplay) exitCodeDisplay.textContent = "—";
+        if (executionTimeDisplay) executionTimeDisplay.textContent = "—";
+
+        try {
+            await compileCurrentSource();
+            setStatus("BUILD SUCCEEDED");
+        } catch (error) {
+            setStatus("BUILD FAILED");
+            if (output && !output.textContent) {
+                output.textContent = error.message;
+            }
+        } finally {
+            compileButton.disabled = false;
+            runButton.disabled = false;
+        }
+    });
+
+    runButton.addEventListener("click", async () => {
+        compileButton.disabled = true;
+        runButton.disabled = true;
+        setStatus("COMPILING BEFORE RUN");
+
+        if (executionStatus) executionStatus.textContent = "Waiting for compilation";
+        if (exitCodeDisplay) exitCodeDisplay.textContent = "—";
+        if (executionTimeDisplay) executionTimeDisplay.textContent = "—";
+
+        try {
+            await compileCurrentSource();
+            setStatus("RUNNING SIMULATION");
+
+            if (executionStatus) executionStatus.textContent = "Running...";
+
+            const startedAt = performance.now();
+
+            try {
+                const response = await fetch(
+                    workspaceMode === "custom"
+                        ? "/api/cpp-workspace/custom/run"
+                        : "/api/cpp-workspace/run",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(workspaceMode === "custom"
+                            ? { experiment_id: loadedCustomId }
+                            : { example_id: selectedExampleId() })
+                    }
+                );
+
+                const data = await response.json();
+                const elapsed = ((performance.now() - startedAt) / 1000).toFixed(3);
+
+                if (executionTimeDisplay) {
+                    executionTimeDisplay.textContent = elapsed + " s";
+                }
+
+                if (data.returncode !== undefined && exitCodeDisplay) {
+                    exitCodeDisplay.textContent = String(data.returncode);
+                }
+
+                if (output) {
+                    output.textContent =
+                        (data.output || data.error || data.message || "No output.") +
+                        (data.returncode !== undefined
+                            ? "\\n\\nExit code: " + data.returncode
+                            : "");
+                }
+
+                if (!response.ok || !data.success) {
+                    if (executionStatus) executionStatus.textContent = "Failed";
+                    throw new Error(data.error || data.message || "Simulation failed.");
+                }
+
+                if (executionStatus) executionStatus.textContent = "Success";
+                setStatus("SIMULATION COMPLETED");
+
+            } catch (error) {
+                if (executionStatus) executionStatus.textContent = "Failed";
+                throw error;
+            }
+
+        } catch (error) {
+            setStatus("BUILD OR RUN FAILED");
+            if (output && !output.textContent) {
+                output.textContent = error.message;
+            }
+        } finally {
+            compileButton.disabled = false;
+            runButton.disabled = false;
+        }
+    });
+
+    loadButton.addEventListener("click", async () => {
+        if (workspaceMode === "custom") {
+            try {
+                await loadCustomSource(loadedCustomId);
+            } catch (error) {
+                setStatus("LOAD FAILED");
+                if (output) output.textContent = error.message;
+            }
+        } else {
+            await loadSource();
+        }
+    });
+
+    resetButton.addEventListener("click", async () => {
+        if (workspaceMode === "custom") {
+            if (!sourceLoaded || !loadedCustomId) {
+                setStatus("OPEN A CUSTOM EXPERIMENT FIRST");
+                return;
+            }
+            setSource(originalSource);
+            setStatus("CUSTOM EDITOR RESET");
+            if (output) output.textContent = "Editor restored to the last loaded custom source.";
+            return;
+        }
+
+        if (!sourceLoaded || loadedExampleId !== selectedExampleId()) {
+            await loadSource();
+            return;
+        }
+
+        setSource(originalSource);
+        setStatus("EDITOR RESET");
+
+        if (output) {
+            output.textContent =
+                "Editor restored to the original project source.";
+        }
+    });
+
+    downloadButton.addEventListener("click", async () => {
+        try {
+            await ensureSelectedSourceLoaded();
+
+            const source = getSource();
+
+            if (!source.trim()) {
+                throw new Error("Load or enter C++ source before downloading.");
+            }
+
+            const filename = filenameLabel
+                ? filenameLabel.textContent.replace("Source file: ", "").trim()
+                : selectedExampleId() + ".cc";
+
+            const blob = new Blob([source], {
+                type: "text/plain;charset=utf-8"
+            });
+
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+
+            setStatus("SOURCE DOWNLOADED");
+
+            if (output) {
+                output.textContent = "Downloaded the current editor contents as " +
+                    filename + ".";
+            }
+        } catch (error) {
+            setStatus("DOWNLOAD FAILED");
+            if (output) output.textContent = error.message;
+        }
+    });
+
+    if (!editor) {
+        console.warn("CodeMirror did not load; using the standard textarea.");
+    }
+
+    loadSource();
+})()

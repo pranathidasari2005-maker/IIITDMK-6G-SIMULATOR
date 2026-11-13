@@ -1,12 +1,25 @@
+import json
 import re
+import os
+import logging
+import ipaddress
 from flask import Flask, render_template, jsonify, request
+from auth import register_auth
 import subprocess
+import shlex
 from pathlib import Path
 
 app = Flask(__name__)
 
-# Project root: ~/6G-Lab/ns-3-dev
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+register_auth(app)
+
+# ns-3 development tree: local WSL or Docker deployment
+PROJECT_ROOT = Path(
+    os.environ.get(
+        "NS3_PROJECT_ROOT",
+        str(Path.home() / "6G-Lab" / "ns-3-dev")
+    )
+).resolve()
 
 RESOURCE_STRESS_EXECUTABLE = (
     PROJECT_ROOT / "build" / "contrib" / "6g-lena" / "6g-core"
@@ -30,6 +43,881 @@ CAPABILITY_SCALABILITY_EXECUTABLE = (
 def index():
     return render_template("index.html")
 
+
+
+# C++ Learning Workspace: fixed allowlist of 22 examples.
+CPP_WORKSPACE_DIR = Path(
+    os.environ.get(
+        "CPP_WORKSPACE_DIR",
+        str(Path.home() / "6G-Lab" / "cpp-workspace")
+    )
+).resolve()
+CPP_WORKSPACE_BUILD_DIR = CPP_WORKSPACE_DIR / "build"
+NS3_BUILD_DIR = PROJECT_ROOT / "build"
+
+CPP_BUILD_TIMEOUT_SECONDS = 45
+CPP_RUN_TIMEOUT_SECONDS = 10
+CPP_OUTPUT_LIMIT = 12000
+CPP_DEFAULT_EXAMPLE = "6g-basic-network-example"
+
+CPP_CUSTOM_DIR = CPP_WORKSPACE_DIR / "custom"
+CPP_CUSTOM_BUILD_DIR = CPP_WORKSPACE_BUILD_DIR / "custom"
+CPP_CUSTOM_INDEX = CPP_CUSTOM_DIR / "experiments.json"
+CPP_CUSTOM_NAME_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{0,47}$")
+
+
+def cpp_custom_experiment_paths(experiment_id):
+    if not isinstance(experiment_id, str) or not CPP_CUSTOM_NAME_PATTERN.fullmatch(experiment_id):
+        return None
+
+    source = (CPP_CUSTOM_DIR / (experiment_id + ".cc")).resolve()
+    executable = (CPP_CUSTOM_BUILD_DIR / experiment_id).resolve()
+
+    if source.parent != CPP_CUSTOM_DIR.resolve() or executable.parent != CPP_CUSTOM_BUILD_DIR.resolve():
+        return None
+
+    return source, executable
+
+
+def cpp_custom_experiment_index():
+    if not CPP_CUSTOM_INDEX.is_file():
+        return {}
+
+    try:
+        data = json.loads(CPP_CUSTOM_INDEX.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+_CPP_EXAMPLE_ROWS = [
+    ("6g-basic-network-example", "network-nodes"),
+    ("6g-communication-computing-example", "network-nodes"),
+    ("6g-communication-computing-load-experiment", "network-nodes"),
+    ("6g-dynamic-resource-state-example", "network-nodes"),
+    ("6g-end-to-end-session-experiment", "network-nodes"),
+    ("6g-heterogeneous-multi-node-example", "network-nodes"),
+    ("6g-heterogeneous-network-experiment", "network-nodes"),
+    ("6g-mobility-handover-example", "network-nodes"),
+    ("6g-mobility-handover-experiment", "network-nodes"),
+    ("6g-service-placement-example", "network-nodes"),
+    ("network-nodes-example", "network-nodes"),
+    ("6g-core-example", "6g-core"),
+    ("6g-capability-experiment", "6g-core"),
+    ("6g-capability-constraint-experiment", "6g-core"),
+    ("6g-capability-freshness-experiment", "6g-core"),
+    ("6g-capability-scalability-experiment", "6g-core"),
+    ("6g-capability-update-experiment", "6g-core"),
+    ("6g-freshness-experiment", "6g-core"),
+    ("6g-resource-stress-experiment", "6g-core"),
+    ("6g-service-placement-experiment", "6g-core"),
+    ("6g-device-example", "6g-devices"),
+    ("6g-capability-registry-example", "6g-capabilities"),
+]
+
+CPP_EXAMPLES = {
+    name: {
+        "module": module,
+        "filename": name + ".cc",
+        "target": "ns3.48-" + name + "-default",
+    }
+    for name, module in _CPP_EXAMPLE_ROWS
+}
+
+
+def cpp_workspace_local_access_allowed():
+    if os.environ.get("IIITDMK_LOCAL_CPP_EXECUTION") != "1":
+        return False
+    if os.environ.get("RENDER") or os.environ.get("RENDER_SERVICE_ID"):
+        return False
+
+    trusted_local_ips = {
+        ip.strip()
+        for ip in os.environ.get(
+            "IIITDMK_LOCAL_CPP_TRUSTED_IPS", ""
+        ).split(",")
+        if ip.strip()
+    }
+
+    try:
+        remote_ip = ipaddress.ip_address(request.remote_addr or "")
+        return (
+            remote_ip.is_loopback
+            or str(remote_ip) in trusted_local_ips
+        )
+    except ValueError:
+        return False
+
+
+def cpp_workspace_output(result):
+    combined = result.stdout or ""
+    if result.stderr:
+        combined += ("\n" if combined else "") + result.stderr
+    if not combined:
+        combined = "(No output.)"
+    if len(combined) > CPP_OUTPUT_LIMIT:
+        combined = combined[:CPP_OUTPUT_LIMIT] + "\n\n[Output truncated.]"
+    return combined
+
+
+def cpp_example_config(example_id):
+    if not isinstance(example_id, str):
+        return None
+    return CPP_EXAMPLES.get(example_id)
+
+
+def cpp_example_source_path(example_id, config):
+    return (
+        PROJECT_ROOT / "contrib" / "6g-lena"
+        / config["module"] / "examples" / config["filename"]
+    )
+
+
+def cpp_workspace_source_path(config):
+    return CPP_WORKSPACE_DIR / config["filename"]
+
+
+def cpp_workspace_executable_path(example_id):
+    return CPP_WORKSPACE_BUILD_DIR / example_id
+
+
+def cpp_get_generated_commands(target):
+    return subprocess.run(
+        ["ninja", "-C", "cmake-cache", "-t", "commands", target],
+        cwd=str(PROJECT_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=15,
+        check=False,
+    )
+
+
+def cpp_parse_command(line):
+    tokens = shlex.split(line)
+    if "/usr/bin/c++" not in tokens:
+        return None
+
+    tokens = tokens[tokens.index("/usr/bin/c++"):]
+
+    if "&&" in tokens:
+        tokens = tokens[:tokens.index("&&")]
+
+    return tokens
+
+
+@app.route("/api/cpp-workspace/source", methods=["GET"])
+def cpp_workspace_source():
+    example_id = request.args.get("example_id", CPP_DEFAULT_EXAMPLE)
+    config = cpp_example_config(example_id)
+
+    if config is None:
+        return jsonify({
+            "success": False,
+            "error": "Unknown C++ example selection."
+        }), 400
+
+    try:
+        source_path = cpp_example_source_path(example_id, config).resolve()
+
+        if not source_path.is_relative_to(PROJECT_ROOT.resolve()):
+            return jsonify({
+                "success": False,
+                "error": "Source path is outside the project directory."
+            }), 403
+
+        if not source_path.is_file():
+            return jsonify({
+                "success": False,
+                "error": "Selected C++ example source was not found."
+            }), 404
+
+        return jsonify({
+            "success": True,
+            "example_id": example_id,
+            "filename": source_path.name,
+            "source": source_path.read_text(encoding="utf-8")
+        })
+
+    except OSError:
+        app.logger.exception("Could not read C++ workspace source")
+        return jsonify({
+            "success": False,
+            "error": "Unable to read the C++ source file."
+        }), 500
+
+
+@app.route("/api/cpp-workspace/save", methods=["POST"])
+def cpp_workspace_save():
+    data = request.get_json(silent=True) or {}
+    example_id = data.get("example_id", CPP_DEFAULT_EXAMPLE)
+    config = cpp_example_config(example_id)
+    source = data.get("source")
+
+    if config is None:
+        return jsonify({
+            "success": False,
+            "error": "Unknown C++ example selection."
+        }), 400
+
+    if not isinstance(source, str) or not source.strip():
+        return jsonify({
+            "success": False,
+            "error": "C++ source cannot be empty."
+        }), 400
+
+    if len(source) > 200_000:
+        return jsonify({
+            "success": False,
+            "error": "Source exceeds the 200 KB limit."
+        }), 413
+
+    try:
+        workspace = CPP_WORKSPACE_DIR.resolve()
+        target = cpp_workspace_source_path(config).resolve()
+
+        if not workspace.is_dir() or target.parent != workspace:
+            return jsonify({
+                "success": False,
+                "error": "Workspace directory is unavailable."
+            }), 500
+
+        target.write_text(source, encoding="utf-8")
+
+        return jsonify({
+            "success": True,
+            "example_id": example_id,
+            "filename": target.name,
+            "message": "Saved to the separate local C++ workspace copy."
+        })
+
+    except OSError:
+        app.logger.exception("Could not save C++ workspace source")
+        return jsonify({
+            "success": False,
+            "error": "Unable to save the C++ source."
+        }), 500
+
+
+@app.route("/api/cpp-workspace/compile", methods=["POST"])
+def cpp_workspace_compile():
+    if not cpp_workspace_local_access_allowed():
+        return jsonify({
+            "success": False,
+            "error": "C++ compilation is disabled or this is not a local request."
+        }), 403
+
+    data = request.get_json(silent=True) or {}
+    example_id = data.get("example_id", CPP_DEFAULT_EXAMPLE)
+    config = cpp_example_config(example_id)
+    source = data.get("source")
+
+    if config is None:
+        return jsonify({
+            "success": False,
+            "error": "Unknown C++ example selection."
+        }), 400
+
+    if not isinstance(source, str) or not source.strip():
+        return jsonify({
+            "success": False,
+            "error": "C++ source cannot be empty."
+        }), 400
+
+    if len(source) > 200_000:
+        return jsonify({
+            "success": False,
+            "error": "Source exceeds the 200 KB limit."
+        }), 413
+
+    try:
+        workspace = CPP_WORKSPACE_DIR.resolve()
+        build_dir = CPP_WORKSPACE_BUILD_DIR.resolve()
+        ns3_root = PROJECT_ROOT.resolve()
+
+        if (
+            not workspace.is_dir()
+            or build_dir.parent != workspace
+            or not build_dir.is_dir()
+            or not (NS3_BUILD_DIR / "include").is_dir()
+        ):
+            return jsonify({
+                "success": False,
+                "error": "The isolated workspace or required ns-3 build files are unavailable."
+            }), 500
+
+        original_source = cpp_example_source_path(example_id, config).resolve()
+        workspace_source = cpp_workspace_source_path(config).resolve()
+        executable = cpp_workspace_executable_path(example_id).resolve()
+        object_file = (build_dir / (example_id + ".o")).resolve()
+        dep_file = (build_dir / (example_id + ".d")).resolve()
+
+        if (
+            not original_source.is_relative_to(ns3_root)
+            or workspace_source.parent != workspace
+            or object_file.parent != build_dir
+            or executable.parent != build_dir
+        ):
+            return jsonify({
+                "success": False,
+                "error": "Invalid workspace path."
+            }), 403
+
+        workspace_source.write_text(source, encoding="utf-8")
+
+        commands = cpp_get_generated_commands(config["target"])
+
+        if commands.returncode != 0:
+            return jsonify({
+                "success": False,
+                "error": "Could not retrieve generated CMake/Ninja build commands.",
+                "output": cpp_workspace_output(commands)
+            }), 500
+
+        generated_executable = (
+            NS3_BUILD_DIR / "contrib" / "6g-lena"
+            / config["module"] / "examples" / config["target"]
+        ).resolve()
+
+        compile_tokens = None
+        link_tokens = None
+
+        for line in commands.stdout.splitlines():
+            tokens = cpp_parse_command(line)
+
+            if not tokens:
+                continue
+
+            if "-c" in tokens and str(original_source) in tokens:
+                compile_tokens = tokens
+
+            elif "-o" in tokens and str(generated_executable) in tokens:
+                link_tokens = tokens
+
+        if not compile_tokens or not link_tokens:
+            return jsonify({
+                "success": False,
+                "error": "Could not identify the selected example's compiler and linker commands."
+            }), 500
+
+        original_object = compile_tokens[
+            compile_tokens.index("-o") + 1
+        ]
+
+        # Compile the workspace copy, not the original ns-3 source.
+        compile_tokens[compile_tokens.index("-o") + 1] = str(object_file)
+
+        if "-MF" in compile_tokens:
+            compile_tokens[compile_tokens.index("-MF") + 1] = str(dep_file)
+
+        if "-MT" in compile_tokens:
+            compile_tokens[compile_tokens.index("-MT") + 1] = str(object_file)
+
+        compile_tokens[compile_tokens.index("-c") + 1] = str(workspace_source)
+
+        if original_object not in link_tokens:
+            return jsonify({
+                "success": False,
+                "error": "Generated linker command did not contain the selected object file."
+            }), 500
+
+        link_tokens[link_tokens.index(original_object)] = str(object_file)
+        link_tokens[link_tokens.index("-o") + 1] = str(executable)
+
+        compiled = subprocess.run(
+            compile_tokens,
+            cwd=str(ns3_root),
+            capture_output=True,
+            text=True,
+            timeout=CPP_BUILD_TIMEOUT_SECONDS,
+            check=False
+        )
+
+        compile_output = cpp_workspace_output(compiled)
+
+        if compiled.returncode != 0:
+            return jsonify({
+                "success": False,
+                "message": "Compilation failed.",
+                "output": compile_output
+            }), 400
+
+        linked = subprocess.run(
+            link_tokens,
+            cwd=str(ns3_root),
+            capture_output=True,
+            text=True,
+            timeout=CPP_BUILD_TIMEOUT_SECONDS,
+            check=False
+        )
+
+        link_output = cpp_workspace_output(linked)
+
+        if linked.returncode != 0:
+            return jsonify({
+                "success": False,
+                "message": "Compilation succeeded, but linking failed.",
+                "output": (
+                    compile_output
+                    + "\n\n--- LINKER OUTPUT ---\n"
+                    + link_output
+                )
+            }), 400
+
+        return jsonify({
+            "success": True,
+            "message": "Compilation succeeded.",
+            "example_id": example_id,
+            "filename": config["filename"],
+            "output": (
+                compile_output + "\n" + link_output
+            ).strip()
+            + "\n\nBUILD SUCCEEDED\nExecutable: "
+            + str(executable)
+        })
+
+    except subprocess.TimeoutExpired:
+        return jsonify({
+            "success": False,
+            "error": "Compilation exceeded the 45-second time limit."
+        }), 408
+
+    except (OSError, ValueError) as exc:
+        app.logger.exception("Local C++ compilation failed")
+        return jsonify({
+            "success": False,
+            "error": "Unable to compile the selected C++ example: " + str(exc)
+        }), 500
+
+
+@app.route("/api/cpp-workspace/run", methods=["POST"])
+def cpp_workspace_run():
+    if not cpp_workspace_local_access_allowed():
+        return jsonify({
+            "success": False,
+            "error": "C++ execution is disabled or this is not a local request."
+        }), 403
+
+    data = request.get_json(silent=True) or {}
+    example_id = data.get("example_id", CPP_DEFAULT_EXAMPLE)
+
+    if cpp_example_config(example_id) is None:
+        return jsonify({
+            "success": False,
+            "error": "Unknown C++ example selection."
+        }), 400
+
+    try:
+        workspace = CPP_WORKSPACE_DIR.resolve()
+        build_dir = CPP_WORKSPACE_BUILD_DIR.resolve()
+        executable = cpp_workspace_executable_path(example_id).resolve()
+
+        if (
+            executable.parent != build_dir
+            or build_dir.parent != workspace
+            or not executable.is_file()
+        ):
+            return jsonify({
+                "success": False,
+                "error": "Compile this selected example successfully before running it."
+            }), 400
+
+        run_args = [str(executable)]
+
+        if example_id == CPP_DEFAULT_EXAMPLE:
+            run_args += [
+                "--accessNodes=2",
+                "--edgeNodes=2",
+                "--ues=3",
+                "--services=1"
+            ]
+
+        result = subprocess.run(
+            run_args,
+            cwd=str(workspace),
+            capture_output=True,
+            text=True,
+            timeout=CPP_RUN_TIMEOUT_SECONDS,
+            check=False
+        )
+
+        return jsonify({
+            "success": result.returncode == 0,
+            "message": (
+                "Simulation completed."
+                if result.returncode == 0
+                else "Simulation exited with an error."
+            ),
+            "returncode": result.returncode,
+            "output": cpp_workspace_output(result)
+        }), (200 if result.returncode == 0 else 400)
+
+    except subprocess.TimeoutExpired:
+        return jsonify({
+            "success": False,
+            "error": "Simulation exceeded the 10-second time limit."
+        }), 408
+
+    except OSError:
+        app.logger.exception("Local C++ execution failed")
+        return jsonify({
+            "success": False,
+            "error": "Unable to run the workspace executable."
+        }), 500
+
+
+
+
+# Custom C++ Experiments
+@app.route("/api/cpp-workspace/custom/list", methods=["GET"])
+def cpp_custom_list():
+    if not cpp_workspace_local_access_allowed():
+        return jsonify({"success": False, "error": "Local access only."}), 403
+
+    experiments = []
+    for experiment_id, metadata in cpp_custom_experiment_index().items():
+        paths = cpp_custom_experiment_paths(experiment_id)
+        if paths and paths[0].is_file():
+            experiments.append({
+                "id": experiment_id,
+                "name": metadata.get("name", experiment_id),
+                "filename": paths[0].name
+            })
+
+    return jsonify({"success": True, "experiments": experiments})
+
+
+
+@app.route("/api/cpp-workspace/custom/source", methods=["GET"])
+def cpp_custom_source():
+    if not cpp_workspace_local_access_allowed():
+        return jsonify({"success": False, "error": "Local access only."}), 403
+
+    experiment_id = request.args.get("experiment_id", "")
+    paths = cpp_custom_experiment_paths(experiment_id)
+
+    if paths is None or not paths[0].is_file():
+        return jsonify({"success": False, "error": "Custom experiment not found."}), 404
+
+    try:
+        source = paths[0].read_text(encoding="utf-8")
+    except OSError:
+        return jsonify({"success": False, "error": "Could not read experiment source."}), 500
+
+    return jsonify({
+        "success": True,
+        "id": experiment_id,
+        "filename": paths[0].name,
+        "source": source
+    })
+
+
+@app.route("/api/cpp-workspace/custom/save", methods=["POST"])
+def cpp_custom_save():
+    if not cpp_workspace_local_access_allowed():
+        return jsonify({"success": False, "error": "Local access only."}), 403
+
+    data = request.get_json(silent=True) or {}
+    experiment_id = data.get("experiment_id", "")
+    source = data.get("source")
+    paths = cpp_custom_experiment_paths(experiment_id)
+
+    if paths is None or not paths[0].is_file():
+        return jsonify({"success": False, "error": "Custom experiment not found."}), 404
+
+    if not isinstance(source, str) or not source.strip():
+        return jsonify({"success": False, "error": "C++ source cannot be empty."}), 400
+
+    if len(source) > 200_000:
+        return jsonify({"success": False, "error": "Source exceeds the 200 KB limit."}), 413
+
+    try:
+        paths[0].write_text(source, encoding="utf-8")
+    except OSError:
+        return jsonify({"success": False, "error": "Could not save experiment source."}), 500
+
+    return jsonify({
+        "success": True,
+        "filename": paths[0].name,
+        "message": "Custom experiment source saved."
+    })
+
+
+@app.route("/api/cpp-workspace/custom/compile", methods=["POST"])
+def cpp_custom_compile():
+    if not cpp_workspace_local_access_allowed():
+        return jsonify({"success": False, "error": "Local access only."}), 403
+
+    data = request.get_json(silent=True) or {}
+    experiment_id = data.get("experiment_id", "")
+    source = data.get("source")
+    paths = cpp_custom_experiment_paths(experiment_id)
+
+    if paths is None or not paths[0].is_file():
+        return jsonify({"success": False, "error": "Custom experiment not found."}), 404
+
+    if not isinstance(source, str) or not source.strip():
+        return jsonify({"success": False, "error": "C++ source cannot be empty."}), 400
+
+    if len(source) > 200_000:
+        return jsonify({"success": False, "error": "Source exceeds the 200 KB limit."}), 413
+
+    try:
+        CPP_CUSTOM_BUILD_DIR.mkdir(parents=True, exist_ok=True)
+
+        source_path, executable = paths
+        build_dir = CPP_CUSTOM_BUILD_DIR.resolve()
+        ns3_root = PROJECT_ROOT.resolve()
+
+        object_file = (build_dir / (experiment_id + ".o")).resolve()
+        dep_file = (build_dir / (experiment_id + ".d")).resolve()
+
+        if (
+            source_path.parent != CPP_CUSTOM_DIR.resolve()
+            or executable.parent != build_dir
+            or object_file.parent != build_dir
+            or not (NS3_BUILD_DIR / "include").is_dir()
+        ):
+            return jsonify({"success": False, "error": "Invalid custom workspace path."}), 403
+
+        source_path.write_text(source, encoding="utf-8")
+
+        config = CPP_EXAMPLES[CPP_DEFAULT_EXAMPLE]
+        original_source = cpp_example_source_path(
+            CPP_DEFAULT_EXAMPLE, config
+        ).resolve()
+
+        generated_executable = (
+            NS3_BUILD_DIR / "contrib" / "6g-lena"
+            / config["module"] / "examples" / config["target"]
+        ).resolve()
+
+        commands = cpp_get_generated_commands(config["target"])
+
+        if commands.returncode != 0:
+            return jsonify({
+                "success": False,
+                "error": "Could not retrieve generated ns-3 build commands.",
+                "output": cpp_workspace_output(commands)
+            }), 500
+
+        compile_tokens = None
+        link_tokens = None
+
+        for line in commands.stdout.splitlines():
+            tokens = cpp_parse_command(line)
+            if not tokens:
+                continue
+
+            if "-c" in tokens and str(original_source) in tokens:
+                compile_tokens = tokens
+            elif "-o" in tokens and str(generated_executable) in tokens:
+                link_tokens = tokens
+
+        if not compile_tokens or not link_tokens:
+            return jsonify({
+                "success": False,
+                "error": "Could not identify the ns-3 compiler and linker commands."
+            }), 500
+
+        original_object = compile_tokens[compile_tokens.index("-o") + 1]
+
+        compile_tokens[compile_tokens.index("-o") + 1] = str(object_file)
+
+        if "-MF" in compile_tokens:
+            compile_tokens[compile_tokens.index("-MF") + 1] = str(dep_file)
+        if "-MT" in compile_tokens:
+            compile_tokens[compile_tokens.index("-MT") + 1] = str(object_file)
+
+        compile_tokens[compile_tokens.index("-c") + 1] = str(source_path)
+
+        if original_object not in link_tokens:
+            return jsonify({
+                "success": False,
+                "error": "Could not locate the original object in the linker command."
+            }), 500
+
+        link_tokens[link_tokens.index(original_object)] = str(object_file)
+        link_tokens[link_tokens.index("-o") + 1] = str(executable)
+
+        compiled = subprocess.run(
+            compile_tokens, cwd=str(ns3_root),
+            capture_output=True, text=True,
+            timeout=CPP_BUILD_TIMEOUT_SECONDS, check=False
+        )
+
+        if compiled.returncode != 0:
+            return jsonify({
+                "success": False,
+                "message": "Compilation failed.",
+                "output": cpp_workspace_output(compiled)
+            }), 400
+
+        linked = subprocess.run(
+            link_tokens, cwd=str(ns3_root),
+            capture_output=True, text=True,
+            timeout=CPP_BUILD_TIMEOUT_SECONDS, check=False
+        )
+
+        if linked.returncode != 0:
+            return jsonify({
+                "success": False,
+                "message": "Linking failed.",
+                "output": cpp_workspace_output(linked)
+            }), 400
+
+        return jsonify({
+            "success": True,
+            "message": "Custom experiment compiled and linked successfully.",
+            "id": experiment_id,
+            "filename": source_path.name,
+            "executable": str(executable),
+            "output": (
+                cpp_workspace_output(compiled)
+                + "\n" + cpp_workspace_output(linked)
+                + "\n\nCUSTOM BUILD SUCCEEDED"
+            )
+        })
+
+    except subprocess.TimeoutExpired:
+        return jsonify({
+            "success": False,
+            "error": "Compilation exceeded the 45-second time limit."
+        }), 408
+    except (OSError, ValueError):
+        app.logger.exception("Custom C++ compilation failed")
+        return jsonify({
+            "success": False,
+            "error": "Unable to compile the custom experiment."
+        }), 500
+
+@app.route("/api/cpp-workspace/custom/create", methods=["POST"])
+def cpp_custom_create():
+    if not cpp_workspace_local_access_allowed():
+        return jsonify({"success": False, "error": "Local access only."}), 403
+
+    data = request.get_json(silent=True) or {}
+    name = data.get("name")
+
+    if not isinstance(name, str):
+        return jsonify({"success": False, "error": "Enter an experiment name."}), 400
+
+    experiment_id = re.sub(r"[^a-z0-9]+", "-", name.strip().lower()).strip("-")
+    if not CPP_CUSTOM_NAME_PATTERN.fullmatch(experiment_id):
+        return jsonify({
+            "success": False,
+            "error": "Use a name of 1–48 characters containing letters, numbers and hyphens."
+        }), 400
+
+    paths = cpp_custom_experiment_paths(experiment_id)
+    if paths is None:
+        return jsonify({"success": False, "error": "Invalid experiment name."}), 400
+
+    source_path, _ = paths
+    index = cpp_custom_experiment_index()
+
+    if source_path.exists() or experiment_id in index:
+        return jsonify({"success": False, "error": "An experiment with this name already exists."}), 409
+
+    template = """#include "ns3/core-module.h"
+#include "ns3/network-nodes-module.h"
+
+using namespace ns3;
+
+int
+main(int argc, char *argv[])
+{
+    std::cout << "Custom 6G experiment started." << std::endl;
+
+    // Add your 6G network scenario here.
+
+    std::cout << "Custom 6G experiment completed." << std::endl;
+    return 0;
+}
+"""
+
+    try:
+        CPP_CUSTOM_DIR.mkdir(parents=True, exist_ok=True)
+        CPP_CUSTOM_BUILD_DIR.mkdir(parents=True, exist_ok=True)
+        source_path.write_text(template, encoding="utf-8")
+        index[experiment_id] = {"name": name.strip()}
+        CPP_CUSTOM_INDEX.write_text(json.dumps(index, indent=2), encoding="utf-8")
+    except OSError:
+        app.logger.exception("Could not create custom C++ experiment")
+        return jsonify({"success": False, "error": "Could not create the experiment."}), 500
+
+    return jsonify({
+        "success": True,
+        "id": experiment_id,
+        "name": name.strip(),
+        "filename": source_path.name,
+        "source": template
+    })
+
+
+@app.route("/api/cpp-workspace/custom/run", methods=["POST"])
+def cpp_custom_run():
+    if not cpp_workspace_local_access_allowed():
+        return jsonify({
+            "success": False,
+            "error": "Local access only."
+        }), 403
+
+    data = request.get_json(silent=True) or {}
+    experiment_id = data.get("experiment_id", "")
+    paths = cpp_custom_experiment_paths(experiment_id)
+
+    if paths is None:
+        return jsonify({
+            "success": False,
+            "error": "Invalid custom experiment selection."
+        }), 400
+
+    try:
+        source_path, executable = paths
+        build_dir = CPP_CUSTOM_BUILD_DIR.resolve()
+
+        if (
+            source_path.parent != CPP_CUSTOM_DIR.resolve()
+            or executable.parent != build_dir
+            or not source_path.is_file()
+            or not executable.is_file()
+        ):
+            return jsonify({
+                "success": False,
+                "error": "Compile this custom experiment successfully before running it."
+            }), 400
+
+        result = subprocess.run(
+            [str(executable)],
+            cwd=str(CPP_CUSTOM_DIR.resolve()),
+            capture_output=True,
+            text=True,
+            timeout=CPP_RUN_TIMEOUT_SECONDS,
+            check=False
+        )
+
+        return jsonify({
+            "success": result.returncode == 0,
+            "message": (
+                "Custom experiment completed."
+                if result.returncode == 0
+                else "Custom experiment exited with an error."
+            ),
+            "returncode": result.returncode,
+            "output": cpp_workspace_output(result)
+        }), (200 if result.returncode == 0 else 400)
+
+    except subprocess.TimeoutExpired:
+        return jsonify({
+            "success": False,
+            "error": "Custom experiment exceeded the 10-second time limit."
+        }), 408
+
+    except (OSError, ValueError) as exc:
+        app.logger.exception("Custom C++ execution failed")
+        return jsonify({
+            "success": False,
+            "error": "Unable to run the custom experiment: " + str(exc)
+        }), 500
 
 # Capability Registry
 CAPABILITY_REGISTRY_EXECUTABLE = (
@@ -693,7 +1581,7 @@ def service_placement_experiment():
 @app.route("/api/status")
 def status():
     return jsonify({
-        "simulator": "IIITDMK 6G SIMULATOR",
+        "simulator": "IIITDM Kurnool 6G SIMULATOR",
         "engine": "ns-3 / 6G-LENA",
         "status": "ready"
     })
@@ -943,10 +1831,11 @@ def build_network():
             "error": "Network simulation timed out."
         }), 500
 
-    except Exception as error:
+    except Exception:
+        logging.exception("Simulator API error")
         return jsonify({
             "success": False,
-            "error": str(error)
+            "error": "An internal server error occurred."
         }), 500
 
 # Dynamic Resource State
@@ -1376,10 +2265,11 @@ def end_to_end_session():
             "error": str(exc),
         }), 400
 
-    except Exception as exc:
+    except Exception:
+        logging.exception("Simulator API error")
         return jsonify({
             "success": False,
-            "error": str(exc),
+            "error": "An internal server error occurred.",
         }), 500
 
 
@@ -1517,10 +2407,11 @@ def resource_stress():
             "raw_output": output,
         })
 
-    except Exception as exc:
+    except Exception:
+        logging.exception("Simulator API error")
         return jsonify({
             "success": False,
-            "error": str(exc),
+            "error": "An internal server error occurred.",
         }), 500
 
 @app.route("/api/capabilities/constraint")
@@ -1675,10 +2566,11 @@ def capability_constraint():
             "error": "Capability constraint simulation timed out."
         }), 500
 
-    except Exception as e:
+    except Exception:
+        logging.exception("Simulator API error")
         return jsonify({
             "success": False,
-            "error": str(e)
+            "error": "An internal server error occurred."
         }), 500
 
 
@@ -1810,10 +2702,11 @@ def capability_experiment():
             "error": "Capability experiment timed out."
         }), 500
 
-    except Exception as e:
+    except Exception:
+        logging.exception("Simulator API error")
         return jsonify({
             "success": False,
-            "error": str(e)
+            "error": "An internal server error occurred."
         }), 500
 
 
@@ -1952,10 +2845,11 @@ def capability_freshness():
             "raw_output": output,
         })
 
-    except Exception as e:
+    except Exception:
+        logging.exception("Simulator API error")
         return jsonify({
             "success": False,
-            "error": str(e)
+            "error": "An internal server error occurred."
         }), 500
 
 @app.route("/api/capabilities/update")
@@ -2033,10 +2927,11 @@ def capability_update():
             "error": "Capability update simulation timed out."
         }), 500
 
-    except Exception as e:
+    except Exception:
+        logging.exception("Simulator API error")
         return jsonify({
             "success": False,
-            "error": str(e)
+            "error": "An internal server error occurred."
         }), 500
 
 
@@ -2149,10 +3044,11 @@ def mobility_handover():
             "error": "Mobility handover simulation timed out."
         }), 500
 
-    except Exception as e:
+    except Exception:
+        logging.exception("Simulator API error")
         return jsonify({
             "success": False,
-            "error": str(e)
+            "error": "An internal server error occurred."
         }), 500
 
 
@@ -2229,8 +3125,9 @@ def mobility_handover_experiment():
             "raw_output": output,
         })
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        logging.exception("Simulator API error")
+        return jsonify({"error": "An internal server error occurred."}), 500
 
 
 if __name__ == "__main__":
