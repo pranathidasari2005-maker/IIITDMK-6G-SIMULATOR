@@ -119,6 +119,17 @@ def cpp_custom_experiment_index():
     except (OSError, ValueError):
         return {}
 
+def cpp_workspace_output(result):
+    combined = result.stdout or ""
+    if result.stderr:
+        combined += ("\n" if combined else "") + result.stderr
+    if not combined:
+        combined = "(No output.)"
+    if len(combined) > CPP_OUTPUT_LIMIT:
+        combined = combined[:CPP_OUTPUT_LIMIT] + "\n\n[Output truncated.]"
+    return combined
+
+
 def cpp_example_config(example_id):
     if not isinstance(example_id, str):
         return None
