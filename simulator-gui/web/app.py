@@ -3,10 +3,12 @@ import re
 import os
 import logging
 import ipaddress
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, session, has_request_context
 from auth import register_auth
 import subprocess
 import shlex
+import urllib.request
+import urllib.error
 from pathlib import Path
 
 app = Flask(__name__)
@@ -45,14 +47,40 @@ def index():
 
 
 
-# C++ Learning Workspace: fixed allowlist of 22 examples.
-CPP_WORKSPACE_DIR = Path(
+# C++ Learning Workspace: isolated per authenticated user.
+CPP_WORKSPACE_BASE_DIR = Path(
     os.environ.get(
         "CPP_WORKSPACE_DIR",
         str(Path.home() / "6G-Lab" / "cpp-workspace")
     )
 ).resolve()
-CPP_WORKSPACE_BUILD_DIR = CPP_WORKSPACE_DIR / "build"
+
+class UserWorkspacePath:
+    def __init__(self, *parts):
+        self.parts = parts
+
+    def _path(self):
+        user_id = "local"
+        if has_request_context():
+            value = session.get("user_id")
+            if value is not None and re.fullmatch(r"[A-Za-z0-9_-]{1,64}", str(value)):
+                user_id = str(value)
+        return CPP_WORKSPACE_BASE_DIR / "users" / ("user-" + user_id) / Path(*self.parts)
+
+    def __truediv__(self, other):
+        return self._path() / other
+
+    def __getattr__(self, name):
+        return getattr(self._path(), name)
+
+    def __str__(self):
+        return str(self._path())
+
+    def __fspath__(self):
+        return str(self._path())
+
+CPP_WORKSPACE_DIR = UserWorkspacePath()
+CPP_WORKSPACE_BUILD_DIR = UserWorkspacePath("build")
 NS3_BUILD_DIR = PROJECT_ROOT / "build"
 
 CPP_BUILD_TIMEOUT_SECONDS = 45
@@ -60,10 +88,12 @@ CPP_RUN_TIMEOUT_SECONDS = 10
 CPP_OUTPUT_LIMIT = 12000
 CPP_DEFAULT_EXAMPLE = "6g-basic-network-example"
 
-CPP_CUSTOM_DIR = CPP_WORKSPACE_DIR / "custom"
-CPP_CUSTOM_BUILD_DIR = CPP_WORKSPACE_BUILD_DIR / "custom"
-CPP_CUSTOM_INDEX = CPP_CUSTOM_DIR / "experiments.json"
+CPP_CUSTOM_DIR = UserWorkspacePath("custom")
+CPP_CUSTOM_BUILD_DIR = UserWorkspacePath("build", "custom")
+CPP_CUSTOM_INDEX = UserWorkspacePath("custom", "experiments.json")
 CPP_CUSTOM_NAME_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{0,47}$")
+
+
 
 
 def cpp_custom_experiment_paths(experiment_id):
@@ -88,6 +118,51 @@ def cpp_custom_experiment_index():
         return data if isinstance(data, dict) else {}
     except (OSError, ValueError):
         return {}
+
+def cpp_example_config(example_id):
+    if not isinstance(example_id, str):
+        return None
+    return CPP_EXAMPLES.get(example_id)
+
+
+def cpp_example_source_path(example_id, config):
+    return (
+        PROJECT_ROOT / "contrib" / "6g-lena"
+        / config["module"] / "examples" / config["filename"]
+    )
+
+
+def cpp_workspace_source_path(config):
+    return CPP_WORKSPACE_DIR / config["filename"]
+
+
+def cpp_workspace_executable_path(example_id):
+    return CPP_WORKSPACE_BUILD_DIR / example_id
+
+
+def cpp_get_generated_commands(target):
+    return subprocess.run(
+        ["ninja", "-C", str(PROJECT_ROOT / "cmake-cache"), "-t", "commands", target],
+        cwd=str(PROJECT_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=15,
+        check=False,
+    )
+
+
+def cpp_parse_command(line):
+    tokens = shlex.split(line)
+    if "/usr/bin/c++" not in tokens:
+        return None
+
+    tokens = tokens[tokens.index("/usr/bin/c++"):]
+
+    if "&&" in tokens:
+        tokens = tokens[:tokens.index("&&")]
+
+    return tokens
+
 
 _CPP_EXAMPLE_ROWS = [
     ("6g-basic-network-example", "network-nodes"),
@@ -125,83 +200,13 @@ CPP_EXAMPLES = {
 
 
 def cpp_workspace_local_access_allowed():
-    if os.environ.get("IIITDMK_LOCAL_CPP_EXECUTION") != "1":
-        return False
-    if os.environ.get("RENDER") or os.environ.get("RENDER_SERVICE_ID"):
-        return False
-
-    trusted_local_ips = {
-        ip.strip()
-        for ip in os.environ.get(
-            "IIITDMK_LOCAL_CPP_TRUSTED_IPS", ""
-        ).split(",")
-        if ip.strip()
-    }
-
-    try:
-        remote_ip = ipaddress.ip_address(request.remote_addr or "")
-        return (
-            remote_ip.is_loopback
-            or str(remote_ip) in trusted_local_ips
-        )
-    except ValueError:
-        return False
+    # Allow every authenticated user to access the C++ workspace.
+    return bool(session.get("user_id"))
 
 
-def cpp_workspace_output(result):
-    combined = result.stdout or ""
-    if result.stderr:
-        combined += ("\n" if combined else "") + result.stderr
-    if not combined:
-        combined = "(No output.)"
-    if len(combined) > CPP_OUTPUT_LIMIT:
-        combined = combined[:CPP_OUTPUT_LIMIT] + "\n\n[Output truncated.]"
-    return combined
-
-
-def cpp_example_config(example_id):
-    if not isinstance(example_id, str):
-        return None
-    return CPP_EXAMPLES.get(example_id)
-
-
-def cpp_example_source_path(example_id, config):
-    return (
-        PROJECT_ROOT / "contrib" / "6g-lena"
-        / config["module"] / "examples" / config["filename"]
-    )
-
-
-def cpp_workspace_source_path(config):
-    return CPP_WORKSPACE_DIR / config["filename"]
-
-
-def cpp_workspace_executable_path(example_id):
-    return CPP_WORKSPACE_BUILD_DIR / example_id
-
-
-def cpp_get_generated_commands(target):
-    return subprocess.run(
-        ["ninja", "-C", "cmake-cache", "-t", "commands", target],
-        cwd=str(PROJECT_ROOT),
-        capture_output=True,
-        text=True,
-        timeout=15,
-        check=False,
-    )
-
-
-def cpp_parse_command(line):
-    tokens = shlex.split(line)
-    if "/usr/bin/c++" not in tokens:
-        return None
-
-    tokens = tokens[tokens.index("/usr/bin/c++"):]
-
-    if "&&" in tokens:
-        tokens = tokens[:tokens.index("&&")]
-
-    return tokens
+def cpp_workspace_execution_allowed():
+    # Only authenticated users may run verified built-in examples.
+    return cpp_workspace_local_access_allowed()
 
 
 @app.route("/api/cpp-workspace/source", methods=["GET"])
@@ -332,6 +337,12 @@ def cpp_workspace_compile():
         workspace = CPP_WORKSPACE_DIR.resolve()
         build_dir = CPP_WORKSPACE_BUILD_DIR.resolve()
         ns3_root = PROJECT_ROOT.resolve()
+
+        # Create the authenticated user's isolated workspace on first use.
+        workspace.mkdir(parents=True, exist_ok=True)
+        build_dir.mkdir(parents=True, exist_ok=True)
+        CPP_CUSTOM_DIR.mkdir(parents=True, exist_ok=True)
+        CPP_CUSTOM_BUILD_DIR.mkdir(parents=True, exist_ok=True)
 
         if (
             not workspace.is_dir()
@@ -490,35 +501,34 @@ def cpp_workspace_compile():
 
 @app.route("/api/cpp-workspace/run", methods=["POST"])
 def cpp_workspace_run():
-    if not cpp_workspace_local_access_allowed():
+    if not cpp_workspace_execution_allowed():
         return jsonify({
             "success": False,
-            "error": "C++ execution is disabled or this is not a local request."
+            "error": "Execution is not permitted for this account."
         }), 403
 
     data = request.get_json(silent=True) or {}
     example_id = data.get("example_id", CPP_DEFAULT_EXAMPLE)
+    config = cpp_example_config(example_id)
 
-    if cpp_example_config(example_id) is None:
+    if config is None:
         return jsonify({
             "success": False,
             "error": "Unknown C++ example selection."
         }), 400
 
     try:
-        workspace = CPP_WORKSPACE_DIR.resolve()
-        build_dir = CPP_WORKSPACE_BUILD_DIR.resolve()
+        build_root = CPP_WORKSPACE_BUILD_DIR.resolve()
         executable = cpp_workspace_executable_path(example_id).resolve()
 
         if (
-            executable.parent != build_dir
-            or build_dir.parent != workspace
+            not executable.is_relative_to(build_root)
             or not executable.is_file()
         ):
             return jsonify({
                 "success": False,
-                "error": "Compile this selected example successfully before running it."
-            }), 400
+                "error": "Compile this example before running it."
+            }), 404
 
         run_args = [str(executable)]
 
@@ -532,41 +542,43 @@ def cpp_workspace_run():
 
         result = subprocess.run(
             run_args,
-            cwd=str(workspace),
+            cwd=str(PROJECT_ROOT),
             capture_output=True,
             text=True,
             timeout=CPP_RUN_TIMEOUT_SECONDS,
             check=False
         )
 
+        output = (result.stdout or "") + (result.stderr or "")
+
         return jsonify({
             "success": result.returncode == 0,
+            "output": output,
+            "return_code": result.returncode,
+            "execution_mode": "trusted_prebuilt_example",
             "message": (
-                "Simulation completed."
-                if result.returncode == 0
-                else "Simulation exited with an error."
-            ),
-            "returncode": result.returncode,
-            "output": cpp_workspace_output(result)
-        }), (200 if result.returncode == 0 else 400)
+                "Ran the prebuilt example from the simulator image. "
+                "Editable workspace changes are compiled separately."
+            )
+        }), 200
 
-    except subprocess.TimeoutExpired:
+    except subprocess.TimeoutExpired as exc:
+        output = exc.stdout or ""
+        if isinstance(output, bytes):
+            output = output.decode("utf-8", errors="replace")
         return jsonify({
             "success": False,
-            "error": "Simulation exceeded the 10-second time limit."
+            "error": "Simulation timed out.",
+            "output": output
         }), 408
 
-    except OSError:
-        app.logger.exception("Local C++ execution failed")
+    except Exception:
+        app.logger.exception("C++ workspace run failed")
         return jsonify({
             "success": False,
-            "error": "Unable to run the workspace executable."
+            "error": "The prebuilt simulation could not be executed."
         }), 500
 
-
-
-
-# Custom C++ Experiments
 @app.route("/api/cpp-workspace/custom/list", methods=["GET"])
 def cpp_custom_list():
     if not cpp_workspace_local_access_allowed():
@@ -855,7 +867,7 @@ main(int argc, char *argv[])
 
 @app.route("/api/cpp-workspace/custom/run", methods=["POST"])
 def cpp_custom_run():
-    if not cpp_workspace_local_access_allowed():
+    if not cpp_workspace_execution_allowed():
         return jsonify({
             "success": False,
             "error": "Local access only."
@@ -870,6 +882,12 @@ def cpp_custom_run():
             "success": False,
             "error": "Invalid custom experiment selection."
         }), 400
+
+    if not paths[0].is_file():
+        return jsonify({
+            "success": False,
+            "error": "Custom experiment not found."
+        }), 404
 
     try:
         source_path, executable = paths
