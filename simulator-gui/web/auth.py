@@ -453,37 +453,46 @@ def register_auth(app):
     # Password recovery: single-use tokens, valid for 30 minutes.
     def send_password_reset_email(recipient, reset_url):
         import os
-        import smtplib
-        import ssl
-        from email.message import EmailMessage
+        import json
+        import urllib.request
 
-        sender = os.environ.get("SMTP_EMAIL", "").strip()
-        app_password = os.environ.get("SMTP_APP_PASSWORD", "").replace(" ", "")
+        relay_url = os.environ.get("EMAIL_RELAY_URL", "").strip()
+        secret = os.environ.get("EMAIL_RELAY_SECRET", "").strip()
 
-        if not sender or not app_password:
-            raise RuntimeError("Gmail SMTP credentials are not configured.")
+        if not relay_url or not secret:
+            raise RuntimeError("Email relay configuration is missing.")
 
-        message = EmailMessage()
-        message["Subject"] = "Reset your IIITDMK 6G Simulator password"
-        message["From"] = sender
-        message["To"] = recipient
-        message.set_content(
-            "A password reset was requested for your IIITDMK 6G Simulator account.\n\n"
-            "Use the link below to choose a new password. "
-            "This link expires in 30 minutes and can only be used once.\n\n"
-            f"{reset_url}\n\n"
-            "If you did not request this, you can ignore this email."
+        payload = {
+            "secret": secret,
+            "to": recipient,
+            "subject": "Reset your IIITDMK 6G Simulator password",
+            "body": (
+                "A password reset was requested for your IIITDMK 6G Simulator account.\n\n"
+                "Use the link below to choose a new password. "
+                "This link expires in 30 minutes and can only be used once.\n\n"
+                f"{reset_url}\n\n"
+                "If you did not request this, you can ignore this email."
+            )
+        }
+
+        request = urllib.request.Request(
+            relay_url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST"
         )
 
-        context = ssl.create_default_context()
+        with urllib.request.urlopen(request, timeout=30) as response:
+            result = json.loads(response.read().decode("utf-8"))
 
-        with smtplib.SMTP_SSL(
-            "smtp.gmail.com", 465, context=context, timeout=20
-        ) as server:
-            server.login(sender, app_password)
-            server.send_message(message)
+        if not result.get("success"):
+            raise RuntimeError(
+                result.get("error", "Email relay rejected the request.")
+            )
 
-        app.logger.info("Password reset email sent successfully to %s", recipient)
+        app.logger.info(
+            "Password reset email sent successfully to %s", recipient
+        )
 
     def allow_password_reset_request(ip_address):
         import time
