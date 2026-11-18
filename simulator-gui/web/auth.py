@@ -452,12 +452,16 @@ def register_auth(app):
 
     # Password recovery: single-use tokens, valid for 30 minutes.
     def send_password_reset_email(recipient, reset_url):
-        username = os.environ.get("MAIL_USERNAME", "").strip()
-        password = os.environ.get("MAIL_PASSWORD", "").strip()
-        sender = os.environ.get("MAIL_DEFAULT_SENDER", username).strip()
+        import os
+        import smtplib
+        import ssl
+        from email.message import EmailMessage
 
-        if not username or not password or not sender:
-            raise RuntimeError("Password reset email credentials are not configured.")
+        sender = os.environ.get("SMTP_EMAIL", "").strip()
+        app_password = os.environ.get("SMTP_APP_PASSWORD", "").replace(" ", "")
+
+        if not sender or not app_password:
+            raise RuntimeError("Gmail SMTP credentials are not configured.")
 
         message = EmailMessage()
         message["Subject"] = "Reset your IIITDMK 6G Simulator password"
@@ -465,20 +469,21 @@ def register_auth(app):
         message["To"] = recipient
         message.set_content(
             "A password reset was requested for your IIITDMK 6G Simulator account.\n\n"
-            "Use the link below to choose a new password. This link expires in 30 minutes "
-            "and can only be used once.\n\n"
+            "Use the link below to choose a new password. "
+            "This link expires in 30 minutes and can only be used once.\n\n"
             f"{reset_url}\n\n"
             "If you did not request this, you can ignore this email."
         )
 
-        with smtplib.SMTP(
-            os.environ.get("MAIL_SERVER", "smtp.gmail.com"),
-            int(os.environ.get("MAIL_PORT", "587")),
-            timeout=15
-        ) as smtp:
-            smtp.starttls()
-            smtp.login(username, password)
-            smtp.send_message(message)
+        context = ssl.create_default_context()
+
+        with smtplib.SMTP_SSL(
+            "smtp.gmail.com", 465, context=context, timeout=20
+        ) as server:
+            server.login(sender, app_password)
+            server.send_message(message)
+
+        app.logger.info("Password reset email sent successfully to %s", recipient)
 
     def allow_password_reset_request(ip_address):
         import time
