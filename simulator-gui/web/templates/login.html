@@ -191,6 +191,19 @@
             <button type="submit">Sign In</button>
         </form>
 
+        <div style="margin-top: 22px; padding-top: 18px; border-top: 1px solid #edf0f5;">
+            <p style="font-size: 13px; color: #78869d; margin-bottom: 10px;">
+                Haven't received your verification code?
+            </p>
+            <form method="POST" action="{{ url_for('resend_verification') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <label for="verification_email">Email address</label>
+                <input id="verification_email" name="email" type="email"
+                       placeholder="Enter your registered email" required>
+                <button type="submit">Resend Verification Code</button>
+            </form>
+        </div>
+
         <p class="switch">
             Don't have an account?
             <a href="{{ url_for('register') }}">Create an account</a>
